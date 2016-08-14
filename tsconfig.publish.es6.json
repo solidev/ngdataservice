@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "target": "es6",
+    "noImplicitAny": false,
+    "outDir": "dist/esm",
+    "rootDir": "src",
+    "sourceMap": true,
+    "inlineSources": true,
+    "declaration": true,
+    "removeComments": true,
+    "moduleResolution": "node"
+  },
+  "files": [
+    "src/ng2dataobjects.ts",
+    "typings/modules/lodash/index.d.ts"
+  ]
+}

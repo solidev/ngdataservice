@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "module": "commonjs",
+    "target": "es5",
+    "noImplicitAny": false,
+    "outDir": "dist",
+    "rootDir": "src",
+    "sourceMap": true,
+    "inlineSources": true,
+    "declaration": true,
+    "removeComments": true
+  },
+  "files": [
+    "src/store.ts",
+    "src/store.spec.ts",
+    "src/component.ts",
+    "src/component.spec.ts",
+    "src/collection.ts",
+    "src/collection.spec.ts",
+    "src/auth.ts",
+    "src/apipath.ts",
+    "src/apipath.spec.ts",
+    "src/testing/http-status-codes.ts",
+    "src/testing/inmemoryapi.ts",
+    "src/persistence/memory.ts",
+    "src/persistence/memory.spec.ts",
+    "src/backends/rest.ts",
+    "src/backends/rest.spec.ts",
+    "typings/index.d.ts"
+  ]
+}
