@@ -10,7 +10,16 @@
     "sourceMap": true,
     "inlineSources": true,
     "declaration": true,
-    "removeComments": true
+    "removeComments": true,
+    "baseUrl": "./src",
+    "paths": [],
+    "types": [
+      "core-js",
+      "jasmine",
+      "node",
+      "protractor",
+      "selenium-webdriver"
+    ]
   },
   "files": [
     "src/store.ts",
@@ -27,7 +36,6 @@
     "src/persistence/memory.ts",
     "src/persistence/memory.spec.ts",
     "src/backends/rest.ts",
-    "src/backends/rest.spec.ts",
-    "typings/index.d.ts"
+    "src/backends/rest.spec.ts"
   ]
 }

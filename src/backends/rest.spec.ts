@@ -1,4 +1,3 @@
-import {describe, it, xit, beforeEachProviders, inject} from "@angular/core/testing";
 import {HTTP_PROVIDERS, XHRBackend, Http} from "@angular/http";
 import {InMemoryBackendService, SEED_DATA, InMemoryBackendConfig} from "../testing/inmemoryapi";
 import {Dataobject} from "../component";

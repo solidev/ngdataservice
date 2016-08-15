@@ -1,4 +1,3 @@
-import {describe, it} from "@angular/core/testing";
 import {Dataobject} from "./component";
 import createSpy = jasmine.createSpy;
 
