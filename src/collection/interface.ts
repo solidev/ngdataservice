@@ -1,35 +1,35 @@
 import {Observable} from "rxjs/Rx";
-import {IDataObject} from "../dataobject/interface";
+import {IDSModel} from "../model/interface";
 
 
-export interface IDataCollectionCreateParams {
+export interface IDSCollectionCreateParams {
     save?: boolean;
     volatile?: boolean;
 }
 
-export interface IDataCollectionGetParams {
+export interface IDSCollectionGetParams {
     fromcache?: boolean;
 }
 
-export interface IDataPagination {
+export interface IDSPaginationInfo {
     currentpage?: number;
     itemsperpage?: number;
     pagescount?: number;
     itemscount?: number;
 }
 
-export interface IDataObjectList<IDataObject> {
-    items: IDataObject[];
-    pagination: IDataPagination;
+export interface IDSModelList<T extends IDSModel> {
+    items: T[];
+    pagination: IDSPaginationInfo;
 }
 
-export interface IDataCollection {
-    save(instance: IDataObject): Observable<IDataObject>;
-    update(instance: IDataObject, fields: string[]): Observable<IDataObject>;
-    remove(instance: IDataObject): Observable<IDataObject>;
-    refresh(instance: IDataObject): Observable<IDataObject>;
-    create(values: any, params: IDataCollectionCreateParams): Observable<IDataObject>;
-    get(identifier: any, params: IDataCollectionGetParams): Observable<IDataObject>;
+export interface IDSCollection<T extends IDSModel> {
+    save(instance: T): Observable<T>;
+    update(instance: T, fields: string[]): Observable<T>;
+    remove(instance: T): Observable<T>;
+    refresh(instance: T): Observable<T>;
+    create(values: any, params: IDSCollectionCreateParams): Observable<T>;
+    get(identifier: any, params: IDSCollectionGetParams): Observable<T>;
 }
 
 export interface IDataCollectionConfig {

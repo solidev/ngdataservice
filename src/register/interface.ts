@@ -1,5 +1,5 @@
-import {IDataCollection} from "../collection/interface";
-export interface IDataRegister {
-    register(name: string, collection: IDataCollection): boolean;
-    get(name: string): IDataCollection;
+import {IDSDataService} from "../service/interface";
+export interface IDSRegister {
+    register(name: string, collection: IDSDataService): IDSDataService;
+    get(name: string): IDSDataService;
 }
