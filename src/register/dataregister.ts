@@ -1,6 +1,6 @@
 import {Injectable} from "@angular/core";
-import {Datastore} from "./collection";
-import {Dataobject} from "./component";
+import {Datastore} from "../collection/datacollection.orig";
+import {Dataobject} from "../dataobject/dataobject";
 
 /**
  * Datastore registry.

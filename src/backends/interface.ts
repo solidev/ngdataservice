@@ -1,0 +1,9 @@
+import {Observable} from "rxjs";
+
+export interface IDataBackend {
+    retrieve(identifier: any, params: any): Observable<any>;
+    list(identifier: any, params: any): Observable<any>;
+    create(identifier: any, values: any, params: any): Observable<any>;
+    update(identifier: any, values: any, params: any): Observable<any>;
+    destroy(identifier: any, params: any): Observable<any>;
+}

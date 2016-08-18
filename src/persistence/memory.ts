@@ -1,5 +1,5 @@
 import {ReplaySubject} from "rxjs/Rx";
-import {IDatastoreParams} from "../collection";
+import {IDatastoreParams} from "../collection/datacollection.orig";
 
 
 export interface IMetaStorage {

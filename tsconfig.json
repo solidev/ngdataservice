@@ -22,20 +22,20 @@
     ]
   },
   "files": [
-    "src/store.ts",
-    "src/store.spec.ts",
-    "src/component.ts",
-    "src/component.spec.ts",
-    "src/collection.ts",
-    "src/collection.spec.ts",
-    "src/auth.ts",
-    "src/apipath.ts",
-    "src/apipath.spec.ts",
+    "src/register/dataregister.ts",
+    "src/register/dataregister.spec.ts",
+    "src/dataobject/dataobject.ts",
+    "src/dataobject/dataobject.spec.ts",
+    "src/collection/datacollection.orig.ts",
+    "src/collection/datacollection.spec.ts",
+    "src/auth/auth.ts",
+    "src/backends/rest/adapters/apipath.ts",
+    "src/backends/rest/adapters/apipath.spec.ts",
     "src/testing/http-status-codes.ts",
     "src/testing/inmemoryapi.ts",
     "src/persistence/memory.ts",
     "src/persistence/memory.spec.ts",
-    "src/backends/rest.ts",
-    "src/backends/rest.spec.ts"
+    "src/backends/rest/rest.ts",
+    "src/backends/rest/rest.spec.ts"
   ]
 }
