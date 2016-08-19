@@ -9,7 +9,7 @@ import {DSModel} from "../model/model";
  * Provides reference to data services to avoid injection loops.
  */
 @Injectable()
-export class DSDataRegister extends IDSRegister {
+export class DSRegister implements IDSRegister {
     private _datastores: {[index: string]: IDSDataService<any>} = {};
 
     public register<T extends DSModel>(name: string, ds: IDSDataService<T>): IDSDataService<T> {

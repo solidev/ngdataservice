@@ -1,14 +1,16 @@
 import {IDSAdapter, IDSAdapterIdentifierParams} from "./interface";
 import {IDSRestIdentifier} from "../backends/rest";
 import {IDSModel} from "../model/interface";
+import {Injectable} from "@angular/core";
 
-class DSRestUrlAdapter implements IDSAdapter {
+@Injectable()
+export class DSRestUrlAdapter implements IDSAdapter {
 
     public identifier(instance: IDSModel, params: IDSAdapterIdentifierParams = {}): IDSRestIdentifier {
         return {
             url: "http://todo",
             headers: {},
-            search: {}
+            query: {}
         };
     }
 
@@ -16,7 +18,7 @@ class DSRestUrlAdapter implements IDSAdapter {
         return {
             url: "http://todo",
             headers: {},
-            search: {}
+            query: {}
         };
     }
 }

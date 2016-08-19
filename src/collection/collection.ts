@@ -6,7 +6,7 @@ import {IDSAdapter} from "../adapters/interface";
 import {IDSSerializer} from "../serializers/interface";
 import {IDSCollection, IDSModelList, IDSCollectionCreateParams, IDSCollectionGetParams} from "./interface";
 
-export class DSCollection<T extends IDSModel> implements IDSCollection {
+export class DSCollection<T extends IDSModel> implements IDSCollection<T> {
     protected _adapter: IDSAdapter;
     protected _backend: IDSBackend;
     protected _serializer: IDSSerializer;
@@ -23,7 +23,7 @@ export class DSCollection<T extends IDSModel> implements IDSCollection {
     }
 
     public save(instance: T): Observable<T> {
-        let identifier: any = this._adapter.identifier(instance);
+        let identifier: any = this._adapter.identifier(instance, {});
         if (identifier === null) {
             // Pk is not defined, let's create this item
             identifier = this._adapter.identifier(instance, {create: true});
@@ -31,7 +31,7 @@ export class DSCollection<T extends IDSModel> implements IDSCollection {
             return this._backend.create(identifier, tosave, {})
                 .do((fromdb) => {
                     instance.assign(this._serializer.deserialize(fromdb));
-                    identifier = this._adapter.identifier(instance);
+                    identifier = this._adapter.identifier(instance, {});
                     this._persistence.save(identifier, instance);
                 });
         }
@@ -40,7 +40,7 @@ export class DSCollection<T extends IDSModel> implements IDSCollection {
     }
 
     public update(instance: T, fields: string[]): Observable<T> {
-        let identifier: any = this._adapter.identifier(instance);
+        let identifier: any = this._adapter.identifier(instance, {});
         if (identifier) {
             let tosave: any = this._serializer.serialize(instance);
             return this._backend.update(identifier, tosave, {})
@@ -53,7 +53,7 @@ export class DSCollection<T extends IDSModel> implements IDSCollection {
     }
 
     public remove(instance: T): Observable<T> {
-        let identifier: any = this._adapter.identifier(instance);
+        let identifier: any = this._adapter.identifier(instance, {});
         if (identifier) {
             return this._backend.destroy(identifier, {})
                 .do(() => {
@@ -64,7 +64,7 @@ export class DSCollection<T extends IDSModel> implements IDSCollection {
     }
 
     public refresh(instance: T): Observable<T> {
-        let identifier: any = this._adapter.identifier(instance);
+        let identifier: any = this._adapter.identifier(instance, {});
         if (identifier) {
             return this._backend.retrieve(identifier, {})
                 .do((fromdb) => {

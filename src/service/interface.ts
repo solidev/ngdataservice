@@ -1,4 +1,5 @@
 import {IDSCollection} from "../collection/interface";
-export interface IDSDataService<T> {
+import {IDSModel} from "../model/interface";
+export interface IDSDataService<T extends IDSModel> {
     collection(params: any): IDSCollection<T>;
 }

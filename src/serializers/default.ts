@@ -1,8 +1,10 @@
 import {IDSSerializer} from "./interface";
 import {omitBy} from "lodash";
 import {IDSModel} from "../model/interface";
+import {Injectable} from "@angular/core";
 
-class IDSDefaultSerializer implements IDSSerializer {
+@Injectable()
+export class DSDefaultSerializer implements IDSSerializer {
     public serialize(instance: IDSModel): any {
         return omitBy(instance, (value, key) => {
             return (key[0] === "_") || (key[0] === "$");
@@ -15,7 +17,7 @@ class IDSDefaultSerializer implements IDSSerializer {
 
     public serializeMany(instances: IDSModel[]): any {
         let serialized: any[] = [];
-        for (let instance of instance) {
+        for (let instance of instances) {
             serialized.push(this.serialize(instance));
         }
         return serialized;

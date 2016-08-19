@@ -13,9 +13,9 @@ export interface IDSModel {
     validate(): Observable<IDSModel>;
 }
 
-export interface IDSModelConstructor<T> {
+export interface IDSModelConstructor<T extends IDSModel> {
     new(collection: IDSCollection<T>,
-        values: any = {}): T;
+        values: any): T;
 }
 
 

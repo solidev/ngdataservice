@@ -21,21 +21,5 @@
       "selenium-webdriver"
     ]
   },
-  "files": [
-    "src/register/register.ts",
-    "src/register/dataregister.spec.ts",
-    "src/model/model.ts",
-    "src/model/dataobject.spec.ts",
-    "src/collection/datacollection.orig.ts",
-    "src/collection/datacollection.spec.ts",
-    "src/authentication/tokenauth.ts",
-    "src/adapters/apipath.orig.ts",
-    "src/adapters/apipath.spec.ts",
-    "test/http-status-codes.ts",
-    "test/inmemoryapi.ts",
-    "src/persistence/memory.ts",
-    "src/persistence/memory.spec.ts",
-    "src/backends/rest.ts",
-    "src/backends/rest/rest.spec.ts"
-  ]
+  "exclude": ["node_modules", "test", "examples", "dist"]
 }

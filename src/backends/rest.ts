@@ -17,7 +17,7 @@ export interface IDSRestIdentifier {
  * Makes data requests to a REST API.
  */
 @Injectable()
-export class RestDataBackend implements IDSBackend {
+export class DSRestBackend implements IDSBackend {
 
     constructor(private _http: Http,
                 protected _parser: DSJsonParser,

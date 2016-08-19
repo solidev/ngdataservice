@@ -6,6 +6,6 @@ export interface IDSAdapterIdentifierParams {
 
 
 export interface IDSAdapter {
-    identifier(instance: IDSModel, params: IDSAdapterIdentifierParams = {}): any;
-    search(params: any): any;
+    identifier(instance: IDSModel, params?: IDSAdapterIdentifierParams): any;
+    search(params?: any): any;
 }

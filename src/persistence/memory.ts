@@ -1,4 +1,7 @@
-export class IDSMemoryPersistence {
+import {Injectable} from "@angular/core";
+import {IDSPersistence} from "./interface";
+@Injectable()
+export class DSMemoryPersistence implements IDSPersistence {
     private _items: {[index: string]: any};
 
     public save(identifier: any, data: any): any {
