@@ -9,9 +9,9 @@ System.config({
     map: {
         app: "./src",
         lib: "./lib",
-        '@angular': 'https://npmcdn.com/@angular',
-        'rxjs': 'https://npmcdn.com/rxjs@5.0.0-beta.6',
-        "lodash": "https://npmcdn.com/lodash"
+        '@angular': './node_modules/@angular',
+        'rxjs': './node_modules/rxjs',
+        "lodash": "./node_modules/lodash"
     },
     //packages defines our app package
     packages: {
@@ -58,6 +58,7 @@ System.config({
             defaultExtension: 'js'
         },
         lodash: {
+            main: "index.js",
             defaultExtension: 'js'
         }
     }

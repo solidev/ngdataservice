@@ -2,7 +2,7 @@ import {Headers, URLSearchParams, RequestOptions, Http} from "@angular/http";
 import {Observable} from "rxjs/Rx";
 import {IDSBackend} from "./interface";
 import {DSJsonParser} from "../parsers/json";
-import {Injectable} from "@angular/core";
+import {Injectable, OpaqueToken, Inject} from "@angular/core";
 import {DSJsonRenderer} from "../renderers/json";
 
 
@@ -12,6 +12,13 @@ export interface IDSRestIdentifier {
     headers?: {[index: string]: string};
 }
 
+export let REST_BACKEND_CONFIG = new OpaqueToken("backend.res.config");
+
+export interface IDSRestBackendConfig {
+    host: string;
+    port: string;
+    scheme: string;
+}
 
 /**
  * Makes data requests to a REST API.
@@ -21,7 +28,8 @@ export class DSRestBackend implements IDSBackend {
 
     constructor(private _http: Http,
                 protected _parser: DSJsonParser,
-                protected _renderer: DSJsonRenderer) {
+                protected _renderer: DSJsonRenderer,
+                @Inject(REST_BACKEND_CONFIG) protected _config: IDSRestBackendConfig) {
     }
 
     public retrieve(identifier: IDSRestIdentifier, params: any): Observable<any> {
@@ -107,3 +115,5 @@ export class DSRestBackend implements IDSBackend {
         });
     }
 }
+
+
