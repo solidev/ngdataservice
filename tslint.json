@@ -146,11 +146,11 @@
     ],
     "directive-selector-prefix": [
       true,
-      "eds"
+      "ds"
     ],
     "component-selector-prefix": [
       true,
-      "eds"
+      "ds"
     ],
     "use-input-property-decorator": true,
     "use-output-property-decorator": true,
@@ -164,7 +164,7 @@
     "pipe-naming": [
       true,
       "camelCase",
-      "eds"
+      "ds"
     ],
     "component-class-suffix": true,
     "directive-class-suffix": true

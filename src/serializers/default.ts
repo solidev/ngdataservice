@@ -1,4 +1,4 @@
-import {IDSSerializer} from "./interface";
+import {IDSSerializer, IDSSerializerProvider} from "./interface";
 import {omitBy} from "lodash";
 import {IDSModel} from "../model/interface";
 import {Injectable} from "@angular/core";
@@ -30,5 +30,12 @@ export class DSDefaultSerializer implements IDSSerializer {
             deserialized.push(this.deserialize(res));
         }
         return deserialized;
+    }
+}
+
+@Injectable()
+export class DSDefaultSerializerProvider implements IDSSerializerProvider {
+    public provide(params: any): IDSSerializer {
+        return new DSDefaultSerializer();
     }
 }

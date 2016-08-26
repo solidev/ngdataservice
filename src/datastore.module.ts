@@ -1,13 +1,15 @@
 import {NgModule} from "@angular/core";
 import {HttpModule} from "@angular/http";
-import {DSRestBackend} from "./backends/rest";
+import {DSRestBackend, DSRestBackendProvider} from "./backends/rest";
 import {DSRestDataService} from "./service/service";
-import {DSDefaultSerializer} from "./serializers/default";
-import {DSRestUrlAdapter} from "./adapters/resturl";
+import {DSDefaultSerializer, DSDefaultSerializerProvider} from "./serializers/default";
+import {DSRestUrlAdapter, DSRestUrlAdapterProvider} from "./adapters/resturl";
 import {DSRegister} from "./register/register";
-import {DSMemoryPersistence} from "./persistence/memory";
-import {DSJsonParser} from "./parsers/json";
-import {DSJsonRenderer} from "./renderers/json";
+import {DSMemoryPersistence, DSMemoryPersistenceProvider} from "./persistence/memory";
+import {DSJsonParser, DSJsonParserProvider} from "./parsers/json";
+import {DSJsonRenderer, DSJsonRendererProvider} from "./renderers/json";
+import {DSPagePaginator, DSPagePaginatorProvider} from "./paginators/pages";
+import {DSTokenAuthenticationProvider, DSTokenAuthentication} from "./authentication/tokenauth";
 
 @NgModule({
     imports: [
@@ -20,8 +22,19 @@ import {DSJsonRenderer} from "./renderers/json";
         DSRestUrlAdapter,
         DSRegister,
         DSMemoryPersistence,
+        DSTokenAuthentication,
+        DSPagePaginator,
         DSJsonParser,
-        DSJsonRenderer
+        DSJsonRenderer,
+        DSRestBackendProvider,
+        DSDefaultSerializerProvider,
+        DSRestUrlAdapterProvider,
+        DSMemoryPersistenceProvider,
+        DSJsonParserProvider,
+        DSJsonRendererProvider,
+        DSPagePaginatorProvider,
+        DSTokenAuthenticationProvider
+
     ],
     exports: []
 })

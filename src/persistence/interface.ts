@@ -5,3 +5,7 @@ export interface IDSPersistence {
     list(params: any): any;
     clear(params: any): any;
 }
+
+export interface IDSPersistenceProvider {
+    provide(params: any): IDSPersistence;
+}

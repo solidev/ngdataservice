@@ -11,3 +11,7 @@ export interface IDSSerializer {
     serializeMany(instances: IDSModel[]): any;
     deserializeMany(result: any): any;
 }
+
+export interface IDSSerializerProvider {
+    provide(params: any): IDSSerializer;
+}

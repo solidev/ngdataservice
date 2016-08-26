@@ -1,8 +1,8 @@
 import {Injectable} from "@angular/core";
-import {IDSPersistence} from "./interface";
+import {IDSPersistence, IDSPersistenceProvider} from "./interface";
 @Injectable()
 export class DSMemoryPersistence implements IDSPersistence {
-    private _items: {[index: string]: any};
+    private _items: {[index: string]: any} = {};
 
     public save(identifier: any, data: any): any {
         let id: string = JSON.stringify(identifier);
@@ -22,5 +22,12 @@ export class DSMemoryPersistence implements IDSPersistence {
     }
     public clear(params: any): any {
         this._items = {};
+    }
+}
+
+@Injectable()
+export class DSMemoryPersistenceProvider implements IDSPersistenceProvider {
+    public provide(params: any): DSMemoryPersistence {
+        return new DSMemoryPersistence();
     }
 }

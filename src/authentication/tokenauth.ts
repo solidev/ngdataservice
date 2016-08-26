@@ -1,11 +1,11 @@
 // Sample authentication service.
-import {IAuthService} from "./interface";
+import {IDSAuthentication, IDSAuthenticationProvider} from "./interface";
 import {Headers} from "@angular/http";
 import {Injectable} from "@angular/core";
 
 
 @Injectable()
-class TokenAuthentication implements IAuthService {
+export class DSTokenAuthentication implements IDSAuthentication {
     private _token: string;
     private _header: string;
     private _authenticated: boolean = false;
@@ -31,5 +31,13 @@ class TokenAuthentication implements IAuthService {
 
     public setAuthContent(content: any): any {
         return content;
+    }
+}
+
+
+@Injectable()
+export class DSTokenAuthenticationProvider implements IDSAuthenticationProvider {
+    public provide(): IDSAuthentication {
+        return new DSTokenAuthentication();
     }
 }

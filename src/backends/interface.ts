@@ -7,3 +7,6 @@ export interface IDSBackend {
     update(identifier: any, values: any, params: any): Observable<any>;
     destroy(identifier: any, params: any): Observable<any>;
 }
+export interface IDSBackendProvider {
+    provide(params: any): IDSBackend;
+}

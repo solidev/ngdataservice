@@ -9,3 +9,7 @@ export interface IDSAdapter {
     identifier(instance: IDSModel, params?: IDSAdapterIdentifierParams): any;
     search(params?: any): any;
 }
+
+export interface IDSAdapterProvider {
+    provide(config: any): IDSAdapter;
+}
