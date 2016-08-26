@@ -13,8 +13,8 @@
     "types": [
       "core-js",
       "mocha",
-      "chai",
       "node",
+      "chai",
       "protractor",
       "selenium-webdriver"
     ]

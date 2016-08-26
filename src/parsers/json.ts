@@ -11,7 +11,7 @@ export class DSJsonParser implements IDSResponseParser {
 
 @Injectable()
 export class DSJsonParserProvider implements IDSResponseParserProvider {
-    public provide(params: any): DSJsonParser {
+    public provide(params: any = null): DSJsonParser {
         return new DSJsonParser();
     }
 }
