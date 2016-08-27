@@ -80,7 +80,7 @@ export class InMemoryBackendConfig implements InMemoryBackendConfigArgs {
 }
 
 /**
- * Interface for object w/ info about the current request url
+ * Interface for object w/ info about the current request path
  * extracted from an Http Request
  */
 export interface IReqInfo {
@@ -406,7 +406,7 @@ export class InMemoryBackendService {
       let drop = this.config.rootPath.length;
       let urlRoot = "";
       if (loc.host !== this.config.host) {
-        // url for a server on a different host!
+        // path for a server on a different host!
         // assume it"s collection is actually here too.
         drop = 1; // the leading slash
         urlRoot = loc.protocol + "//" + loc.host + "/";

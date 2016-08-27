@@ -1,1 +1,1 @@
-export * from "./adapters/resturl";
+export * from "./adapters/flatresturl";

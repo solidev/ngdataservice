@@ -8,7 +8,7 @@ import {IDSCollection} from "../collection/interface";
 import {IDSModel} from "../model/interface";
 import {DSRestBackend} from "../backends/rest";
 import {DSDefaultSerializer} from "../serializers/default";
-import {DSRestUrlAdapter} from "../adapters/resturl";
+import {DSFlatRestUrlAdapter} from "../adapters/flatresturl";
 import {DSMemoryPersistence} from "../persistence/memory";
 import {DSRegister} from "../register/register";
 import {IDSSerializer} from "../serializers/interface";
@@ -35,7 +35,7 @@ export class DSRestDataService<T extends IDSModel> extends DSGenericDataService<
     constructor(
         public backend: DSRestBackend,
         public serializer: DSDefaultSerializer,
-        public adapter: DSRestUrlAdapter,
+        public adapter: DSFlatRestUrlAdapter,
         public persistence: DSMemoryPersistence,
         public registry: DSRegister
     ) {

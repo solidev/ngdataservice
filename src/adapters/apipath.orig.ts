@@ -17,7 +17,7 @@ import * as replace from "lodash/replace";
 // }
 //
 // export class ObjectUrl {
-//   public url:string;
+//   public path:string;
 //   public curl:string;
 //   private _path:string;
 //   private _pathParams:IObjectPathParam[];
@@ -46,10 +46,10 @@ import * as replace from "lodash/replace";
 //   }
 //
 //   private _buildUrls():void {
-//     this.url = this._path;
+//     this.path = this._path;
 //     this.curl = this._path;
 //     for (let pp of this._pathParams) {
-//       this.url = _.replace(this.url, `{${pp.key}}`, pp.value);
+//       this.path = _.replace(this.path, `{${pp.key}}`, pp.value);
 //       if (this._options.ignore && this._options.ignore.path) {
 //         if (!_.includes(this._options.ignore.path, pp.key)) {
 //           this.curl = _.replace(this.curl, `{${pp.key}}`, pp.value);
@@ -71,7 +71,7 @@ import * as replace from "lodash/replace";
 //       }
 //     }
 //     if (search.length > 0) {
-//       this.url += "?" + search.join("&");
+//       this.path += "?" + search.join("&");
 //     }
 //     if (csearch.length > 0) {
 //       this.curl += "?" + csearch.join("&");
@@ -88,7 +88,7 @@ export interface IUrlBuilderParams {
 
 
 /**
- * Builds object / list url from item/identifier data, search params & options.
+ * Builds object / list path from item/identifier data, search params & options.
  * @todo to be implemented using canonical params ordering (see ObjectUrl)
  */
 export class UrlBuilder {
@@ -102,7 +102,7 @@ export class UrlBuilder {
     }
 
     /**
-     * Returns object canonical url.
+     * Returns object canonical path.
      * @param identifier object identifier parameters
      * @param search search object
      * @param item optional item instance
@@ -119,7 +119,7 @@ export class UrlBuilder {
     }
 
     /**
-     * Returns object full url.
+     * Returns object full path.
      * @param identifier object identifier parameters
      * @param search search object
      * @param item optional item instance
@@ -136,7 +136,7 @@ export class UrlBuilder {
     }
 
     /**
-     * Returns list canonical url.
+     * Returns list canonical path.
      * @param identifier object identifier parameters
      * @param search search object
      * @returns {any}
@@ -152,7 +152,7 @@ export class UrlBuilder {
     }
 
     /**
-     * Returns list url.
+     * Returns list path.
      * @param identifier object identifier parameters
      * @param search search object
      * @returns {any}

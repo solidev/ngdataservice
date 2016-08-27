@@ -1,13 +1,14 @@
 import {Headers, URLSearchParams, RequestOptions, Http} from "@angular/http";
-import {Observable} from "rxjs/Rx";
+import {Observable} from "rxjs";
 import {IDSBackend, IDSBackendProvider} from "./interface";
 import {DSJsonParser} from "../parsers/json";
 import {Injectable, OpaqueToken, Inject} from "@angular/core";
 import {DSJsonRenderer} from "../renderers/json";
+import "rxjs/add/operator/map";
 
 
 export interface IDSRestIdentifier {
-    url: string;
+    path: string;
     query?: {[index: string]: string};
     headers?: {[index: string]: string};
 }
@@ -23,6 +24,8 @@ export interface IDSRestBackendConfig {
 
 /**
  * Makes data requests to a REST API.
+ * FIXME: include authentication in backend ?
+ * TODO: add custom actions.
  */
 @Injectable()
 export class DSRestBackend implements IDSBackend {
@@ -33,46 +36,46 @@ export class DSRestBackend implements IDSBackend {
                 @Inject(REST_BACKEND_CONFIG) protected _config: IDSRestBackendConfig) {
     }
 
-    public retrieve(identifier: IDSRestIdentifier, params: any): Observable<any> {
+    public retrieve(identifier: IDSRestIdentifier, params: any = {}): Observable<any> {
         let options = this.getRequestOptions(identifier);
         return this._http
-            .get(this._config.url + identifier.url, options)
+            .get(this.getRequestUrl(identifier), options)
             .map((response) => {
                 return this._parser.parse(response);
             });
     }
 
-    public list(identifier: IDSRestIdentifier, params: any): Observable<any> {
+    public list(identifier: IDSRestIdentifier, params: any = {}): Observable<any> {
         let options = this.getRequestOptions(identifier);
         return this._http
-            .get(identifier.url, options)
+            .get(this.getRequestUrl(identifier), options)
             .map((response) => {
                 return this._parser.parse(response);
             });
     }
 
-    public create(identifier: IDSRestIdentifier, values: any, params: any): Observable<any> {
+    public create(identifier: IDSRestIdentifier, values: any, params: any = {}): Observable<any> {
         let options = this.getRequestOptions(identifier);
         return this._http
-            .post(identifier.url, this._renderer.render(values), options)
+            .post(this.getRequestUrl(identifier), this._renderer.render(values), options)
             .map((response) => {
                 return this._parser.parse(response);
             });
     }
 
-    public update(identifier: IDSRestIdentifier, values: any, params: any): Observable<any> {
+    public update(identifier: IDSRestIdentifier, values: any, params: any = {}): Observable<any> {
         let options = this.getRequestOptions(identifier);
         return this._http
-            .put(identifier.url, this._renderer.render(values), options)
+            .put(this.getRequestUrl(identifier), this._renderer.render(values), options)
             .map((response) => {
                 return this._parser.parse(response);
             });
     }
 
-    public destroy(identifier: IDSRestIdentifier, params: any): Observable<any> {
+    public destroy(identifier: IDSRestIdentifier, params: any = {}): Observable<any> {
         let options = this.getRequestOptions(identifier);
         return this._http
-            .delete(identifier.url, options)
+            .delete(this.getRequestUrl(identifier), options)
             .map((response) => {
                 return this._parser.parse(response);
             });
@@ -105,7 +108,7 @@ export class DSRestBackend implements IDSBackend {
     }
 
     /**
-     * Compute request options (url, search, headers)
+     * Compute request options (path, search, headers)
      * @param identifier
      * @returns {RequestOptions} Request options
      */
@@ -114,6 +117,25 @@ export class DSRestBackend implements IDSBackend {
             headers: this.getRequestHeaders(identifier),
             search: this.getSearchParams(identifier)
         });
+    }
+
+    /**
+     * Compute request url using config and identifier.
+     * TODO: check trailing slashes
+     * SEE: add basePath in detailed config ?
+     * SEE: add current host as default host ?
+     * @param identifier
+     * @returns {string}
+     */
+    public getRequestUrl(identifier: IDSRestIdentifier): string {
+        if (this._config.url) {
+            return this._config.url + identifier.path;
+        } else {
+            return (this._config.scheme || "http") + "://" +
+                this._config.host + ":" +
+                (this._config.port || "80") +
+                identifier.path;
+        }
     }
 }
 

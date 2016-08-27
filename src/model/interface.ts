@@ -5,6 +5,7 @@ import {IDSCollection} from "../collection/interface";
 
 export interface IDSModel {
     pk: number|string;
+    id?: number|string;
     assign(values: any): IDSModel;
     save(): Observable<IDSModel>;
     update(fields: string[]): Observable<IDSModel>;

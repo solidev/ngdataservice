@@ -3,7 +3,7 @@ import {HttpModule} from "@angular/http";
 import {DSRestBackend, DSRestBackendProvider} from "./backends/rest";
 import {DSRestDataService} from "./service/service";
 import {DSDefaultSerializer, DSDefaultSerializerProvider} from "./serializers/default";
-import {DSRestUrlAdapter, DSRestUrlAdapterProvider} from "./adapters/resturl";
+import {DSFlatRestUrlAdapter, DSFlatRestUrlAdapterProvider} from "./adapters/flatresturl";
 import {DSRegister} from "./register/register";
 import {DSMemoryPersistence, DSMemoryPersistenceProvider} from "./persistence/memory";
 import {DSJsonParser, DSJsonParserProvider} from "./parsers/json";
@@ -19,7 +19,7 @@ import {DSTokenAuthenticationProvider, DSTokenAuthentication} from "./authentica
         DSRestBackend,
         DSRestDataService,
         DSDefaultSerializer,
-        DSRestUrlAdapter,
+        DSFlatRestUrlAdapter,
         DSRegister,
         DSMemoryPersistence,
         DSTokenAuthentication,
@@ -28,7 +28,7 @@ import {DSTokenAuthenticationProvider, DSTokenAuthentication} from "./authentica
         DSJsonRenderer,
         DSRestBackendProvider,
         DSDefaultSerializerProvider,
-        DSRestUrlAdapterProvider,
+        DSFlatRestUrlAdapterProvider,
         DSMemoryPersistenceProvider,
         DSJsonParserProvider,
         DSJsonRendererProvider,
