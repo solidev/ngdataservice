@@ -101,7 +101,7 @@ export class DSRestBackend implements IDSBackend {
         let rawquery = identifier.query || {};
         for (let param in rawquery) {
             if (rawquery.hasOwnProperty(param)) {
-                search.set(param, rawquery["param"]);
+                search.set(param, rawquery[param]);
             }
         }
         return search;
