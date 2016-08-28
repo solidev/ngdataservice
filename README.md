@@ -9,6 +9,6 @@ be considered as stable.
 # **Github mirror**
 
 This project is hosted on https://gitlab.com/solidev/ng2datastore
-Issues, builds and pull(merge) requests are on gitlab side, this
+Issues, builds and pull(merge) requests are on gitlab side, github
 repository is read-only.
 

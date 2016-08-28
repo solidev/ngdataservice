@@ -5,6 +5,7 @@
     "module": "commonjs",
     "target": "es5",
     "noImplicitAny": false,
+    "outDir": "./dist",
     "sourceMap": false,
     "inlineSourceMap": true,
     "inlineSources": false,
