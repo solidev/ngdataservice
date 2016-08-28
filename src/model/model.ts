@@ -90,9 +90,9 @@ export class DSModel implements IDSModel {
      * Checks if object is associated to a datacollection.
      * @param raise if true (default), raises an Error if no datacollection is given
      * @returns {boolean}
-     * @private
+     * @protected
      */
-    private _checkCollection(raise: boolean = true): boolean {
+    protected _checkCollection(raise: boolean = true): boolean {
         if (!this._collection) {
             if (raise) {
                 throw new Error("No collection defined");

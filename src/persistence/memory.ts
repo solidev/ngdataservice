@@ -1,7 +1,10 @@
 import {Injectable} from "@angular/core";
 import {IDSPersistence, IDSPersistenceProvider} from "./interface";
+import * as _ from "lodash";
+
 @Injectable()
 export class DSMemoryPersistence implements IDSPersistence {
+    public type:string = "OBJ";
     private _items: {[index: string]: any} = {};
 
     public save(identifier: any, data: any): any {
@@ -17,10 +20,10 @@ export class DSMemoryPersistence implements IDSPersistence {
         let id: string = JSON.stringify(identifier);
         delete this._items[id];
     }
-    public list(params: any): any {
-        return this._items;
+    public list(params: any = {}): any {
+        return _.values(this._items);
     }
-    public clear(params: any): any {
+    public clear(params: any = {}): any {
         this._items = {};
     }
 }
