@@ -54,21 +54,40 @@ export class DSCollection<T extends IDSModel> implements IDSCollection<T> {
         return null;
     }
 
+    public create(values: any = {}, params: IDSCollectionCreateParams = {}): Observable<T> {
+        let instance: T = new this.model(this, values);
+        if (params.create) {
+            return this.save(instance);
+        } else if (!params.volatile) {
+            this.get_persistence().save(
+                this.get_adapter().identifier(instance, {unsaved: true}),
+                instance
+            );
+            return Observable.of(instance);
+        } else {
+            return Observable.of(instance);
+
+        }
+    }
+
     public save(instance: T): Observable<T> {
         let identifier: any = this.get_adapter().identifier(instance, {});
-        if (identifier === null) {
+        if (identifier == null) {
             // Pk is not defined, let's create this item
             identifier = this.get_adapter().identifier(instance, {create: true});
             let tosave: any = this.get_serializer().serialize(instance);
-            return this.get_backend().create(identifier, tosave, {})
-                .do((fromdb) => {
+            return <Observable<T>>this.get_backend().create(identifier, tosave, {})
+                .map((fromdb) => {
                     instance.assign(this.get_serializer().deserialize(fromdb));
                     identifier = this.get_adapter().identifier(instance, {});
                     this.get_persistence().save(identifier, instance);
+                    // SEE : remove temporary localId ??
+                    return <T>instance;
                 });
+        } else {
+            // Identifier is defined, it's a full update
+            return this.update(instance, []);
         }
-        // Identifier is defined, it's a full update
-        return this.update(instance, []);
     }
 
     public update(instance: T, fields: string[]): Observable<T> {
@@ -105,22 +124,6 @@ export class DSCollection<T extends IDSModel> implements IDSCollection<T> {
                 });
         }
         throw new Error("Cannot refresh unsaved item");
-    }
-
-    public create(values: any, params: IDSCollectionCreateParams = {}): Observable<T> {
-        let instance: T = new this.model(this, values);
-        if (params.save) {
-            return this.save(instance);
-        } else if (!params.volatile) {
-            this.get_persistence().save(
-                this.get_adapter().identifier(instance, {unsaved: true}),
-                instance
-            );
-            return Observable.of(instance);
-        } else {
-            return Observable.of(instance);
-
-        }
     }
 
     public get(pk: any, params: IDSCollectionGetParams = {}): Observable<T> {
@@ -211,11 +214,13 @@ export class DSCollection<T extends IDSModel> implements IDSCollection<T> {
         if (!this[name]) {
             if (this[name + "_provider"]) {
                 this[name] = this[name + "_provider"].provide(config);
+            } else if (this.setup[name]) {
+                this[name] = this.setup[name];
             } else if (this.setup[name + "_provider"]) {
                 let provider: any = this.setup[name + "_provider"];
                 this[name] = provider.provide(config);
-            } else if (this.setup[name]) {
-                this[name] = this.setup[name];
+            } else {
+                throw new Error(name + " service is not defined");
             }
         }
         return this[name];

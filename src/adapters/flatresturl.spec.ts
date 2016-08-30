@@ -16,20 +16,24 @@ describe("DSFlatRestUrlAdapter", () => {
             expect(identifier.headers).to.be.empty;
         });
 
-        it("should return raw base url if no object given", () => {
+        it("should return null if no object given", () => {
             let identifier = adapter.identifier();
-            expect(identifier.path).to.equal("/api/trains");
-            expect(identifier.query).to.be.empty;
-            expect(identifier.headers).to.be.empty;
+            expect(identifier).to.be.null;
         });
 
-        it("should return raw base url if object given has no id", () => {
+        it("should return null if object given has no id", () => {
             let identifier = adapter.identifier(<any>{name: "train"});
+            expect(identifier).to.be.null;
+        });
+    });
+    describe(".identifier({create: true})", () => {
+        let adapter = new DSFlatRestUrlAdapter({basePath: "/api/trains"});
+        it("should return raw base url if object given wo id and create parameter is set", () => {
+            let identifier = adapter.identifier(<any>{name: "train"}, {create: true});
             expect(identifier.path).to.equal("/api/trains");
             expect(identifier.query).to.be.empty;
             expect(identifier.headers).to.be.empty;
         });
-
         it("should return raw base url if object given and create parameter is set", () => {
             let identifier = adapter.identifier(<any>{id: 12, name: "train"}, {create: true});
             expect(identifier.path).to.equal("/api/trains");
@@ -38,6 +42,17 @@ describe("DSFlatRestUrlAdapter", () => {
         });
     });
 
+    describe(".identifier({unsaved: true})", () => {
+        let adapter = new DSFlatRestUrlAdapter({basePath: "/api/trains"});
+        it("should return a temporary identifier and store in instance", () => {
+            let obj = {name: "train"};
+            let identifier = adapter.identifier(<any>obj, {unsaved: true});
+            expect(identifier.path).to.contain("?__local__/api/trains/");
+            expect(obj).to.have.property("_localId");
+            expect(identifier.query).to.be.empty;
+            expect(identifier.headers).to.be.empty;
+        });
+    });
     describe(".search()", () => {
         let adapter = new DSFlatRestUrlAdapter({basePath: "/api/trains"});
         it("should return basePath", () => {

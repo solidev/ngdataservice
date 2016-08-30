@@ -8,6 +8,10 @@ export let REST_ADAPTER_CONFIG = new OpaqueToken("adapter.resturl.config");
 export interface IDSRestAdapterConfig {
     basePath: string;
 }
+function getRandomId(): string {
+    return Math.random().toString(36).substring(2, 15) +
+        Math.random().toString(36).substring(2, 15);
+}
 
 @Injectable()
 export class DSFlatRestUrlAdapter implements IDSAdapter {
@@ -16,17 +20,27 @@ export class DSFlatRestUrlAdapter implements IDSAdapter {
     }
 
     public identifier(instance: IDSModel = null, params: IDSAdapterIdentifierParams = {}): IDSRestIdentifier {
-        if (params.create ||
-            instance === null ||
+        if (params.unsaved) {
+            let randomId = getRandomId();
+            let path = "?__local__" + this._config.basePath + "/" + randomId;
+            // FIXME: add setter for localId ?
+            (<any>instance)._localId = path;
+            return {path: "?__local__" + this._config.basePath + "/" + randomId, headers: {}, query: {}};
+        }
+        else if (params.create) {
+            return {path: this._config.basePath, headers: {}, query: {}};
+
+        } else if (instance === null ||
             (instance.id === undefined && instance.pk === undefined)
         ) {
-            return {path: this._config.basePath, headers: {}, query: {}};
+            return null;
         } else if (instance.id !== undefined || instance.pk !== undefined) {
             let id = instance.id || instance.pk;
             return {path: this._config.basePath + "/" + id, headers: {}, query: {}};
         } else {
             return {path: this._config.basePath, headers: {}, query: {}};
         }
+
     }
 
     public search(params: any = {}): any {

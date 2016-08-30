@@ -2,9 +2,10 @@ Collection classes and service
 ==============================
 
 Collection classes provides foundation classes to create data collections.
-Collections instances are created by Collection service.
+Collections instances can be injected or created by Collection service.
 
 Collection must have :
+
 - a backend service
 - a persistence service
 - a serializer service

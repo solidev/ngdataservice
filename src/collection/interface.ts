@@ -9,7 +9,7 @@ import {IDSAdapterProvider, IDSAdapter} from "../adapters/interface";
 
 
 export interface IDSCollectionCreateParams {
-    save?: boolean;
+    create?: boolean;
     volatile?: boolean;
 }
 
