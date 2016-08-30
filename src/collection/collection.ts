@@ -94,10 +94,11 @@ export class DSCollection<T extends IDSModel> implements IDSCollection<T> {
         let identifier: any = this.get_adapter().identifier(instance, {});
         if (identifier) {
             let tosave: any = this.get_serializer().serialize(instance);
-            return this.get_backend().update(identifier, tosave, {})
-                .do((fromdb) => {
+            return <Observable<T>>this.get_backend().update(identifier, tosave, {})
+                .map((fromdb) => {
                     instance.assign(this.get_serializer().deserialize(fromdb));
                     this.get_persistence().save(identifier, instance);
+                    return instance;
                 });
         }
         throw new Error("Cannot update unsaved item");

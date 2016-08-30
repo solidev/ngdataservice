@@ -201,5 +201,55 @@ describe("DSCollection", () => {
                 done();
             });
         });
+
+        it("should save(update) an existing object", (done) => {
+            mockAdapter.identifier.returns("/api/1");
+            sinon.stub(mockSerializer, "serialize")
+                .returns({id: 1, name: "train"});
+            sinon.stub(mockSerializer, "deserialize")
+                .returns({id: 1, name: "train"});
+            mockBackend.update = sinon.stub()
+                .returns(Observable.of({id: 1, name: "train"}));
+            let obj = new DSModel(this, {id: 1, name: "train"});
+
+            ds.save(obj).subscribe((res) => {
+                expect((<any>obj).id).to.equal(1);
+                expect(mockBackend.update.calledOnce).to.be.true;
+                done();
+            });
+        });
+
+        it("should not (update) a non-existing object", (done) => {
+            mockAdapter.identifier.returns(null);
+            let obj = new DSModel(this, {name: "train"});
+            expect(ds.update.bind(ds, [obj])).to.throw("Cannot update unsaved item");
+            done();
+        });
+
+        it("should not delete an existing existing object", (done) => {
+            mockAdapter.identifier.returns("/api/1");
+            sinon.stub(mockSerializer, "serialize")
+                .returns({id: 1, name: "train"});
+            sinon.stub(mockSerializer, "deserialize")
+                .returns({id: 1, name: "train"});
+            mockBackend.destroy = sinon.stub()
+                .returns(Observable.of({id: 1, name: "train"}));
+            let obj = new DSModel(this, {id: 1, name: "train"});
+
+            ds.remove(obj).subscribe((res) => {
+                expect(mockPersistence.destroy.calledOnce).to.be.true;
+                expect(mockBackend.destroy.calledOnce).to.be.true;
+                done();
+            });
+        });
+
+        it("should not remove a non-existing object", (done) => {
+            mockAdapter.identifier.returns(null);
+            let obj = new DSModel(this, {name: "train"});
+            expect(ds.remove.bind(ds, [obj])).to.throw("Cannot delete unsaved item");
+            done();
+        });
+
+
     });
 });
