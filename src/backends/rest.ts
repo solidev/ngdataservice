@@ -2,7 +2,7 @@ import {Headers, URLSearchParams, RequestOptions, Http} from "@angular/http";
 import {Observable} from "rxjs";
 import {IDSBackend, IDSBackendProvider} from "./interface";
 import {DSJsonParser} from "../parsers/json";
-import {Injectable, OpaqueToken, Inject} from "@angular/core";
+import {Injectable, OpaqueToken, Inject, Optional} from "@angular/core";
 import {DSJsonRenderer} from "../renderers/json";
 import "rxjs/add/operator/map";
 
@@ -13,7 +13,7 @@ export interface IDSRestIdentifier {
     headers?: {[index: string]: string};
 }
 
-export let REST_BACKEND_CONFIG = new OpaqueToken("backend.res.config");
+export let REST_BACKEND_CONFIG = new OpaqueToken("backend.rest.config");
 
 export interface IDSRestBackendConfig {
     host: string;
@@ -144,7 +144,8 @@ export class DSRestBackend implements IDSBackend {
 export class DSRestBackendProvider implements IDSBackendProvider {
     constructor(protected _http: Http,
                 protected _parser: DSJsonParser,
-                protected _renderer: DSJsonRenderer) {
+                protected _renderer: DSJsonRenderer,
+                @Optional() @Inject(REST_BACKEND_CONFIG) protected _config: IDSRestBackendConfig) {
 
     }
 
@@ -153,7 +154,7 @@ export class DSRestBackendProvider implements IDSBackendProvider {
             this._http,
             this._parser,
             this._renderer,
-            params
+            params || this._config
         );
     }
 }

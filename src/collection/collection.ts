@@ -4,39 +4,54 @@ import {IDSBackend, IDSBackendProvider} from "../backends/interface";
 import {IDSPersistence, IDSPersistenceProvider} from "../persistence/interface";
 import {IDSAdapter, IDSAdapterProvider} from "../adapters/interface";
 import {IDSSerializer, IDSSerializerProvider} from "../serializers/interface";
-import {IDSCollection, IDSModelList, IDSCollectionCreateParams, IDSCollectionGetParams} from "./interface";
+import {
+    IDSCollection,
+    IDSModelList,
+    IDSCollectionCreateParams,
+    IDSCollectionGetParams,
+    IDSCollectionSetup
+} from "./interface";
 import {IDSAuthentication, IDSAuthenticationProvider} from "../authentication/interface";
 import {IDSPaginator, IDSPaginatorProvider} from "../paginators/interface";
 
 
 export class DSCollection<T extends IDSModel> implements IDSCollection<T> {
-    protected _adapter: IDSAdapter;
-    protected adapter_provider: IDSAdapterProvider;
-    protected adapter_config: any;
-    protected _backend: IDSBackend;
-    protected backend_provider: IDSBackendProvider;
-    protected backend_config: any;
-    protected _serializer: IDSSerializer;
-    protected serializer_provider: IDSSerializerProvider;
-    protected serializer_config: any;
-    protected _persistence: IDSPersistence;
-    protected persistence_provider: IDSPersistenceProvider;
-    protected persistence_config: any;
-    protected _authentication: IDSAuthentication;
-    protected authentication_provider: IDSAuthenticationProvider;
-    protected authentication_config: any;
-    protected _paginator: IDSPaginator;
-    protected paginator_service: IDSPaginatorProvider;
-    protected paginator_config: any;
-    protected _base: IDSModelConstructor<T>;
-    protected _context: any;
 
-    protected _items: ReplaySubject<IDSModelList<T>> = new ReplaySubject<IDSModelList<T>>(1);
+    public model: IDSModelConstructor<T>;
     public items$: Observable<IDSModelList<T>>;
 
-    constructor(context: any) {
-        this.items$ = this._items.asObservable();
+    protected adapter: IDSAdapter;
+    protected adapter_provider: IDSAdapterProvider;
+    protected adapter_config: any;
+    protected backend: IDSBackend;
+    protected backend_provider: IDSBackendProvider;
+    protected backend_config: any;
+    protected serializer: IDSSerializer;
+    protected serializer_provider: IDSSerializerProvider;
+    protected serializer_config: any;
+    protected persistence: IDSPersistence;
+    protected persistence_provider: IDSPersistenceProvider;
+    protected persistence_config: any;
+    protected authentication: IDSAuthentication;
+    protected authentication_provider: IDSAuthenticationProvider;
+    protected authentication_config: any;
+    protected paginator: IDSPaginator;
+    protected paginator_provider: IDSPaginatorProvider;
+    protected paginator_config: any;
+    protected _context: any;
+    protected setup: IDSCollectionSetup;
+    protected _items: ReplaySubject<IDSModelList<T>> = new ReplaySubject<IDSModelList<T>>(1);
+
+    constructor(setup: IDSCollectionSetup, context: any = {}) {
+        this.setup = setup;
         this._context = context;
+        this.items$ = this._items.asObservable();
+        this.init();
+    }
+
+
+    public init(): void {
+        return null;
     }
 
     public save(instance: T): Observable<T> {
@@ -93,7 +108,7 @@ export class DSCollection<T extends IDSModel> implements IDSCollection<T> {
     }
 
     public create(values: any, params: IDSCollectionCreateParams = {}): Observable<T> {
-        let instance: T = new this._base(this, values);
+        let instance: T = new this.model(this, values);
         if (params.save) {
             return this.save(instance);
         } else if (!params.volatile) {
@@ -109,7 +124,7 @@ export class DSCollection<T extends IDSModel> implements IDSCollection<T> {
     }
 
     public get(pk: any, params: IDSCollectionGetParams = {}): Observable<T> {
-        let identifier = this.get_adapter().identifier(pk);
+        let identifier = this.get_adapter().identifier(<any>{pk: pk});
         if (params.fromcache) {
             return Observable.of(this.get_persistence().retrieve(identifier));
         } else {
@@ -183,6 +198,7 @@ export class DSCollection<T extends IDSModel> implements IDSCollection<T> {
     protected get_authentication_config(): any {
         return this.get_service_config("authentication");
     }
+
     protected get_paginator(): IDSPaginator {
         return <IDSPaginator>this.get_service("paginator", this.get_paginator_config());
     }
@@ -192,18 +208,28 @@ export class DSCollection<T extends IDSModel> implements IDSCollection<T> {
     }
 
     private get_service(name: string, config: any): any {
-        if (!this["_" + name]) {
+        if (!this[name]) {
             if (this[name + "_provider"]) {
-                this["_" + name] = this[name + "_provider"].provide(config);
-            } else {
-                throw new Error("No " + name + " provided");
+                this[name] = this[name + "_provider"].provide(config);
+            } else if (this.setup[name + "_provider"]) {
+                let provider: any = this.setup[name + "_provider"];
+                this[name] = provider.provide(config);
+            } else if (this.setup[name]) {
+                this[name] = this.setup[name];
             }
         }
-        return this["_" + name];
+        return this[name];
     }
 
     private get_service_config(name: string): any {
-        return this[name + "_config"];
+        if (this[name + "_config"]) {
+            return this[name + "_config"];
+        } else if (this.setup[name + "_config"]) {
+            return this.setup[name + "_config"];
+        } else {
+            // SEE: default values ? false ? undefined ?
+            return null;
+        }
     }
 
 

@@ -1,7 +1,6 @@
 import {NgModule} from "@angular/core";
 import {HttpModule} from "@angular/http";
 import {DSRestBackend, DSRestBackendProvider} from "./backends/rest";
-import {DSRestDataService} from "./service/service";
 import {DSDefaultSerializer, DSDefaultSerializerProvider} from "./serializers/default";
 import {DSFlatRestUrlAdapter, DSFlatRestUrlAdapterProvider} from "./adapters/flatresturl";
 import {DSRegister} from "./register/register";
@@ -10,6 +9,7 @@ import {DSJsonParser, DSJsonParserProvider} from "./parsers/json";
 import {DSJsonRenderer, DSJsonRendererProvider} from "./renderers/json";
 import {DSPagePaginator, DSPagePaginatorProvider} from "./paginators/pages";
 import {DSTokenAuthenticationProvider, DSTokenAuthentication} from "./authentication/tokenauth";
+import {DSRestCollectionSetup} from "./collection/restcollection";
 
 @NgModule({
     imports: [
@@ -17,7 +17,6 @@ import {DSTokenAuthenticationProvider, DSTokenAuthentication} from "./authentica
     ],
     providers: [
         DSRestBackend,
-        DSRestDataService,
         DSDefaultSerializer,
         DSFlatRestUrlAdapter,
         DSRegister,
@@ -33,10 +32,12 @@ import {DSTokenAuthenticationProvider, DSTokenAuthentication} from "./authentica
         DSJsonParserProvider,
         DSJsonRendererProvider,
         DSPagePaginatorProvider,
-        DSTokenAuthenticationProvider
-
+        DSTokenAuthenticationProvider,
+        DSRestCollectionSetup
     ],
-    exports: []
+    exports: [
+        HttpModule
+    ]
 })
 export class RestModule {
 }

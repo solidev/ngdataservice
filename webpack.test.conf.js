@@ -1,8 +1,7 @@
 module.exports = {
     resolve: {
         root: __dirname,
-        extensions: ['', '.ts', '.js', '.json'],
-        modulesDirectories: ['node_modules','src']
+        extensions: ['', '.ts', '.js', '.json']
     },
     devtool: 'inline-source-map',
     module: {
@@ -14,8 +13,14 @@ module.exports = {
             },
             {test: /\.json$/, loader: 'json'},
             {test: /\.html$/, loader: 'raw'}
+        ],
+        postLoaders: [
+            { test: /\.ts$/,
+                loader: 'istanbul-instrumenter'
+            }
         ]
     },
     stats: {colors: true, reasons: true},
-    debug: false
+    debug: true,
+    entry: "./src/index.ts"
 }

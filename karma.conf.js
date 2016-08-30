@@ -17,6 +17,7 @@ module.exports = function (config) {
                 root: __dirname,
                 extensions: ['', '.ts', '.js', '.json']
             },
+            devtool: 'inline-source-map',
             module: {
                 loaders: [
                     {
@@ -34,10 +35,10 @@ module.exports = function (config) {
                 ]
             },
             stats: {colors: true, reasons: true},
-            debug: false
-        },
-        ts: {
-            configFileName: "tsconfig.test.json"
+            debug: false,
+            ts: {
+                configFileName: "tsconfig.test.json"
+            },
         },
         coverageReporter: {
             dir: 'coverage',

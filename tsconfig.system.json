@@ -1,25 +1,26 @@
 {
   "compilerOptions": {
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "module": "commonjs",
+    "module": "system",
     "target": "es5",
-    "noImplicitAny": false,
-    "outDir": "./dist",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
     "sourceMap": true,
     "inlineSourceMap": false,
-    "inlineSources": false,
-    "declaration": true,
-    "removeComments": true,
+    "moduleResolution": "node",
+    "outFile": "./dist/ng2datastore-bundle.js",
     "types": [
       "core-js",
       "mocha",
+      "node",
       "chai",
       "lodash",
-      "node",
       "protractor",
       "selenium-webdriver"
     ]
   },
+  "files": [
+    "src/index.ts"
+  ],
   "exclude": ["./index.d.ts", "node_modules", "test", "examples", "dist"]
+
 }
