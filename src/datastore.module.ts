@@ -34,9 +34,6 @@ import {DSRestCollectionSetup} from "./collection/restcollection";
         DSPagePaginatorProvider,
         DSTokenAuthenticationProvider,
         DSRestCollectionSetup
-    ],
-    exports: [
-        HttpModule
     ]
 })
 export class RestModule {

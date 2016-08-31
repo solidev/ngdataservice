@@ -12,7 +12,7 @@
     "coverage:reporttxt": "remap-istanbul -i coverage/coverage.json -t text-summary -o coverage/summary.txt -e node_modules,vendor.ts && cat coverage/summary.txt",
     "docs": "typedoc --out doc/api/ --module commonjs --mode modules --name ng2dataobjects src",
     "build": "rm -rf dist; tsc -p ./tsconfig.es5.json",
-    "build_npm": "rm -rf dist && tsc -p tsconfig.es5.json && tsc -p tsconfig.system.json"
+    "build_npm": "rm -rf dist && tsc -p tsconfig.es5.json"
   },
   "author": "Jean-Matthieu BARBIER <jm.barbier@solidev.net>",
   "license": "MIT",

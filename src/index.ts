@@ -11,3 +11,4 @@ export * from "./register/index";
 export * from "./renderers/index";
 export * from "./serializers/index";
 export * from "./service/index";
+export * from "./datastore.module";

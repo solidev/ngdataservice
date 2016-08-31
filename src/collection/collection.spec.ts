@@ -132,7 +132,7 @@ describe("DSCollection", () => {
         let mockPersistence: any;
         let mockAuthentication: any;
         let mockPaginator: any;
-        let ds: DSCollection;
+        let ds: DSCollection<DSModel>;
 
         beforeEach(() => {
             mockAdapter = {identifier: sinon.stub()};
@@ -157,7 +157,7 @@ describe("DSCollection", () => {
             };
             mockAuthentication = {};
             mockPaginator = {};
-            ds = new DSCollection({});
+            ds = new DSCollection<DSModel>({});
             ds.model = <any>DSModel;
             (<any>ds).adapter = <any>mockAdapter;
             (<any>ds).backend = <any>mockBackend;
@@ -195,8 +195,8 @@ describe("DSCollection", () => {
 
             mockBackend.create = sinon.stub().returns(Observable.of({id: 1, name: "train"}));
             ds.create({name: "train"}, {create: true}).subscribe((obj) => {
-                expect(mockBackend.create.called).to.be.true;
-                expect(obj.id).to.equal(1);
+                expect((<any>mockBackend.create).called).to.be.true;
+                expect((<any>obj).id).to.equal(1);
                 expect(obj).to.be.instanceOf(DSModel);
                 done();
             });

@@ -20,5 +20,5 @@
       "selenium-webdriver"
     ]
   },
-  "exclude": ["node_modules", "test", "examples", "dist"]
+  "exclude": ["node_modules", "test", "example", "dist"]
 }
