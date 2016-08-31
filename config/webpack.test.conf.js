@@ -1,6 +1,7 @@
+var path = require("path");
 module.exports = {
     resolve: {
-        root: __dirname,
+        root: path.resolve(__dirname, "../"),
         extensions: ['', '.ts', '.js', '.json']
     },
     devtool: 'inline-source-map',
@@ -15,12 +16,15 @@ module.exports = {
             {test: /\.html$/, loader: 'raw'}
         ],
         postLoaders: [
-            { test: /\.ts$/,
+            {
+                test: /\.ts$/,
                 loader: 'istanbul-instrumenter'
             }
         ]
     },
     stats: {colors: true, reasons: true},
-    debug: true,
-    entry: "./src/index.ts"
-}
+    debug: false,
+    ts: {
+        configFileName: "config/tsconfig.test.json"
+    }
+};

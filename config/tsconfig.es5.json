@@ -4,21 +4,21 @@
     "emitDecoratorMetadata": true,
     "module": "commonjs",
     "target": "es5",
+    "outDir": "../dist",
     "noImplicitAny": false,
-    "sourceMap": false,
-    "inlineSourceMap": true,
+    "sourceMap": true,
+    "inlineSourceMap": false,
     "inlineSources": false,
     "declaration": true,
     "removeComments": true,
     "types": [
       "core-js",
       "mocha",
-      "node",
       "chai",
       "lodash",
-      "protractor",
-      "selenium-webdriver"
+      "node"
     ]
   },
-  "exclude": ["node_modules", "test", "example", "dist"]
+  "exclude": ["./index.d.ts", "./index.ts", "node_modules", "test", "example", "dist"],
+  "include": ["../src/**/*.ts"]
 }

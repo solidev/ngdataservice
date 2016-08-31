@@ -7,19 +7,17 @@
     "sourceMap": true,
     "inlineSourceMap": false,
     "moduleResolution": "node",
-    "outFile": "./dist/ng2datastore-bundle.js",
+    "outFile": "../dist/ng2datastore-bundle.js",
     "types": [
       "core-js",
       "mocha",
       "node",
       "chai",
-      "lodash",
-      "protractor",
-      "selenium-webdriver"
+      "lodash"
     ]
   },
   "files": [
-    "src/index.ts"
+    "../src/ng2datastore.ts"
   ],
   "exclude": ["./index.d.ts", "node_modules", "test", "example", "dist"]
 

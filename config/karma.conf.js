@@ -1,6 +1,6 @@
 module.exports = function (config) {
     config.set({
-        basePath: '',
+        basePath: '../',
         frameworks: ['mocha', 'es6-shim'],
         files: [
             'src/vendors.ts',
@@ -12,34 +12,7 @@ module.exports = function (config) {
             'src/vendors.ts': ['webpack', 'sourcemap'],
             'src/**/*.spec.ts': ['webpack', 'sourcemap']
         },
-        webpack: {
-            resolve: {
-                root: __dirname,
-                extensions: ['', '.ts', '.js', '.json']
-            },
-            devtool: 'inline-source-map',
-            module: {
-                loaders: [
-                    {
-                        test: /\.tsx?$/, loader: 'ts-loader', exclude: [
-                        /node_modules/
-                    ]
-                    },
-                    {test: /\.json$/, loader: 'json'},
-                    {test: /\.html$/, loader: 'raw'}
-                ],
-                postLoaders: [
-                    { test: /\.ts$/,
-                        loader: 'istanbul-instrumenter'
-                    }
-                ]
-            },
-            stats: {colors: true, reasons: true},
-            debug: false,
-            ts: {
-                configFileName: "tsconfig.test.json"
-            },
-        },
+        webpack: require("./webpack.test.conf.js"),
         coverageReporter: {
             dir: 'coverage',
             reporters: [

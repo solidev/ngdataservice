@@ -19,6 +19,7 @@
     "@angular/router": "^3.0.0-rc.1",
     "live-server": "^1.1.0",
     "lodash": "^4.15.0",
+    "ng2datastore": "../../",
     "reflect-metadata": "^0.1.3",
     "rxjs": "^5.0.0-beta.6",
     "systemjs": "^0.19.31",

@@ -5,21 +5,18 @@
     "module": "commonjs",
     "target": "es5",
     "noImplicitAny": false,
-    "outDir": "./dist",
-    "sourceMap": true,
-    "inlineSourceMap": false,
+    "sourceMap": false,
+    "inlineSourceMap": true,
     "inlineSources": false,
     "declaration": true,
     "removeComments": true,
     "types": [
       "core-js",
       "mocha",
-      "chai",
-      "lodash",
       "node",
-      "protractor",
-      "selenium-webdriver"
+      "chai",
+      "lodash"
     ]
   },
-  "exclude": ["./index.d.ts", "node_modules", "test", "example", "dist"]
+  "exclude": ["node_modules", "test", "example", "dist"]
 }

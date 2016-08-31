@@ -1,7 +1,7 @@
 import {NgModule} from "@angular/core";
 import {BrowserModule} from "@angular/platform-browser";
 import {TrainCollection, TrainService} from "./trains/model";
-import {REST_BACKEND_CONFIG, REST_ADAPTER_CONFIG, RestModule, DSRestCollectionSetup} from "../src/index";
+import {REST_BACKEND_CONFIG, REST_ADAPTER_CONFIG, RestModule, DSRestCollectionSetup} from "ng2datastore";
 import {AppComponent} from "./app.component";
 
 @NgModule({
