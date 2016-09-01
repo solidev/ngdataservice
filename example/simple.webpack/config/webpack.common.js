@@ -29,15 +29,12 @@ module.exports = {
                 loader: 'file?name=assets/[name].[hash].[ext]'
             },
             {
-                test: /\.css$/,
-                exclude: helpers.root('src', 'app'),
-                loader: ExtractTextPlugin.extract('style', 'css?sourceMap')
+                test: /\.css$/, include: [helpers.root('src', 'css')],
+                loader: ExtractTextPlugin.extract({fallbackLoader: 'style-loader', loader: 'css-loader'})
             },
-            {
-                test: /\.css$/,
-                include: helpers.root('src', 'app'),
-                loader: 'raw'
-            }
+            { test: /\.css$/,         loaders: ['raw-loader']
+                , include: [helpers.root('src','app')] }
+
         ]
     },
 

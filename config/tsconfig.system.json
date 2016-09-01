@@ -10,15 +10,13 @@
     "outFile": "../dist/ng2datastore-bundle.js",
     "types": [
       "core-js",
-      "mocha",
       "node",
-      "chai",
       "lodash"
     ]
   },
   "files": [
     "../src/ng2datastore.ts"
   ],
-  "exclude": ["./index.d.ts", "node_modules", "test", "example", "dist"]
+  "exclude": ["../index.d.ts", "../src/**/*.spec.ts", "node_modules", "test", "example", "dist"]
 
 }

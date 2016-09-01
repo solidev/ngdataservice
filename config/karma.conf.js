@@ -1,7 +1,7 @@
 module.exports = function (config) {
     config.set({
         basePath: '../',
-        frameworks: ['mocha', 'es6-shim'],
+        frameworks: ['jasmine'],
         files: [
             'src/vendors.ts',
             {pattern: 'src/**/*.spec.ts', watched: false}

@@ -1,18 +1,14 @@
 import {BaseRequestOptions, Http, Response, RequestMethod, ResponseOptions} from "@angular/http";
 import {MockBackend, MockConnection} from "@angular/http/testing/mock_backend";
-import {BrowserDynamicTestingModule, platformBrowserDynamicTesting} from "@angular/platform-browser-dynamic/testing";
-import {TestBed, inject} from "@angular/core/testing/test_bed";
 import {REST_BACKEND_CONFIG, DSRestBackend} from "./rest";
 import {DSJsonRenderer} from "../renderers/json";
 import {DSJsonParser} from "../parsers/json";
 import {expect} from "chai";
 import * as sinon from "sinon";
 
-TestBed.initTestEnvironment(
-    BrowserDynamicTestingModule,
-    platformBrowserDynamicTesting()
-);
-
+import {TestBed, inject} from "@angular/core/testing";
+import {BrowserDynamicTestingModule, platformBrowserDynamicTesting} from "@angular/platform-browser-dynamic/testing"
+TestBed.initTestEnvironment(BrowserDynamicTestingModule, platformBrowserDynamicTesting());
 describe("DSRestBackend", () => {
 
     beforeEach(() => {

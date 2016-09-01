@@ -1,11 +1,8 @@
 import {DSDefaultSerializer, DSDefaultSerializerProvider} from "./default";
 import {expect} from "chai";
-import {BrowserDynamicTestingModule, platformBrowserDynamicTesting} from "@angular/platform-browser-dynamic/testing";
-import {TestBed, inject} from "@angular/core/testing/test_bed";
-TestBed.initTestEnvironment(
-    BrowserDynamicTestingModule,
-    platformBrowserDynamicTesting()
-);
+import {TestBed, inject} from "@angular/core/testing";
+import {BrowserDynamicTestingModule, platformBrowserDynamicTesting} from "@angular/platform-browser-dynamic/testing"
+TestBed.initTestEnvironment(BrowserDynamicTestingModule, platformBrowserDynamicTesting());
 
 describe("DSDefaultSerializer", () => {
     it("should serialize an object omitting _ and $ properties", () => {

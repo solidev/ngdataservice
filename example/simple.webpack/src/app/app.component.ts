@@ -4,13 +4,9 @@ import {Train, TrainService} from "./trains/model";
 
 @Component({
     selector: "ds-app",
-    templateUrl: "./app.component.html"
-/*: `
-    <div>
-      <h2>This is fetched train data</h2>
-        <pre>{{train?.title}}</pre>
-    </div>
-  `*/
+    templateUrl: "./app.component.html",
+    styleUrls: ["./app.component.css"]
+
 })
 export class AppComponent {
     public train: Train;

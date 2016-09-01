@@ -13,12 +13,10 @@
     "removeComments": true,
     "types": [
       "core-js",
-      "mocha",
-      "chai",
       "lodash",
       "node"
     ]
   },
-  "exclude": ["./index.d.ts", "./index.ts", "node_modules", "test", "example", "dist"],
+  "exclude": ["./index.d.ts", "../src/**/*.spec.ts", "./index.ts", "node_modules", "test", "example", "dist"],
   "include": ["../src/**/*.ts"]
 }

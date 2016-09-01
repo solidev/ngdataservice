@@ -1,11 +1,8 @@
 import {DSFlatRestUrlAdapter, REST_ADAPTER_CONFIG, DSFlatRestUrlAdapterProvider} from "./flatresturl";
 import {expect} from "chai";
-import {BrowserDynamicTestingModule, platformBrowserDynamicTesting} from "@angular/platform-browser-dynamic/testing";
-import {TestBed, inject} from "@angular/core/testing/test_bed";
-TestBed.initTestEnvironment(
-    BrowserDynamicTestingModule,
-    platformBrowserDynamicTesting()
-);
+import {TestBed, inject} from "@angular/core/testing";
+import {BrowserDynamicTestingModule, platformBrowserDynamicTesting} from "@angular/platform-browser-dynamic/testing"
+TestBed.initTestEnvironment(BrowserDynamicTestingModule, platformBrowserDynamicTesting());
 describe("DSFlatRestUrlAdapter", () => {
     describe(".identifier()", () => {
         let adapter = new DSFlatRestUrlAdapter({basePath: "/api/trains"});
