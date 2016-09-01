@@ -6,15 +6,15 @@ export class Train extends DSModel {
      type: DSIntegerField,
      validators: [DSGreaterThanValidator(0)]
      })*/
-    public id: number = 12;
+    public id: number;
     /*@Field({
      type: DSStringField,
      validators: [DSMinLength(5), DSMaxLength(20)]
      })*/
-    public name: string = "chugginton";
+    public title: string;
 
     public honk(): void {
-        console.log(`${this.name} is honking`);
+        console.log(`${this.title} is honking`);
     }
 }
 

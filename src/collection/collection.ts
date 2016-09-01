@@ -72,9 +72,11 @@ export class DSCollection<T extends IDSModel> implements IDSCollection<T> {
 
     public save(instance: T): Observable<T> {
         let identifier: any = this.get_adapter().identifier(instance, {});
+        console.log("saving", instance, identifier);
         if (identifier == null) {
             // Pk is not defined, let's create this item
             identifier = this.get_adapter().identifier(instance, {create: true});
+            console.log("To create", identifier);
             let tosave: any = this.get_serializer().serialize(instance);
             return <Observable<T>>this.get_backend().create(identifier, tosave, {})
                 .map((fromdb) => {

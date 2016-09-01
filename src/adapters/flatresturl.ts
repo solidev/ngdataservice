@@ -26,15 +26,16 @@ export class DSFlatRestUrlAdapter implements IDSAdapter {
             // FIXME: add setter for localId ?
             (<any>instance)._localId = path;
             return {path: "?__local__" + this._config.basePath + "/" + randomId, headers: {}, query: {}};
-        }
-        else if (params.create) {
+        } else if (params.create) {
             return {path: this._config.basePath, headers: {}, query: {}};
-
         } else if (instance === null ||
-            (instance.id === undefined && instance.pk === undefined)
+            (
+                ((instance.id === undefined) || (instance.id == null)) &&
+                ((instance.pk === undefined || instance.pk == null))
+            )
         ) {
             return null;
-        } else if (instance.id !== undefined || instance.pk !== undefined) {
+        } else if (!instance.id || !instance.pk) { // FIXME: add better check for unsaved instance
             let id = instance.id || instance.pk;
             return {path: this._config.basePath + "/" + id, headers: {}, query: {}};
         } else {
