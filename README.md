@@ -1,6 +1,8 @@
 [![build status](https://gitlab.com/solidev/ng2datastore/badges/develop/build.svg)](https://gitlab.com/solidev/ng2datastore/commits/develop)
 [![coverage report](https://gitlab.com/solidev/ng2datastore/badges/develop/coverage.svg)](https://gitlab.com/solidev/ng2datastore/commits/develop)
 
+**This is a Work In Progress project - do not use it until it reaches at least `0.1`** 
+
 # ng2datastore : data access for angular2
 This project is hosted on https://gitlab.com/solidev/ng2datastore
 Issues, builds and pull(merge) requests are on gitlab side, github
@@ -12,7 +14,8 @@ Works with **angular@2.0.0-rc.6** : ```npm install ng2datastore --save```
 
 ## Usage
 
-With webpack : as is (see [./example/simple.webpack/](example)); with systemjs : (see [./example/simple.system/](system))
+With webpack : as is (see [example](./example/simple.webpack/src/app/app.component.ts));
+with systemjs : (see [example](./example/simple.system/config.js))
 ```
 map: { ... "ng2datastore": "./node_modules/ng2datastore",  ... },
 packages: { "ng2datastore": { main: "index.js", defaultExtension: 'js' } ... }
@@ -189,22 +192,22 @@ TODO
 
 ### Backend
 
-[See backend](./src/backend/README.md)
+[See backend](./src/backends/README.md)
 
 ### Parser / renderer
 
-[See parser](./src/parser/README.md)
+[See parser](./src/parsers/README.md)
 
-[See renderer](./src/renderer/README.md)
+[See renderer](./src/renderers/README.md)
 
 
 ### Serializer
 
-[See serializer](./src/serializer/README.md)
+[See serializer](./src/serializers/README.md)
 
 ### Adapter
 
-[See adapter](./src/adapter/README.md)
+[See adapter](./src/adapters/README.md)
 
 ### Persistence
 
