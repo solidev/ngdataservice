@@ -27,5 +27,70 @@ class Train extends DSModel {
 }
 ```
 
+## API
+
+Models have to extend `DSModel` base class to get :
+
+### Public methods
+
+- **`.save(): Observable(model)`** : save all model fields, returning
+  an observable of saved model (= PUT for REST backends)
+
+- **`.update(fields: string[]): Observable(model)`** : save only some 
+  model fields (those with name given in fields argument. Returns an
+  observable of updated model.
+
+- **`.remove(): Observable(any)`** : remove model. Returns an observable
+  of backend response.
+
+- **`.refresh(): Observable(model)`** : retrieve fresh model data from
+  backend. Returns an observable of refreshed model.
+
+- **`.assign(data, options): DSValidationResult`** : assign data
+  to model fields, returning a validation result
+  (see [validate](#validate)) 
+  Options are :
+
+    - `validate: true|false` : data is validated before assignation
+      (with sync validators, and async validators if `async` is true)
+    - `async: true|false` : returns an observable instead of model
+       instance; if `validate` is true, then async validators are also
+       used.
+    
+- <a name="validate"></a> **`.validate(options): DSValidationResult`** :
+  validate current model instance data. Returns a validation result or
+  an observable of validation result (for async validation) :
+  `true | [ValidationError]`. Options : `async: true|false` : uses
+  async validators.
+
+- **`.dirty()`: string[]** : return a list of fields updated since last
+  save / retrieve / update operation.
+
+### Protected methods
+
+- **`getPk()`** : returns primary key value (used for `pk` field, by
+  default returns `id` field value). Customize it for special needs.
+
+### Public properties 
+
+- **pk** :  primary key
+
+### Protected properties
+
+- **\_collection** : collection of model
+  (see [Collection](../collection/README.md))
+- **\_datasources** : datasources registry
+
+
+  
+
+
+
+
+
+
+
+  
+
 
 

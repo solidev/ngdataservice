@@ -174,12 +174,38 @@ export class TrainComponent {
 
 ### Model API
 
-[See model](./src/model/README.md)
+[Details : see model](./src/model/README.md)
+
+- **`.save(): Observable(model)`** 
+- **`.update(fields: string[]): Observable(model)`**
+- **`.remove(): Observable(any)`**
+- **`.refresh(): Observable(model)`**
+- **`.assign(data, options): DSValidationResult`**
+    - `options.validate: true|false`
+    - `options.async: true|false`)    
+- **`.validate(options): DSValidationResult`**
+    - `options.async = true|false`
+- **`.dirty()`: string[]**
 
 ### Collection API
 
-[See collection](./src/collection/README.md)
+[Details : see collection](./src/collection/README.md)
 
+- **`constructor(setup, context)`**
+- **`init()`**
+- **`create(values, options): Observable(model)`**
+    - `options.validation = true|*false*|"sync"`
+    - `options.save = true|*false*`
+    - `options.volatile = true|*false*`  
+- **`save(model): Observable(model)`**
+- **`update(model, fields): Observable(model)`**
+- **`remove(model): Observable(any)`**
+- **`refresh(model)`**
+- **`get(pk, params): Observable(model)`**
+    - `params.fromcache = true|*false*`
+    - `params.dual = true|*false*`
+    
+    
 ### Service API
 
 TODO
