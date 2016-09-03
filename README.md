@@ -193,6 +193,9 @@ export class TrainComponent {
 
 - **`constructor(setup, context)`**
 - **`init()`**
+
+Instance api
+
 - **`create(values, options): Observable(model)`**
     - `options.validation = true|*false*|"sync"`
     - `options.save = true|*false*`
@@ -205,7 +208,10 @@ export class TrainComponent {
     - `params.fromcache = true|*false*`
     - `params.dual = true|*false*`
     
-    
+List api
+
+TODO
+
 ### Service API
 
 TODO
