@@ -1,5 +1,6 @@
 [![build status](https://gitlab.com/solidev/ng2datastore/badges/develop/build.svg)](https://gitlab.com/solidev/ng2datastore/commits/develop)
 [![coverage report](https://gitlab.com/solidev/ng2datastore/badges/develop/coverage.svg)](https://gitlab.com/solidev/ng2datastore/commits/develop)
+[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 
 **This is a Work In Progress project - do not use it until it reaches at least `0.1`** 
 
