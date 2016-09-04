@@ -1,20 +1,10 @@
-# Changelog
-
-All notable changes to this project will be documented in this file.
-
-The format is based on [Keep a Changelog](http://keepachangelog.com/) 
-and this project adheres to [Semantic Versioning](http://semver.org/).
-
-## [Unreleased]
-### Added
-### Changed
-### Fixed
+<a name="Unreleased"></a>
+# [Unreleased](https://gitlab.com/solidev/ng2datastore/compare/v0.0.0-alpha.2...) (2016-09-04)
 
 
-## [0.0.0] - 2016-08-31
-### Added
-### Changed
-### Fixed
+
+<a name="0.0.0-alpha.2"></a>
+# [0.0.0-alpha.2](https://gitlab.com/solidev/ng2datastore/compare/...v0.0.0-alpha.2) (2016-09-03)
 
 
-[Unreleased]: https://gitlab.com/solidev/ng2datastore/tree/develop
+
