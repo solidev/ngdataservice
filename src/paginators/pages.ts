@@ -15,6 +15,10 @@ export class DSPagePaginator implements IDSPaginator {
     public getPaginationInfos(result: any): any {
         return {page: 2, count: 3};
     }
+
+    public getResults(results: any): any {
+        return results;
+    }
 }
 
 @Injectable()

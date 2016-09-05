@@ -7,7 +7,7 @@ import {expect} from "chai";
 import * as sinon from "sinon";
 
 import {TestBed, inject} from "@angular/core/testing";
-import {BrowserDynamicTestingModule, platformBrowserDynamicTesting} from "@angular/platform-browser-dynamic/testing"
+import {BrowserDynamicTestingModule, platformBrowserDynamicTesting} from "@angular/platform-browser-dynamic/testing";
 TestBed.initTestEnvironment(BrowserDynamicTestingModule, platformBrowserDynamicTesting());
 describe("DSRestBackend", () => {
 
@@ -194,7 +194,7 @@ describe("DSRestBackend", () => {
         inject([DSRestBackend], (backend: DSRestBackend) => {
             let bk: any = <any>backend;
             let id = {path: "/trains"};
-            bk._config = {url: "http://example.com/api/v1"}
+            bk._config = {url: "http://example.com/api/v1"};
             expect(backend.getRequestUrl(id)).to.equal("http://example.com/api/v1/trains");
             bk._config = {host: "example.com"};
             expect(backend.getRequestUrl(id)).to.equal("http://example.com:80/trains");

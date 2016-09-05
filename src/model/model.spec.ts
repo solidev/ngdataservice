@@ -1,6 +1,7 @@
 import {expect} from "chai";
 import * as sinon from "sinon";
 import {DSModel} from "./model";
+import {Observable} from "rxjs";
 
 describe("DSModel", () => {
     describe("field assignment and validation", () => {
@@ -16,11 +17,33 @@ describe("DSModel", () => {
             expect((<any>m).name).to.equal("toto");
         });
         it("should validate fields using validate()", (done) => {
+            // TODO: implement validation tests
             let m = new DSModel();
-            m.validate().subscribe((result) => {
+            (<Observable<boolean>>m.validate()).subscribe((result) => {
                 expect(result).to.equal(true);
                 done();
             });
+        });
+        it("should generate a local id on demand", () => {
+            let m = new DSModel();
+            expect(m._local).not.to.be.undefined;
+        });
+        it("should return object's primary key", () => {
+            let m = new DSModel();
+            (<any>m).id = 12;
+            expect(m._pk).to.equal(12);
+        });
+
+        xit("should check dirty fields", () => {
+            // TODO: implement dirty checking tests
+            expect(false).to.be.true;
+        });
+
+        it("should export to json with secure fields only", () => {
+            let m = new DSModel();
+            (<any>m).id = 12;
+            expect(m._pk).to.equal(12);
+            expect(JSON.parse(JSON.stringify(m))).not.to.have.property("_pk");
         });
     });
 

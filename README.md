@@ -1,6 +1,10 @@
 [![build status](https://gitlab.com/solidev/ng2datastore/badges/develop/build.svg)](https://gitlab.com/solidev/ng2datastore/commits/develop)
 [![coverage report](https://gitlab.com/solidev/ng2datastore/badges/develop/coverage.svg)](https://gitlab.com/solidev/ng2datastore/commits/develop)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
+[![Sauce Test Status](https://saucelabs.com/buildstatus/solidev)](https://saucelabs.com/u/solidev)
+[![Dependency Status](https://www.versioneye.com/user/projects/57cfc79e8d1bad004c3d7812/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/57cfc79e8d1bad004c3d7812)
+
+[![Sauce Test Status](https://saucelabs.com/browser-matrix/solidev.svg)](https://saucelabs.com/u/solidev)
 
 **This is a Work In Progress project - do not use it until it reaches at least `0.1`** 
 
@@ -135,7 +139,7 @@ export class TrainComponent {
     }
     
     public createAction(): void {
-        this._trains.create({title: "New train"})
+        this._trains.save({title: "New train"})
             .subscribe((t) => {
                 console.log("Created (but not saved) train", t);
                 this.train = t;
@@ -143,7 +147,7 @@ export class TrainComponent {
      }
      
     public createAndSaveAction(): void {
-        this._trains.create({title: "New train"}, {create: true})
+        this._trains.save({title: "New train"}, {create: true})
             .subscribe((t) => {
                 console.log("Created and saved train", t);
                 this.train = t;
@@ -197,7 +201,7 @@ export class TrainComponent {
 
 Instance api
 
-- **`create(values, options): Observable(model)`**
+- **`save(values, options): Observable(model)`**
     - `options.validation = true|*false*|"sync"`
     - `options.save = true|*false*`
     - `options.volatile = true|*false*`  

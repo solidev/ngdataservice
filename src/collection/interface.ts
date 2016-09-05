@@ -6,10 +6,12 @@ import {IDSPersistenceProvider, IDSPersistence} from "../persistence/interface";
 import {IDSSerializerProvider, IDSSerializer} from "../serializers/interface";
 import {IDSBackendProvider, IDSBackend} from "../backends/interface";
 import {IDSAdapterProvider, IDSAdapter} from "../adapters/interface";
+import {IDSFilter, IDSFilterProvider} from "../filters/interface";
+import {IDSSorterProvider, IDSSorter} from "../sorters/interface";
 
 
 export interface IDSCollectionCreateParams {
-    create?: boolean;
+    save?: boolean;
     volatile?: boolean;
 }
 
@@ -26,14 +28,14 @@ export interface IDSPaginationInfo {
 
 export interface IDSModelList<T extends IDSModel> {
     items: T[];
-    pagination: IDSPaginationInfo;
+    pagination?: IDSPaginationInfo;
 }
 
 export interface IDSCollection<T extends IDSModel> {
     model: IDSModelConstructor<T>;
     save(instance: T): Observable<T>;
     update(instance: T, fields: string[]): Observable<T>;
-    remove(instance: T): Observable<T>;
+    remove(instance: T | number | string): Observable<any>;
     refresh(instance: T): Observable<T>;
     create(values: any, params: IDSCollectionCreateParams): Observable<T>;
     get(identifier: any, params: IDSCollectionGetParams): Observable<T>;
@@ -69,6 +71,12 @@ export interface IDSCollectionSetup {
     paginator?: IDSPaginator;
     paginator_provider?: IDSPaginatorProvider;
     paginator_config?: any;
+    filter?: IDSFilter;
+    filter_provider?: IDSFilterProvider;
+    filter_config?: any;
+    sorter?: IDSSorter;
+    sorter_provider?: IDSSorterProvider;
+    sorter_config?: any;
 }
 
 export const COLLECTION_SETUP_NAMES: string[] = [
@@ -77,5 +85,7 @@ export const COLLECTION_SETUP_NAMES: string[] = [
     "authentication", "authentication_provider", "authentication_config",
     "serializer", "serializer_provider", "serializer_config",
     "persistence", "persistence_provider", "persistence_config",
-    "paginator", "paginator_provider", "paginator_config"
+    "paginator", "paginator_provider", "paginator_config",
+    "filter", "filter_provider", "filter_config",
+    "sorter", "sorter_provider", "sorter_config"
 ];

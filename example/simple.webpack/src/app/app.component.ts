@@ -25,7 +25,7 @@ export class AppComponent {
 
         });
 
-        coll.create({title: "chugginton"}, {create: true})
+        coll.create({title: "chugginton"}, {save: true})
             .subscribe((t: Train) => {
                 console.log("Saved train 5", t);
                 this.train5 = t;
@@ -38,7 +38,7 @@ export class AppComponent {
         coll.get(2, {}).subscribe((t: Train) => {
             console.log("Got train 2", t);
             this.train2 = t;
-            coll.remove(<any>{id: 4}).subscribe(() => {
+            coll.remove(4).subscribe(() => {
                 console.log("Removed train 4");
                 t.title = "Modified train 2";
                 t.save().subscribe((nt: Train) => {
