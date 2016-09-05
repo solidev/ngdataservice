@@ -57,8 +57,8 @@ example, a train with `id=1` corresponds to a REST url `/api/v1/trains/1`
                   {local: true});  // {path: "?__local__/trains/123", ...}
     ```
 
-- **`.search(params: any = {}): any`** : returns a search identifier
-    from search `params` (eventually coming from `filter` plugin(s)).
+- **`.search(filter, sorter): any`** : returns a search identifier
+    from filter and sort params
 
 
 
@@ -81,6 +81,6 @@ console.log(adapter.identifier(train));
 console.log(adapter.search())
 # {path: '/api/v1/trains', query: {}, headers: {}}
 
-console.log(adapter.search({search: {name: "train"}})
+console.log(adapter.search({name: "train"})
 # {path: '/api/v1/trains', query: {name: 'train'}, headers: {}}
 ```

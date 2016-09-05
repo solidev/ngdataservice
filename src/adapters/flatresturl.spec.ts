@@ -80,7 +80,7 @@ describe("DSFlatRestUrlAdapter", () => {
             expect(search.path).to.equal("/api/trains");
             expect(search.query).to.be.have.property("name").and.to.equal("train");
             expect(search.headers).to.be.empty;
-        })
+        });
     });
 
     describe("injectability", () => {
