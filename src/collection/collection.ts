@@ -13,6 +13,8 @@ import {
 } from "./interface";
 import {IDSAuthentication, IDSAuthenticationProvider} from "../authentication/interface";
 import {IDSPaginator, IDSPaginatorProvider} from "../paginators/interface";
+import {IDSFilterProvider, IDSFilter} from "../filters/interface";
+import {IDSSorter, IDSSorterProvider} from "../sorters/interface";
 
 
 export class DSCollection<T extends IDSModel> implements IDSCollection<T> {
@@ -35,9 +37,15 @@ export class DSCollection<T extends IDSModel> implements IDSCollection<T> {
     protected authentication: IDSAuthentication;
     protected authentication_provider: IDSAuthenticationProvider;
     protected authentication_config: any;
-    protected paginator: IDSPaginator;
+    public paginator: IDSPaginator;
     protected paginator_provider: IDSPaginatorProvider;
     protected paginator_config: any;
+    public filter: IDSFilter;
+    protected filter_provider: IDSFilterProvider;
+    protected filter_config: any;
+    public sorter: IDSSorter;
+    protected sorter_provider: IDSSorterProvider;
+    protected sorter_config: any;
     protected _context: any;
     protected setup: IDSCollectionSetup;
     protected _items: ReplaySubject<IDSModelList<T>> = new ReplaySubject<IDSModelList<T>>(1);
@@ -56,11 +64,11 @@ export class DSCollection<T extends IDSModel> implements IDSCollection<T> {
 
     public create(values: any = {}, params: IDSCollectionCreateParams = {}): Observable<T> {
         let instance: T = new this.model(this, values);
-        if (params.create) {
+        if (params.save) {
             return this.save(instance);
         } else if (!params.volatile) {
             this.get_persistence().save(
-                this.get_adapter().identifier(instance, {unsaved: true}),
+                this.get_adapter().identifier(instance, {create: true}),
                 instance
             );
             return Observable.of(instance);
@@ -71,19 +79,16 @@ export class DSCollection<T extends IDSModel> implements IDSCollection<T> {
     }
 
     public save(instance: T): Observable<T> {
-        let identifier: any = this.get_adapter().identifier(instance, {});
-        console.log("saving", instance, identifier);
+        let identifier: any = this.get_adapter().identifier(instance);
         if (identifier == null) {
-            // Pk is not defined, let's create this item
+            // Pk is not defined, let's save this item
             identifier = this.get_adapter().identifier(instance, {create: true});
-            console.log("To create", identifier);
             let tosave: any = this.get_serializer().serialize(instance);
             return <Observable<T>>this.get_backend().create(identifier, tosave, {})
                 .map((fromdb) => {
                     instance.assign(this.get_serializer().deserialize(fromdb));
-                    identifier = this.get_adapter().identifier(instance, {});
+                    identifier = this.get_adapter().identifier(instance);
                     this.get_persistence().save(identifier, instance);
-                    // SEE : remove temporary localId ??
                     return <T>instance;
                 });
         } else {
@@ -93,7 +98,7 @@ export class DSCollection<T extends IDSModel> implements IDSCollection<T> {
     }
 
     public update(instance: T, fields: string[]): Observable<T> {
-        let identifier: any = this.get_adapter().identifier(instance, {});
+        let identifier: any = this.get_adapter().identifier(instance);
         if (identifier) {
             let tosave: any = this.get_serializer().serialize(instance);
             return <Observable<T>>this.get_backend().update(identifier, tosave, {})
@@ -107,7 +112,7 @@ export class DSCollection<T extends IDSModel> implements IDSCollection<T> {
     }
 
     public remove(instance: T): Observable<T> {
-        let identifier: any = this.get_adapter().identifier(instance, {});
+        let identifier: any = this.get_adapter().identifier(instance);
         if (identifier) {
             return this.get_backend().destroy(identifier, {})
                 .do(() => {
@@ -118,7 +123,7 @@ export class DSCollection<T extends IDSModel> implements IDSCollection<T> {
     }
 
     public refresh(instance: T): Observable<T> {
-        let identifier: any = this.get_adapter().identifier(instance, {});
+        let identifier: any = this.get_adapter().identifier(instance);
         if (identifier) {
             return this.get_backend().retrieve(identifier, {})
                 .do((fromdb) => {
@@ -149,13 +154,15 @@ export class DSCollection<T extends IDSModel> implements IDSCollection<T> {
     }
 
     public filter(filter: any, params: IDSCollectionGetParams = {}): Observable<IDSModelList<T>> {
-        let search = this.get_adapter().search(filter);
+        this.get_filter().update(filter);
         if (params.fromcache) {
-            this.get_persistence().list(search);
+            this.get_persistence().list(this.get_filter().localFilter, this.get_sorter().localSorter);
         } else {
+            let search = this.get_adapter().search(this.get_filter().backendFilter);
             this.get_backend().list(search, {})
                 .map((result) => {
                     return this.get_serializer().deserializeMany(result);
+                    // TODO: do something with items and their ids
                 });
         }
         return this.items$;
@@ -187,6 +194,22 @@ export class DSCollection<T extends IDSModel> implements IDSCollection<T> {
 
     protected get_serializer_config(): any {
         return this.get_service_config("serializer");
+    }
+
+    protected get_filter(): IDSFilter {
+        return <IDSFilter>this.get_service("filter", this.get_filter_config());
+    }
+
+    protected get_filter_config(): any {
+        return this.get_service_config("filter");
+    }
+
+    protected get_sorter(): IDSSorter {
+        return <IDSSorter>this.get_service("sorter", this.get_sorter_config());
+    }
+
+    protected get_sorter_config(): any {
+        return this.get_service_config("sorter");
     }
 
     protected get_persistence(): IDSPersistence {

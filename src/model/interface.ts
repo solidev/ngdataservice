@@ -3,15 +3,30 @@ import {IDSCollection} from "../collection/interface";
 
 
 
+export interface IDSValidationOptions {
+    validate?: boolean;
+    async?: boolean;
+}
+
+export interface IDSValidationError {
+    field: string;
+    errors: string[];
+}
+export type IDSValidationResult = boolean | IDSValidationError[] |
+    Observable<boolean> | Observable<IDSValidationError>;
+
+
 export interface IDSModel {
-    pk: number|string;
+    _pk: number|string;
+    _local: number|string;
     id?: number|string;
-    assign(values: any): IDSModel;
+    assign(values: any): IDSValidationResult;
     save(): Observable<IDSModel>;
     update(fields: string[]): Observable<IDSModel>;
     remove(): Observable<IDSModel>;
     refresh(): Observable<IDSModel>;
-    validate(): Observable<IDSModel>;
+    validate(data: any, options: IDSValidationOptions): IDSValidationResult;
+    dirty(fields: string[]): string[];
 }
 
 export interface IDSModelConstructor<T extends IDSModel> {

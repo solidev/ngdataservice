@@ -1,6 +1,8 @@
 import {Injectable} from "@angular/core";
 import {IDSPersistence, IDSPersistenceProvider} from "./interface";
 import * as _ from "lodash";
+import {IDSFilterFunction} from "../filters/interface";
+import {IDSSorterFunction} from "../sorters/interface";
 
 @Injectable()
 export class DSMemoryPersistence implements IDSPersistence {
@@ -20,8 +22,16 @@ export class DSMemoryPersistence implements IDSPersistence {
         let id: string = JSON.stringify(identifier);
         delete this._items[id];
     }
-    public list(params: any = {}): any {
-        return _.values(this._items);
+    public list(filter: IDSFilterFunction = null, sorter: IDSSorterFunction = null): any {
+        let items;
+        if (_.isFunction(filter)) {
+            items = _.filter(_.values(this._items));
+        }
+        items =  _.values(this._items);
+        if (_.isFunction(sorter)) {
+            items.sort(sorter);
+        }
+        return items;
     }
     public clear(params: any = {}): any {
         this._items = {};

@@ -25,7 +25,7 @@ export class AppComponent {
 
         });
 
-        coll.create({title: "chugginton"}, {create: true})
+        coll.create({title: "chugginton"}, {save: true})
             .subscribe((t: Train) => {
                 console.log("Saved train 5", t);
                 this.train5 = t;

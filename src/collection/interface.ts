@@ -6,10 +6,12 @@ import {IDSPersistenceProvider, IDSPersistence} from "../persistence/interface";
 import {IDSSerializerProvider, IDSSerializer} from "../serializers/interface";
 import {IDSBackendProvider, IDSBackend} from "../backends/interface";
 import {IDSAdapterProvider, IDSAdapter} from "../adapters/interface";
+import {IDSFilter, IDSFilterProvider} from "../filters/interface";
+import {IDSSorterProvider, IDSSorter} from "../sorters/interface";
 
 
 export interface IDSCollectionCreateParams {
-    create?: boolean;
+    save?: boolean;
     volatile?: boolean;
 }
 
@@ -69,6 +71,12 @@ export interface IDSCollectionSetup {
     paginator?: IDSPaginator;
     paginator_provider?: IDSPaginatorProvider;
     paginator_config?: any;
+    filter?: IDSFilter;
+    filter_provider?: IDSFilterProvider;
+    filter_config?: any;
+    sorter?: IDSSorter;
+    sorter_provider?: IDSSorterProvider;
+    sorter_config?: any;
 }
 
 export const COLLECTION_SETUP_NAMES: string[] = [

@@ -122,8 +122,7 @@ describe("DSCollection", () => {
             ds.paginator = <any>"A";
             expect(ds.get_paginator()).to.equal("A");
         });
-
-    })
+    });
 
     describe("save/retrieve/update/delete", () => {
         let mockAdapter: any;
@@ -194,7 +193,7 @@ describe("DSCollection", () => {
                 .onFirstCall().returns({id: 1, name: "train"});
 
             mockBackend.create = sinon.stub().returns(Observable.of({id: 1, name: "train"}));
-            ds.create({name: "train"}, {create: true}).subscribe((obj) => {
+            ds.create({name: "train"}, {save: true}).subscribe((obj) => {
                 expect((<any>mockBackend.create).called).to.be.true;
                 expect((<any>obj).id).to.equal(1);
                 expect(obj).to.be.instanceOf(DSModel);

@@ -59,7 +59,7 @@ TODO
   
 - **`save(model): Observable(model)`** : save a model instance. If
   provided instance is not already saved (no primary key), it is
-  created (using backend's `create`). If instance is already saved,
+  created (using backend's `save`). If instance is already saved,
   it's an update (using backend's full `update`). Saved object
   is also saved in persistence layer. Returns an observable of
   saved model instance.
@@ -83,7 +83,35 @@ TODO
   
 ### Collection / filter / pagination methods
 
-TODO
+Each collection has one current observable result list. This
+observable is updated on filter / pagination / update / create
+operations.
+
+The result observable contains results and pagination data.
+
+- **`list(filter_params, sorter_params, params): Observable(IDSModelList)`** : 
+  returns an observable of filtered items. If `params.fromcache` is
+  set, it get results by filtering cache instead of using
+  backend.
+
+- **`filter`** : filter instance (see [filters])
+    - `filter.update(filter_params)`
+    - `filter.listener` : filter observer
+    - `filter.fields` : filter field object
+
+- **`paginator`** : pagination object (see [pagination])
+    - `paginator.update(pagination_parameters)`
+    - `paginator.listener` : pagination observer
+    - `paginator.params` : pagination params object
+
+- **`sorter`** : sorter object (see [sort])
+    - `sorter.update(sort_parameters)`
+    - `sorter.listener` : sorter observer
+    - `sorter.fields` : sorter fields array
+
+- **`all(params) : Observable(IDSModelList)`** : return all items
+  in collection (= empty filter)
+    
  
 
 

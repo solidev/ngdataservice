@@ -1,20 +1,19 @@
 import {IDSModel} from "../model/interface";
 
-// TODO: make filter-aware IDSAdapterIdentifierParams
 export interface IDSAdapterIdentifierParams {
-    create?: boolean;
-    unsaved?: boolean;
+    local?: boolean; // returns model's local identifier
+    create?: boolean; // returns creation identifier
 }
 
-export interface IDSAdapterSearchParams {
-    search?: any;
-}
+export type IDSAdapterFilterParams  = any;
+export type IDSAdapterSorterParams = any;
 
 export interface IDSAdapter {
     identifier(instance: IDSModel, params?: IDSAdapterIdentifierParams): any;
-    search(params?: IDSAdapterSearchParams): any;
+    search(filter?: IDSAdapterFilterParams, sorter?: IDSAdapterSorterParams): any;
 }
 
 export interface IDSAdapterProvider {
     provide(config: any): IDSAdapter;
 }
+

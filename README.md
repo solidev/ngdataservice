@@ -135,7 +135,7 @@ export class TrainComponent {
     }
     
     public createAction(): void {
-        this._trains.create({title: "New train"})
+        this._trains.save({title: "New train"})
             .subscribe((t) => {
                 console.log("Created (but not saved) train", t);
                 this.train = t;
@@ -143,7 +143,7 @@ export class TrainComponent {
      }
      
     public createAndSaveAction(): void {
-        this._trains.create({title: "New train"}, {create: true})
+        this._trains.save({title: "New train"}, {create: true})
             .subscribe((t) => {
                 console.log("Created and saved train", t);
                 this.train = t;
@@ -197,7 +197,7 @@ export class TrainComponent {
 
 Instance api
 
-- **`create(values, options): Observable(model)`**
+- **`save(values, options): Observable(model)`**
     - `options.validation = true|*false*|"sync"`
     - `options.save = true|*false*`
     - `options.volatile = true|*false*`  
