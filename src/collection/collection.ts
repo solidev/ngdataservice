@@ -161,8 +161,19 @@ export class DSCollection<T extends IDSModel> implements IDSCollection<T> {
             let search = this.get_adapter().search(this.get_filter().backendFilter);
             this.get_backend().list(search, {})
                 .map((result) => {
-                    return this.get_serializer().deserializeMany(result);
-                    // TODO: do something with items and their ids
+                    this.get_paginator().getPaginationInfos(result);
+                    let items = this.get_paginator().getResults(result);
+                    let _items:T[] = [];
+                    for (let item of items) {
+                        let itemdata = this.get_serializer().deserialize(item);
+                        let temp = new this.model(this, itemdata);
+                        let identifier = this.get_adapter().identifier(temp);
+                        let instance = this.get_persistence().retrieve(identifier);
+                        instance.assign(itemdata);
+                        this.get_persistence().save(identifier, instance);
+                        items.push(instance);
+                    }
+                    this._items.next(items);
                 });
         }
         return this.items$;
