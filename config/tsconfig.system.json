@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "module": "system",
+    "target": "es5",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "sourceMap": true,
+    "inlineSourceMap": false,
+    "moduleResolution": "node",
+    "outFile": "../dist/ng2datastore-bundle.js",
+    "types": [
+      "core-js",
+      "node",
+      "lodash"
+    ]
+  },
+  "files": [
+    "../src/ng2datastore.ts"
+  ],
+  "exclude": ["../index.d.ts", "../src/**/*.spec.ts", "node_modules", "test", "example", "dist"]
+
+}

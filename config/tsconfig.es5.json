@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "module": "commonjs",
+    "target": "es5",
+    "outDir": "../dist",
+    "noImplicitAny": false,
+    "sourceMap": true,
+    "inlineSourceMap": false,
+    "inlineSources": false,
+    "declaration": true,
+    "removeComments": true,
+    "types": [
+      "core-js",
+      "lodash",
+      "node"
+    ]
+  },
+  "exclude": ["./index.d.ts", "../src/**/*.spec.ts", "./index.ts", "node_modules", "test", "example", "dist"],
+  "include": ["../src/**/*.ts"]
+}
