@@ -1,5 +1,5 @@
 import {expect} from "chai";
-import {BaseRequestOptions, Http, Response, RequestMethod, ResponseOptions} from "@angular/http";
+import {Response, RequestMethod, ResponseOptions} from "@angular/http";
 import {MockBackend, MockConnection} from "@angular/http/testing/mock_backend";
 import {REST_BACKEND_CONFIG, DSRestBackend} from "../backends/rest";
 import {DSJsonRenderer} from "../renderers/json";
@@ -16,6 +16,7 @@ import {DSDummySorterProvider} from "../sorters/dummy";
 import {DSDummyFilterProvider} from "../filters/dummy";
 import {DSDummyPaginatorProvider} from "../paginators/dummy";
 import {IDSModelConstructor} from "../model/interface";
+import {MOCK_REST_API_PROVIDER, DSMockRestApi} from "../testing/mockrestapi";
 
 TestBed.initTestEnvironment(BrowserDynamicTestingModule, platformBrowserDynamicTesting());
 
@@ -33,15 +34,9 @@ export class TrainCollection extends DSRestCollection<DSModel> {
 describe("DSRestCollection", () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
-            providers: [MockBackend,
-                BaseRequestOptions,
-                {
-                    provide: Http,
-                    useFactory: (backend, options) => {
-                        return new Http(backend, options);
-                    },
-                    deps: [MockBackend, BaseRequestOptions]
-                },
+            providers: [
+                MOCK_REST_API_PROVIDER,
+                DSMockRestApi,
                 DSJsonParser,
                 DSJsonRenderer,
                 {
@@ -62,18 +57,12 @@ describe("DSRestCollection", () => {
     });
 
     it("should get an item, store it in persistence and return the result", (done) => {
-        let connection: MockConnection;
-        inject([MockBackend, DSRestCollectionSetup, DSMemoryPersistence],
-            (mock: MockBackend, setup: DSRestCollectionSetup, persistence: DSMemoryPersistence) => {
-                mock.connections.subscribe((c) => {
-                    connection = c;
-                    expect(RequestMethod[connection.request.method]).to.equal("Get");
-                    expect(connection.request.url).to.equal("https://example.com:8123/api/trains/1");
-                    connection.mockRespond(
-                        new Response(new ResponseOptions({
-                            body: JSON.stringify({id: 1, name: "train"})
-                        }))
-                    );
+        inject([DSMockRestApi, DSRestCollectionSetup, DSMemoryPersistence],
+            (api: DSMockRestApi, setup: DSRestCollectionSetup, persistence: DSMemoryPersistence) => {
+                api.addResponse({
+                    url: "https://example.com:8123/api/trains/1",
+                    body: {id: 1, name: "train"},
+                    order: true
                 });
                 let coll = new TrainCollection(setup);
                 coll.get(1).subscribe((result) => {
@@ -88,20 +77,12 @@ describe("DSRestCollection", () => {
     });
 
     it("should get a list of items", (done) => {
-        let connection: MockConnection;
-        console.log("Before");
-        inject([MockBackend, DSRestCollectionSetup, DSMemoryPersistence],
-            (mock: MockBackend, setup: DSRestCollectionSetup, persistence: DSMemoryPersistence) => {
-                console.log("Steup", setup);
-                mock.connections.subscribe((c) => {
-                    connection = c;
-                    expect(RequestMethod[connection.request.method]).to.equal("Get");
-                    expect(connection.request.url).to.equal("https://example.com:8123/api/trains");
-                    connection.mockRespond(
-                        new Response(new ResponseOptions({
-                            body: JSON.stringify([{id: 1, name: "train1"}, {id: 2, name: "train2"}])
-                        }))
-                    );
+        inject([DSMockRestApi, DSRestCollectionSetup, DSMemoryPersistence],
+            (api: DSMockRestApi, setup: DSRestCollectionSetup, persistence: DSMemoryPersistence) => {
+                api.addResponse({
+                    url: "https://example.com:8123/api/trains",
+                    body: [{id: 1, name: "train1"}, {id: 2, name: "train2"}],
+                    order: true
                 });
                 let coll = new TrainCollection(setup);
                 coll.list({}).subscribe((result) => {
@@ -111,7 +92,8 @@ describe("DSRestCollection", () => {
                     expect(persistence.list()).to.have.lengthOf(2);
                     done();
                 }, (error) => {
-                    done(error);
+                    expect(false).to.be.true;
+                    done();
                 });
             })();
     });
