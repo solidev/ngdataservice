@@ -1,3 +1,5 @@
+
+
 var customLaunchers = {
     sl_chrome: {
         base: 'SauceLabs',
@@ -26,7 +28,7 @@ var customLaunchers = {
 
 
 module.exports = function (config) {
-    config.set({
+    var cfg = {
         basePath: '../',
         frameworks: ['jasmine'],
         files: [
@@ -54,7 +56,7 @@ module.exports = function (config) {
             noInfo: true //please don't spam the console when running in karma!
         },
         // possible values: 'dots', 'progress'
-        reporters: ['mocha', 'coverage', 'saucelabs'],
+        reporters: ['mocha', 'coverage'],
         port: 9876,
         colors: true,
 
@@ -76,13 +78,23 @@ module.exports = function (config) {
         // Continuous Integration mode
         // if true, Karma captures browsers, runs the tests and exits
         singleRun: true,
-        sauceLabs: {
+
+    };
+    if(process.env.SAUCE_ACCESS_KEY) {
+        // Use saucelabs for CI tests
+        cfg.reporters.push("saucelabs");
+        cfg.sauceLabs = {
             testName: "Ng2Datastore unit tests",
             startConnect: true,
             build: process.env.CI_BUILD_ID || "manual"
-        },
-        customLaunchers: customLaunchers,
-        browsers: Object.keys(customLaunchers)
+        };
+        cfg.customLaunchers = customLaunchers;
+        cfg.browsers = Object.keys(customLaunchers);
+    } else {
+        // Use PhantomJS for local tests
+        cfg.browsers = ["PhantomJS"]
+    }
 
-    });
+    config.set(cfg);
+
 };
