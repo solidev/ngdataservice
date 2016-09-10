@@ -230,23 +230,6 @@ export class DSCollection<T extends IDSModel> implements IDSCollection<T> {
     }
 
     protected get_filter(): IDSFilter {
-        let filter = <IDSFilter>this.get_service("filter", this.get_filter_config());
-        return filter;
-    }
-
-    protected get_filter_config(): any {
-        return this.get_service_config("filter");
-    }
-
-    protected get_sorter(): IDSSorter {
-        return <IDSSorter>this.get_service("sorter", this.get_sorter_config());
-    }
-
-    protected get_sorter_config(): any {
-        return this.get_service_config("sorter");
-    }
-
-    protected get_filter(): IDSFilter {
         return <IDSFilter>this.get_service("filter", this.get_filter_config());
     }
 
