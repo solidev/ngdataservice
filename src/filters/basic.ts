@@ -3,28 +3,32 @@ import {IDSFilter, IDSFilterField, IDSFilterFunction, IDSFilterProvider} from ".
 import {Injectable} from "@angular/core";
 
 @Injectable()
-export class DSDummyFilter implements IDSFilter {
+export class DSBasicFilter implements IDSFilter {
     public listener: Observer<any>;
     public fields: {[index: string]: IDSFilterField};
-    public backendFilter: any = {};
 
     constructor() {
 
     }
 
+    public get backendFilter(): any  {
+        return this.fields;
+    }
+
     public localFilter: IDSFilterFunction = (item: any) => {
+        console.log("NOT IMPLEMENTED");
         return true;
     };
 
     public update(filter_params: any): void {
-        console.log("Dummy filter in action, do nothing");
+        this.fields = filter_params;
     }
 
 }
 
 @Injectable()
-export class DSDummyFilterProvider implements IDSFilterProvider {
+export class DSBasicFilterProvider implements IDSFilterProvider {
     public provide(params: any): IDSFilter {
-        return new DSDummyFilter();
+        return new DSBasicFilter();
     }
 }

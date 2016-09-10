@@ -34,8 +34,9 @@ export class DSMockRestApi {
         });
     }
 
-    public addResponse(request: IDSMockRequest): void {
+    public addResponse(request: IDSMockRequest): number {
         this._responses.push(request);
+        return this._responses.length;
     }
 
     public response(): void {
@@ -66,7 +67,7 @@ export class DSMockRestApi {
                 }
             }
         }
-        throw new Error(`API Response error : ${method} ${url} not found`);
+        throw new Error(`API Response error : ${method} ${url} not found on ${this._count++} api call`);
 
     }
 }

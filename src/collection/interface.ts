@@ -37,13 +37,16 @@ export interface IDSCollection<T extends IDSModel> {
     update(instance: T, fields: string[]): Observable<T>;
     remove(instance: T | number | string): Observable<any>;
     refresh(instance: T): Observable<T>;
-    create(values: any, params: IDSCollectionCreateParams): Observable<T>;
-    get(identifier: any, params: IDSCollectionGetParams): Observable<T>;
+    create(values: any, params?: IDSCollectionCreateParams): Observable<T>;
+    get(identifier: any, params?: IDSCollectionGetParams): Observable<T>;
+    action?(instance: T, action: string, params: any): Observable<any>;
+    list(filter: any, params?: IDSCollectionGetParams): Observable<IDSModelList<T>>;
+    all(params?: IDSCollectionGetParams): Observable<IDSModelList<T>>;
 }
 
 
 export interface IDSCollectionConstructor<T extends IDSModel> {
-    new(setup: IDSCollectionSetup, context: any): IDSCollection<T>;
+    new(setup: IDSCollectionSetup, context?: any): IDSCollection<T>;
 }
 
 export interface IDataCollectionConfig {

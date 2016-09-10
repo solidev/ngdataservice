@@ -86,7 +86,6 @@ describe("DSRestCollection", () => {
                 });
                 let coll = new TrainCollection(setup);
                 coll.list({}).subscribe((result) => {
-                    console.log("Result", result);
                     expect(result).to.have.property("items").to.have.lengthOf(2);
                     expect(result).to.have.property("pagination");
                     expect(persistence.list()).to.have.lengthOf(2);

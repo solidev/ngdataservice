@@ -50,8 +50,10 @@ export class DSCollection<T extends IDSModel> implements IDSCollection<T> {
     protected setup: IDSCollectionSetup;
     protected _items: ReplaySubject<IDSModelList<T>> = new ReplaySubject<IDSModelList<T>>(1);
 
-    constructor(setup: IDSCollectionSetup, context: any = {}) {
-        this.setup = setup;
+    constructor(setup: IDSCollectionSetup = null, context: any = {}) {
+        if (setup) {
+            this.setup = setup;
+        }
         this._context = context;
         this.items$ = this._items.asObservable();
         this.init();
@@ -153,6 +155,11 @@ export class DSCollection<T extends IDSModel> implements IDSCollection<T> {
         }
     }
 
+    public action(instance: T, action: string, args: any): Observable<any> {
+        let identifier = this.get_adapter().identifier(instance);
+        return this.get_backend().action(identifier, action, args);
+    }
+
     public list(filter: any, params: IDSCollectionGetParams = {}): Observable<IDSModelList<T>> {
         this.get_filter().update(filter);
         if (params.fromcache) {
@@ -186,7 +193,7 @@ export class DSCollection<T extends IDSModel> implements IDSCollection<T> {
                         console.log("Item", item);
                     }
                     // TODO: save persistence of results ids ?
-                    let output =  {items: _items, pagination: pagination};
+                    let output = {items: _items, pagination: pagination};
                     this._items.next(output);
                 });
             return this.items$;
