@@ -9,11 +9,10 @@ export type IDSAdapterFilterParams  = any;
 export type IDSAdapterSorterParams = any;
 
 export interface IDSAdapter {
-    identifier(instance: IDSModel, params?: IDSAdapterIdentifierParams): any;
+    identifier(instance: IDSModel | number | string, params?: IDSAdapterIdentifierParams): any;
     search(filter?: IDSAdapterFilterParams, sorter?: IDSAdapterSorterParams): any;
 }
 
 export interface IDSAdapterProvider {
     provide(config: any): IDSAdapter;
 }
-

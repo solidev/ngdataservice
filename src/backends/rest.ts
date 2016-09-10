@@ -1,11 +1,11 @@
-import {Headers, URLSearchParams, RequestOptions, Http} from "@angular/http";
+import {Headers, URLSearchParams, RequestOptions, Http, Request, RequestMethod} from "@angular/http";
 import {Observable} from "rxjs";
 import {IDSBackend, IDSBackendProvider} from "./interface";
 import {DSJsonParser} from "../parsers/json";
 import {Injectable, OpaqueToken, Inject, Optional} from "@angular/core";
 import {DSJsonRenderer} from "../renderers/json";
 import "rxjs/add/operator/map";
-
+import {capitalize, isString} from "lodash";
 
 export interface IDSRestIdentifier {
     path: string;
@@ -77,6 +77,24 @@ export class DSRestBackend implements IDSBackend {
         return this._http
             .delete(this.getRequestUrl(identifier), options)
             .map((response) => {
+                return this._parser.parse(response);
+            });
+    }
+
+    public action(identifier: IDSRestIdentifier, action: string, params: any = {}): Observable<any> {
+        // Params : string => url
+        // Params : object => {url, body}
+        let options = this.getRequestOptions(identifier);
+        options.method = RequestMethod[capitalize(action)];
+        if (isString(params)) {
+            options.url = this.getRequestUrl(identifier) + <string>params;
+        } else {
+            options.url = this.getRequestUrl(identifier) + params.url;
+            options.body = this._renderer.render(params.body);
+        }
+        return this._http.request(options.url, options)
+            .map((response) => {
+                console.log("ACTION : ", response);
                 return this._parser.parse(response);
             });
     }

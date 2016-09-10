@@ -8,10 +8,10 @@ export interface IDSFilterField {
 }
 
 export interface IDSFilter {
-    listener: Observer;
+    listener: Observer<any>;
     fields: {[index: string]: IDSFilterField};
-    localFilter: IDSFilterFunction;
     backendFilter: any;
+    localFilter: IDSFilterFunction;
     update(filter_params: any): void;
 }
 

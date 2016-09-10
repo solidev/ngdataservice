@@ -1,6 +1,10 @@
 [![build status](https://gitlab.com/solidev/ng2datastore/badges/develop/build.svg)](https://gitlab.com/solidev/ng2datastore/commits/develop)
 [![coverage report](https://gitlab.com/solidev/ng2datastore/badges/develop/coverage.svg)](https://gitlab.com/solidev/ng2datastore/commits/develop)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
+[![Sauce Test Status](https://saucelabs.com/buildstatus/solidev)](https://saucelabs.com/u/solidev)
+[![Dependency Status](https://www.versioneye.com/user/projects/57cfc79e8d1bad004c3d7812/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/57cfc79e8d1bad004c3d7812)
+
+[![Sauce Test Status](https://saucelabs.com/browser-matrix/solidev.svg)](https://saucelabs.com/u/solidev)
 
 **This is a Work In Progress project - do not use it until it reaches at least `0.1`** 
 

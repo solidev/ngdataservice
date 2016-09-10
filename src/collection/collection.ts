@@ -50,8 +50,10 @@ export class DSCollection<T extends IDSModel> implements IDSCollection<T> {
     protected setup: IDSCollectionSetup;
     protected _items: ReplaySubject<IDSModelList<T>> = new ReplaySubject<IDSModelList<T>>(1);
 
-    constructor(setup: IDSCollectionSetup, context: any = {}) {
-        this.setup = setup;
+    constructor(setup: IDSCollectionSetup = null, context: any = {}) {
+        if (setup) {
+            this.setup = setup;
+        }
         this._context = context;
         this.items$ = this._items.asObservable();
         this.init();
@@ -111,7 +113,7 @@ export class DSCollection<T extends IDSModel> implements IDSCollection<T> {
         throw new Error("Cannot update unsaved item");
     }
 
-    public remove(instance: T): Observable<T> {
+    public remove(instance: T | number | string): Observable<any> {
         let identifier: any = this.get_adapter().identifier(instance);
         if (identifier) {
             return this.get_backend().destroy(identifier, {})
@@ -135,7 +137,7 @@ export class DSCollection<T extends IDSModel> implements IDSCollection<T> {
     }
 
     public get(pk: any, params: IDSCollectionGetParams = {}): Observable<T> {
-        let identifier = this.get_adapter().identifier(<any>{pk: pk});
+        let identifier = this.get_adapter().identifier(pk);
         if (params.fromcache) {
             return Observable.of(this.get_persistence().retrieve(identifier));
         } else {
@@ -153,34 +155,54 @@ export class DSCollection<T extends IDSModel> implements IDSCollection<T> {
         }
     }
 
-    public filter(filter: any, params: IDSCollectionGetParams = {}): Observable<IDSModelList<T>> {
+    public action(instance: T, action: string, args: any): Observable<any> {
+        let identifier = this.get_adapter().identifier(instance);
+        return this.get_backend().action(identifier, action, args);
+    }
+
+    public list(filter: any, params: IDSCollectionGetParams = {}): Observable<IDSModelList<T>> {
         this.get_filter().update(filter);
         if (params.fromcache) {
-            this.get_persistence().list(this.get_filter().localFilter, this.get_sorter().localSorter);
+            return Observable.of(
+                this.get_persistence().list(
+                    this.get_filter().localFilter,
+                    this.get_sorter().localSorter
+                )
+            );
         } else {
             let search = this.get_adapter().search(this.get_filter().backendFilter);
+            console.log("Search", search);
             this.get_backend().list(search, {})
-                .map((result) => {
-                    this.get_paginator().getPaginationInfos(result);
+                .subscribe((result) => {
+                    let pagination = this.get_paginator().getPaginationInfos(result);
                     let items = this.get_paginator().getResults(result);
-                    let _items:T[] = [];
+                    let _items = [];
                     for (let item of items) {
                         let itemdata = this.get_serializer().deserialize(item);
                         let temp = new this.model(this, itemdata);
                         let identifier = this.get_adapter().identifier(temp);
                         let instance = this.get_persistence().retrieve(identifier);
-                        instance.assign(itemdata);
-                        this.get_persistence().save(identifier, instance);
-                        items.push(instance);
+                        if (instance) {
+                            instance.assign(itemdata);
+                            this.get_persistence().save(identifier, instance);
+                            _items.push(instance);
+                        } else {
+                            this.get_persistence().save(identifier, temp);
+                            _items.push(temp);
+                        }
+                        console.log("Item", item);
                     }
-                    this._items.next(items);
+                    // TODO: save persistence of results ids ?
+                    let output = {items: _items, pagination: pagination};
+                    this._items.next(output);
                 });
+            return this.items$;
         }
-        return this.items$;
+
     }
 
     public all(params: IDSCollectionGetParams = {}): Observable<IDSModelList<T>> {
-        return this.filter({}, params);
+        return this.list({}, params);
     }
 
     protected get_adapter(): IDSAdapter {
@@ -205,6 +227,23 @@ export class DSCollection<T extends IDSModel> implements IDSCollection<T> {
 
     protected get_serializer_config(): any {
         return this.get_service_config("serializer");
+    }
+
+    protected get_filter(): IDSFilter {
+        let filter = <IDSFilter>this.get_service("filter", this.get_filter_config());
+        return filter;
+    }
+
+    protected get_filter_config(): any {
+        return this.get_service_config("filter");
+    }
+
+    protected get_sorter(): IDSSorter {
+        return <IDSSorter>this.get_service("sorter", this.get_sorter_config());
+    }
+
+    protected get_sorter_config(): any {
+        return this.get_service_config("sorter");
     }
 
     protected get_filter(): IDSFilter {

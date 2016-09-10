@@ -28,22 +28,25 @@ export interface IDSPaginationInfo {
 
 export interface IDSModelList<T extends IDSModel> {
     items: T[];
-    pagination: IDSPaginationInfo;
+    pagination?: IDSPaginationInfo;
 }
 
 export interface IDSCollection<T extends IDSModel> {
     model: IDSModelConstructor<T>;
     save(instance: T): Observable<T>;
     update(instance: T, fields: string[]): Observable<T>;
-    remove(instance: T): Observable<T>;
+    remove(instance: T | number | string): Observable<any>;
     refresh(instance: T): Observable<T>;
-    create(values: any, params: IDSCollectionCreateParams): Observable<T>;
-    get(identifier: any, params: IDSCollectionGetParams): Observable<T>;
+    create(values: any, params?: IDSCollectionCreateParams): Observable<T>;
+    get(identifier: any, params?: IDSCollectionGetParams): Observable<T>;
+    action?(instance: T, action: string, params: any): Observable<any>;
+    list(filter: any, params?: IDSCollectionGetParams): Observable<IDSModelList<T>>;
+    all(params?: IDSCollectionGetParams): Observable<IDSModelList<T>>;
 }
 
 
 export interface IDSCollectionConstructor<T extends IDSModel> {
-    new(setup: IDSCollectionSetup, context: any): IDSCollection<T>;
+    new(setup: IDSCollectionSetup, context?: any): IDSCollection<T>;
 }
 
 export interface IDataCollectionConfig {
@@ -85,5 +88,7 @@ export const COLLECTION_SETUP_NAMES: string[] = [
     "authentication", "authentication_provider", "authentication_config",
     "serializer", "serializer_provider", "serializer_config",
     "persistence", "persistence_provider", "persistence_config",
-    "paginator", "paginator_provider", "paginator_config"
+    "paginator", "paginator_provider", "paginator_config",
+    "filter", "filter_provider", "filter_config",
+    "sorter", "sorter_provider", "sorter_config"
 ];

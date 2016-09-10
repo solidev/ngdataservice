@@ -9,12 +9,12 @@ export interface IDSSorterField {
 
 export interface IDSSorter {
     fields: IDSSorterField[];
-    listener: Observer;
+    listener: Observer<any>;
     localSorter: IDSSorterFunction;
     backendSorter: any;
     update(sorter_params: any): void;
 }
 
 export interface IDSSorterProvider {
-    provider(params: any): IDSSorter;
+    provide(params: any): IDSSorter;
 }

@@ -10,6 +10,9 @@ import {DSJsonRenderer, DSJsonRendererProvider} from "./renderers/json";
 import {DSPagePaginator, DSPagePaginatorProvider} from "./paginators/pages";
 import {DSTokenAuthenticationProvider, DSTokenAuthentication} from "./authentication/tokenauth";
 import {DSRestCollectionSetup} from "./collection/restcollection";
+import {DSDummyPaginator, DSDummyPaginatorProvider} from "./paginators/dummy";
+import {DSDummySorter, DSDummySorterProvider} from "./sorters/dummy";
+import {DS_FILTERS, DS_FILTER_PROVIDERS} from "./filters/index";
 
 @NgModule({
     imports: [
@@ -23,6 +26,9 @@ import {DSRestCollectionSetup} from "./collection/restcollection";
         DSMemoryPersistence,
         DSTokenAuthentication,
         DSPagePaginator,
+        DSDummyPaginator,
+        DSDummySorter,
+        DS_FILTERS,
         DSJsonParser,
         DSJsonRenderer,
         DSRestBackendProvider,
@@ -33,6 +39,9 @@ import {DSRestCollectionSetup} from "./collection/restcollection";
         DSJsonRendererProvider,
         DSPagePaginatorProvider,
         DSTokenAuthenticationProvider,
+        DSDummyPaginatorProvider,
+        DSDummySorterProvider,
+        DS_FILTER_PROVIDERS,
         DSRestCollectionSetup
     ]
 })
