@@ -1,9 +1,9 @@
 import {IDSModel, IDSModelConstructor} from "../model/interface";
 import {Observable, ReplaySubject} from "rxjs/Rx";
-import {IDSBackend, IDSBackendProvider} from "../backends/interface";
-import {IDSPersistence, IDSPersistenceProvider} from "../persistence/interface";
-import {IDSAdapter, IDSAdapterProvider} from "../adapters/interface";
-import {IDSSerializer, IDSSerializerProvider} from "../serializers/interface";
+import {IDSBackend, IDSBackendProvider, IDSBackendClass} from "../backends/interface";
+import {IDSPersistence, IDSPersistenceProvider, IDSPersistenceClass} from "../persistence/interface";
+import {IDSAdapter, IDSAdapterProvider, IDSAdapterClass} from "../adapters/interface";
+import {IDSSerializer, IDSSerializerProvider, IDSSerializerClass} from "../serializers/interface";
 import {
     IDSCollection,
     IDSModelList,
@@ -11,10 +11,10 @@ import {
     IDSCollectionGetParams,
     IDSCollectionSetup
 } from "./interface";
-import {IDSAuthentication, IDSAuthenticationProvider} from "../authentication/interface";
-import {IDSPaginator, IDSPaginatorProvider} from "../paginators/interface";
-import {IDSFilterProvider, IDSFilter} from "../filters/interface";
-import {IDSSorter, IDSSorterProvider} from "../sorters/interface";
+import {IDSAuthentication, IDSAuthenticationProvider, IDSAuthenticationClass} from "../authentication/interface";
+import {IDSPaginator, IDSPaginatorProvider, IDSPaginatorClass} from "../paginators/interface";
+import {IDSFilterProvider, IDSFilter, IDSFilterClass} from "../filters/interface";
+import {IDSSorter, IDSSorterProvider, IDSSorterClass} from "../sorters/interface";
 
 
 export class DSCollection<T extends IDSModel> implements IDSCollection<T> {
@@ -23,27 +23,35 @@ export class DSCollection<T extends IDSModel> implements IDSCollection<T> {
     public items$: Observable<IDSModelList<T>>;
 
     protected adapter: IDSAdapter;
+    protected adapter_class: IDSAdapterClass;
     protected adapter_provider: IDSAdapterProvider;
     protected adapter_config: any;
     protected backend: IDSBackend;
+    protected backend_class: IDSBackendClass;
     protected backend_provider: IDSBackendProvider;
     protected backend_config: any;
     protected serializer: IDSSerializer;
+    protected serialize_class: IDSSerializerClass;
     protected serializer_provider: IDSSerializerProvider;
     protected serializer_config: any;
     protected persistence: IDSPersistence;
+    protected persistence_class: IDSPersistenceClass;
     protected persistence_provider: IDSPersistenceProvider;
     protected persistence_config: any;
     protected authentication: IDSAuthentication;
+    protected authentication_class: IDSAuthenticationClass;
     protected authentication_provider: IDSAuthenticationProvider;
     protected authentication_config: any;
     public paginator: IDSPaginator;
+    public paginator_class: IDSPaginatorClass;
     protected paginator_provider: IDSPaginatorProvider;
     protected paginator_config: any;
     public filter: IDSFilter;
+    protected filter_class: IDSFilterClass;
     protected filter_provider: IDSFilterProvider;
     protected filter_config: any;
     public sorter: IDSSorter;
+    protected sorter_class: IDSSorterClass;
     protected sorter_provider: IDSSorterProvider;
     protected sorter_config: any;
     protected _context: any;
@@ -179,14 +187,18 @@ export class DSCollection<T extends IDSModel> implements IDSCollection<T> {
                     let _items = [];
                     for (let item of items) {
                         let itemdata = this.get_serializer().deserialize(item);
+                        console.log("Data", itemdata);
                         let temp = new this.model(this, itemdata);
+                        console.log("Temp", temp);
                         let identifier = this.get_adapter().identifier(temp);
                         let instance = this.get_persistence().retrieve(identifier);
                         if (instance) {
                             instance.assign(itemdata);
                             this.get_persistence().save(identifier, instance);
+                            console.log("Instance", instance);
                             _items.push(instance);
                         } else {
+                            console.log("Temp", temp);
                             this.get_persistence().save(identifier, temp);
                             _items.push(temp);
                         }
@@ -271,10 +283,14 @@ export class DSCollection<T extends IDSModel> implements IDSCollection<T> {
 
     private get_service(name: string, config: any): any {
         if (!this[name]) {
-            if (this[name + "_provider"]) {
+            if (this[name + "_class"]) {
+                this[name] = new this[name + "_class"](config);
+            } else if (this[name + "_provider"]) {
                 this[name] = this[name + "_provider"].provide(config);
             } else if (this.setup[name]) {
                 this[name] = this.setup[name];
+            } else if (this.setup[name + "_class"]) {
+                this[name] = new this.setup[name + "_class"](config);
             } else if (this.setup[name + "_provider"]) {
                 let provider: any = this.setup[name + "_provider"];
                 this[name] = provider.provide(config);

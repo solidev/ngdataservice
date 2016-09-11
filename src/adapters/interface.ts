@@ -13,6 +13,11 @@ export interface IDSAdapter {
     search(filter?: IDSAdapterFilterParams, sorter?: IDSAdapterSorterParams): any;
 }
 
+
+export interface IDSAdapterClass {
+    new(config: any): IDSAdapter;
+}
+
 export interface IDSAdapterProvider {
     provide(config: any): IDSAdapter;
 }

@@ -6,6 +6,10 @@ export interface IDSAuthentication {
     setAuthContent(content: any): any;
 }
 
+export interface IDSAuthenticationClass {
+    new(params: any): IDSAuthentication;
+}
+
 export interface IDSAuthenticationProvider {
     provide(params: any): IDSAuthentication;
 }

@@ -9,6 +9,10 @@ export interface IDSPersistence {
     clear(params: any): any;
 }
 
+export interface IDSPersistenceClass {
+    new(params: any): IDSPersistence;
+}
+
 export interface IDSPersistenceProvider {
     provide(params: any): IDSPersistence;
 }

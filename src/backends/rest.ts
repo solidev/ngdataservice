@@ -38,6 +38,7 @@ export class DSRestBackend implements IDSBackend {
 
     public retrieve(identifier: IDSRestIdentifier, params: any = {}): Observable<any> {
         let options = this.getRequestOptions(identifier);
+        options = this._renderer.prepare(options);
         return this._http
             .get(this.getRequestUrl(identifier), options)
             .map((response) => {
@@ -47,6 +48,7 @@ export class DSRestBackend implements IDSBackend {
 
     public list(identifier: IDSRestIdentifier, params: any = {}): Observable<any> {
         let options = this.getRequestOptions(identifier);
+        options = this._renderer.prepare(options);
         return this._http
             .get(this.getRequestUrl(identifier), options)
             .map((response) => {
@@ -56,6 +58,7 @@ export class DSRestBackend implements IDSBackend {
 
     public create(identifier: IDSRestIdentifier, values: any, params: any = {}): Observable<any> {
         let options = this.getRequestOptions(identifier);
+        options = this._renderer.prepare(options);
         return this._http
             .post(this.getRequestUrl(identifier), this._renderer.render(values), options)
             .map((response) => {
@@ -65,6 +68,7 @@ export class DSRestBackend implements IDSBackend {
 
     public update(identifier: IDSRestIdentifier, values: any, params: any = {}): Observable<any> {
         let options = this.getRequestOptions(identifier);
+        options = this._renderer.prepare(options);
         return this._http
             .put(this.getRequestUrl(identifier), this._renderer.render(values), options)
             .map((response) => {
@@ -74,6 +78,7 @@ export class DSRestBackend implements IDSBackend {
 
     public destroy(identifier: IDSRestIdentifier, params: any = {}): Observable<any> {
         let options = this.getRequestOptions(identifier);
+        options = this._renderer.prepare(options);
         return this._http
             .delete(this.getRequestUrl(identifier), options)
             .map((response) => {
@@ -85,6 +90,7 @@ export class DSRestBackend implements IDSBackend {
         // Params : string => url
         // Params : object => {url, body}
         let options = this.getRequestOptions(identifier);
+        options = this._renderer.prepare(options);
         options.method = RequestMethod[capitalize(action)];
         if (isString(params)) {
             options.url = this.getRequestUrl(identifier) + <string>params;

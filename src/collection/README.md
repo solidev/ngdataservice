@@ -18,15 +18,19 @@ adapter, backend, ...) can be given (in order, first defined component
 is chosen) :
 
 1. via an instance (`adapter`, `backend`, ...)
-2. via a provider (`adapter_provider`, `backend_provider`, ...)
-3. via an instance of setup object (`setup.adapter`, `setup.backend`, ...)
-4. via a provider through setup object (`setup.adapter_provider`,
+2. via a class (`adapter_class`, `backend_class`, ...)
+3. via a provider instance (`adapter_provider`, `backend_provider`, ...)
+4. via an instance of setup object (`setup.adapter`, `setup.backend`, ...)
+5. via a class from setup object (`setup.adapter_class`, 
+   `setup.backend_class`, ...)
+6. via a provider through setup object (`setup.adapter_provider`,
   `setup.backend_provider`, ...)
 
 Each component configuration (if needed) can be given through
 
 1. via a collection property (`adapter_config`, `backend_config`, ...)
 2. via a setup property (`setup.adapter_config`, `backend_config`, ...)
+
 ## Example
 
 TODO

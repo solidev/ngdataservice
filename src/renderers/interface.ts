@@ -1,4 +1,5 @@
 export interface IDSRequestRenderer {
+    prepare(data: any): any;
     render(data: any): any;
 }
 

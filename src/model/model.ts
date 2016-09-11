@@ -2,7 +2,7 @@ import {Observable} from "rxjs/Rx";
 import {IDSModel, IDSValidationResult, IDSValidationOptions} from "./interface";
 import {IDSCollection} from "../collection/interface";
 import {IDSRegister} from "../register/interface";
-import {omitBy} from "lodash";
+import {omitBy, extend} from "lodash";
 
 const DEFAULT_VALIDATION_OPTIONS: IDSValidationOptions = {validate: true, async: true};
 /**
@@ -17,12 +17,15 @@ export class DSModel implements IDSModel {
 
     /**
      * Construct object from (optional) value object.
+     * WARNING: initialisation does not work if fields have default values.
+     * See http://bit.ly/2cwApxb
      * @param values Initial values (not validated)
      * @param collection Object's collection
      */
     constructor(collection: IDSCollection<DSModel> = null, values: any = null) {
-        this.assign(values, {validate: false}); // SEE: check if validation should be on ?
+        Object.assign(this, values);
         this._collection = collection;
+        console.log("this", this);
     }
 
     /**
@@ -57,7 +60,7 @@ export class DSModel implements IDSModel {
                   options: IDSValidationOptions = DEFAULT_VALIDATION_OPTIONS): IDSValidationResult {
         if (values) {
             // TODO: implement validation
-            Object.assign(this, values);
+            extend(this, values);
         }
         return true;
     }

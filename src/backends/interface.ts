@@ -8,6 +8,11 @@ export interface IDSBackend {
     destroy(identifier: any, params: any): Observable<any>;
     action(identifier: any, action: string, params: any): Observable<any>;
 }
+
+export interface IDSBackendClass {
+    new(params: any): IDSBackend;
+}
+
 export interface IDSBackendProvider {
     provide(params: any): IDSBackend;
 }
