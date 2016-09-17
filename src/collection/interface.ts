@@ -8,6 +8,7 @@ import {IDSBackendProvider, IDSBackend, IDSBackendClass} from "../backends/inter
 import {IDSAdapterProvider, IDSAdapter, IDSAdapterClass} from "../adapters/interface";
 import {IDSFilter, IDSFilterProvider, IDSFilterClass} from "../filters/interface";
 import {IDSSorterProvider, IDSSorter, IDSSorterClass} from "../sorters/interface";
+import {IDSRegister} from "../register/interface";
 
 
 export interface IDSCollectionCreateParams {
@@ -33,6 +34,7 @@ export interface IDSModelList<T extends IDSModel> {
 
 export interface IDSCollection<T extends IDSModel> {
     model: IDSModelConstructor<T>;
+    datasources: IDSRegister;
     save(instance: T): Observable<T>;
     update(instance: T, fields: string[]): Observable<T>;
     remove(instance: T | number | string): Observable<any>;
@@ -80,6 +82,7 @@ export interface IDSCollectionSetup {
     paginator_class?: IDSPaginatorClass;
     paginator_provider?: IDSPaginatorProvider;
     paginator_config?: any;
+    datasources?: IDSRegister;
     filter?: IDSFilter;
     filter_class?: IDSFilterClass;
     filter_provider?: IDSFilterProvider;
@@ -98,5 +101,5 @@ export const COLLECTION_SETUP_NAMES: string[] = [
     "persistence", "persistence_class", "persistence_provider", "persistence_config",
     "paginator", "paginator_class", "paginator_provider", "paginator_config",
     "filter", "filter_class", "filter_provider", "filter_config",
-    "sorter", "sorter_class", "sorter_provider", "sorter_config"
+    "sorter", "sorter_class", "sorter_provider", "sorter_config", "datasources"
 ];

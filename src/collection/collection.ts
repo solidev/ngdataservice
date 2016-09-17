@@ -15,12 +15,15 @@ import {IDSAuthentication, IDSAuthenticationProvider, IDSAuthenticationClass} fr
 import {IDSPaginator, IDSPaginatorProvider, IDSPaginatorClass} from "../paginators/interface";
 import {IDSFilterProvider, IDSFilter, IDSFilterClass} from "../filters/interface";
 import {IDSSorter, IDSSorterProvider, IDSSorterClass} from "../sorters/interface";
+import {DSRegister} from "../register/register";
+import {IDSRegister} from "../register/interface";
 
 
 export class DSCollection<T extends IDSModel> implements IDSCollection<T> {
 
     public model: IDSModelConstructor<T>;
     public items$: Observable<IDSModelList<T>>;
+    public datasources: IDSRegister;
 
     protected adapter: IDSAdapter;
     protected adapter_class: IDSAdapterClass;
@@ -61,6 +64,9 @@ export class DSCollection<T extends IDSModel> implements IDSCollection<T> {
     constructor(setup: IDSCollectionSetup = null, context: any = {}) {
         if (setup) {
             this.setup = setup;
+        }
+        if (!this.datasources) {
+            this.datasources = this.setup.datasources;
         }
         this._context = context;
         this.items$ = this._items.asObservable();

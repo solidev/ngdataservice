@@ -11,8 +11,9 @@ import {IDSAuthentication, IDSAuthenticationProvider} from "../authentication/in
 import {IDSSerializer, IDSSerializerProvider} from "../serializers/interface";
 import {IDSPersistence, IDSPersistenceProvider} from "../persistence/interface";
 import {IDSPaginator, IDSPaginatorProvider} from "../paginators/interface";
+import {IDSDataService} from "./interface";
 
-export class DSService<T extends IDSModel> implements IDSCollectionSetup {
+export class DSService<T extends IDSModel> implements IDSCollectionSetup, IDSDataService<T> {
     public collection: IDSCollectionConstructor<T>;
     public model: IDSModelConstructor<T>;
     public setup: IDSCollectionSetup;
