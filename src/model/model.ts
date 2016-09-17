@@ -25,8 +25,9 @@ export class DSModel implements IDSModel {
     constructor(collection: IDSCollection<DSModel> = null, values: any = null) {
         Object.assign(this, values);
         this._collection = collection;
-        this._datasources = collection.datasources;
-        console.log("this", this);
+        if (this._collection && this._collection.datasources) {
+            this._datasources = collection.datasources;
+        }
     }
 
     /**
