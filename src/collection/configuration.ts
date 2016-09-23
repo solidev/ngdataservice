@@ -1,4 +1,4 @@
-import {IDSCollectionSetup} from "../collection/interface";
+import {IDSCollectionSetup} from "./interface";
 export class DSConfiguration {
     protected setup: IDSCollectionSetup;
 

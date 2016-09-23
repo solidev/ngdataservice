@@ -10,6 +10,5 @@ export * from "./persistence/index";
 export * from "./register/index";
 export * from "./renderers/index";
 export * from "./serializers/index";
-export * from "./service/index";
 export * from "./queryset/index";
 export * from "./datastore.module";

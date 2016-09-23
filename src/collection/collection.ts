@@ -7,7 +7,7 @@ import {IDSSerializer, IDSSerializerProvider, IDSSerializerClass} from "../seria
 import {IDSCollection, IDSCollectionCreateParams, IDSCollectionGetParams, IDSCollectionSetup} from "./interface";
 import {IDSAuthentication, IDSAuthenticationProvider, IDSAuthenticationClass} from "../authentication/interface";
 import {IDSRegister} from "../register/interface";
-import {DSConfiguration} from "../service/configuration";
+import {DSConfiguration} from "./configuration";
 import {IDSQueryset, IDSQuerysetClass, IDSQuerysetProvider} from "../queryset/interface";
 import {DSQueryset} from "../queryset/queryset";
 

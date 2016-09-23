@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import {IDSRegister} from "./interface";
-import {IDSDataService} from "../service/interface";
 import {DSModel} from "../model/model";
+import {IDSCollection} from "../collection/interface";
 
 
 /**
@@ -10,14 +10,14 @@ import {DSModel} from "../model/model";
  */
 @Injectable()
 export class DSRegister implements IDSRegister {
-    private _datastores: {[index: string]: IDSDataService<any>} = {};
+    private _datastores: {[index: string]: IDSCollection<any>} = {};
 
-    public register<T extends DSModel>(name: string, ds: IDSDataService<T>): IDSDataService<T> {
+    public register<T extends DSModel>(name: string, ds: IDSCollection<T>): IDSCollection<T> {
         this._datastores[name] = ds;
         return this._datastores[name];
     }
 
-    public get<T extends DSModel>(name: string): IDSDataService<T> {
+    public get<T extends DSModel>(name: string): IDSCollection<T> {
         return this._datastores[name];
     }
 }

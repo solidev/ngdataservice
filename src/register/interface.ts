@@ -1,5 +1,5 @@
-import {IDSDataService} from "../service/interface";
+import {IDSCollection} from "../collection/interface";
 export interface IDSRegister {
-    register(name: string, collection: IDSDataService<any>): IDSDataService<any>;
-    get(name: string): IDSDataService<any>;
+    register(name: string, collection: IDSCollection<any>): IDSCollection<any>;
+    get(name: string): IDSCollection<any>;
 }

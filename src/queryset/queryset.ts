@@ -5,7 +5,7 @@ import {IDSQueryset} from "./interface";
 import {IDSFilter, IDSFilterClass, IDSFilterProvider} from "../filters/interface";
 import {IDSSorter, IDSSorterClass, IDSSorterProvider} from "../sorters/interface";
 import {Observable, ReplaySubject} from "rxjs";
-import {DSConfiguration} from "../service/configuration";
+import {DSConfiguration} from "../collection/configuration";
 import * as _ from "lodash";
 
 export class DSQueryset<T extends IDSModel> extends DSConfiguration implements IDSQueryset<T> {
