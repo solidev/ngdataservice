@@ -29,7 +29,7 @@ export interface IDSModel {
     dirty(fields: string[]): string[];
 }
 
-export interface IDSModelConstructor<T extends IDSModel> {
+export interface IDSModelClass<T extends IDSModel> {
     new(collection: IDSCollection<T>,
         values: any): T;
 }

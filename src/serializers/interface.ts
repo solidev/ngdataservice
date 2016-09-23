@@ -12,6 +12,10 @@ export interface IDSSerializer {
     deserializeMany(result: any): any;
 }
 
+export interface IDSSerializerClass {
+    new(params: any): IDSSerializer;
+}
+
 export interface IDSSerializerProvider {
     provide(params: any): IDSSerializer;
 }

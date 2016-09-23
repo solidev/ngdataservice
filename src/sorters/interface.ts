@@ -15,6 +15,10 @@ export interface IDSSorter {
     update(sorter_params: any): void;
 }
 
+export interface IDSSorterClass {
+    new(params: any): IDSSorter;
+}
+
 export interface IDSSorterProvider {
     provide(params: any): IDSSorter;
 }

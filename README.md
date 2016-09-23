@@ -15,7 +15,7 @@ repository is read-only.
 
 ## Installation
 
-Works with **angular@2.0.0-rc.6** : ```npm install ng2datastore --save```
+Works with **angular@2.0.0** : ```npm install ng2datastore --save```
 
 ## Usage
 
@@ -41,7 +41,8 @@ This example uses the default REST setup :
 
 ```typescript
 // file models/train.service.ts
-import {DSModel, DSService, DSRestCollectionSetup} from "ng2datastore";
+// ----------------------------
+import {DSModel, DSCollection, DSRestCollectionSetup} from "ng2datastore";
 import {Injectable} from "@angular/core";
 
 // Model declaration
@@ -57,12 +58,12 @@ export class Train extends DSModel {
 
 // Train collections provider
 @Injectable()
-export class TrainService extends DSService<Train> {
+export class TrainService extends DSCollection<Train> {
     public adapter_config = {basePath: "/trains"};
     public model = Train;
     // Needed to inject default settings
     constructor(public setup: DSRestCollectionSetup) {
-        super();
+        super(setup);
     }
 }
 
@@ -72,9 +73,12 @@ export class TrainService extends DSService<Train> {
 
 ```typescript
 // file app.module.ts
+// ------------------
 import {NgModule} from "@angular/core";
-import {RestModule, REST_ADAPTER_CONFIG,
-    DSRestCollectionSetup} from "ng2datastore";
+
+// import Rest module and config providers
+import {RestModule, REST_ADAPTER_CONFIG} from "ng2datastore";
+
 import {TrainService} from "models/train.service";
 
 @NgModule({
@@ -84,8 +88,6 @@ import {TrainService} from "models/train.service";
     providers: [
         // providing backend config
         {provide: REST_BACKEND_CONFIG, useValue: {url: "https://example.com/api/v1"}},
-        // provide default setup
-        DSRestCollectionSetup,
         // our train service
         TrainService]
 })
@@ -93,11 +95,12 @@ export class AppModule {
 }
 ``` 
 
-### Usage in component
+### Usage
 
-- inject TrainService
-- get a new collection via `.getCollection()`
-- retrieve, create, update, delete model instances
+- inject `TrainService`
+- use directly `TrainService` to retrieve, create, update, delete model
+  instances
+- use `queryset` to list, filter, paginate results
 
 ```typescript
 import {Component} from "@angular/core";
@@ -116,10 +119,9 @@ import {Train, TrainService} from "models/train.service";
 })
 export class TrainComponent {
     public train: Train;
-    private _trains;
+    public trains: Train[];
     
-    constructor(TrainService: TrainService) {
-        this._trains = TrainService.getCollection();    
+    constructor(private _trains: TrainService) {
     }
     
     public retrieveAction(): void {
@@ -164,10 +166,22 @@ export class TrainComponent {
     }
 
     public removeAction(): void {
-        this.trains.remove()
+        this._trains.remove()
             .subscribe(() => {
                 console.log("Deleted train 1);
             })
+    }
+    
+    public searchAction(): void {
+        this._trains.queryset
+            .filter({name: "chugginton"})
+            .sort(["+name", "-id"])
+            .paginate({page: 1, perpage: 10})
+            .get()
+            .subscribe((paginated) => {
+                console.log("Pagination infos", paginated.pagination);
+                this.trains = paginated.items;
+            });
     }
 
 }
@@ -199,7 +213,7 @@ export class TrainComponent {
 - **`constructor(setup, context)`**
 - **`init()`**
 
-Instance api
+Model instance operations :
 
 - **`save(values, options): Observable(model)`**
     - `options.validation = true|*false*|"sync"`
@@ -213,11 +227,12 @@ Instance api
     - `params.fromcache = true|*false*`
     - `params.dual = true|*false*`
     
-List api
+Queryset :
 
-TODO
+- **`queryset`** : return a new queryset instance.
 
-### Service API
+
+### Queryset API
 
 TODO
 

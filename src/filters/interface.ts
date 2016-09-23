@@ -1,11 +1,13 @@
 import {Observer} from "rxjs";
 export type IDSFilterFunction = (item: any) => boolean;
 
-export interface IDSFilterField {
+export interface IDSFilterFieldFull {
     name: string;
     params: any;
     value: any;
 }
+
+export type IDSFilterField = IDSFilterFieldFull | string;
 
 export interface IDSFilter {
     listener: Observer<any>;
@@ -13,6 +15,10 @@ export interface IDSFilter {
     backendFilter: any;
     localFilter: IDSFilterFunction;
     update(filter_params: any): void;
+}
+
+export interface IDSFilterClass {
+    new(params: any): IDSFilter;
 }
 
 export interface IDSFilterProvider {

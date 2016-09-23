@@ -4,12 +4,13 @@ import {Injectable} from "@angular/core";
 
 @Injectable()
 export class DSDummyFilter implements IDSFilter {
-    constructor() {
-
-    }
     public listener: Observer<any>;
     public fields: {[index: string]: IDSFilterField};
     public backendFilter: any = {};
+
+    constructor() {
+
+    }
 
     public localFilter: IDSFilterFunction = (item: any) => {
         return true;
