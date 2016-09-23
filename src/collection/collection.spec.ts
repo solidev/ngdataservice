@@ -10,25 +10,25 @@ describe("DSCollection", () => {
         it("should be configured via local properties", () => {
             let ds: any = new DSCollection<DSModel>({});
             ds.adapter = <any>"A";
-            expect(ds.get_adapter()).to.equal("A");
+            expect(ds.adapter).to.equal("A");
         });
         it("should be configured via local providers", () => {
             let ds: any = new DSCollection<DSModel>({});
             let prov: any = {provide: sinon.stub().returns("A")};
             ds.adapter_provider = prov;
-            expect(ds.get_adapter()).to.equal("A");
+            expect(ds.adapter).to.equal("A");
             expect(prov.provide.calledOnce).to.be.true;
         });
 
         it("should be configured via setup parameters", () => {
             let ds: any = new DSCollection<DSModel>({adapter: <any>"A"});
-            expect(ds.get_adapter()).to.equal("A");
+            expect(ds.adapter).to.equal("A");
         });
 
         it("should be configured via setup parameters provider", () => {
             let prov: any = {provide: sinon.stub().returns("A")};
             let ds: any = new DSCollection<DSModel>({adapter_provider: prov});
-            expect(ds.get_adapter()).to.equal("A");
+            expect(ds.adapter).to.equal("A");
             expect(prov.provide.calledOnce).to.be.true;
         });
 
@@ -37,14 +37,14 @@ describe("DSCollection", () => {
             let prov: any = {provide: sinon.stub().returns("A")};
             ds.adapter = <any>"B";
             ds.adapter_provider = prov;
-            expect(ds.get_adapter()).to.equal("B");
+            expect(ds.adapter).to.equal("B");
             expect(prov.provide.called).to.be.false;
         });
 
         it("should take precedence on setup value instead of setup provider", () => {
             let prov: any = {provide: sinon.stub().returns("B")};
             let ds: any = new DSCollection<DSModel>({adapter: <any>"A", adapter_provider: prov});
-            expect(ds.get_adapter()).to.equal("A");
+            expect(ds.adapter).to.equal("A");
             expect(prov.provide.called).to.be.false;
         });
 
@@ -54,14 +54,14 @@ describe("DSCollection", () => {
             let ds: any = new DSCollection<DSModel>({adapter: <any>"C", adapter_provider: prov2});
             ds.adapter = <any>"A";
             ds.adapter_provider = prov1;
-            expect(ds.get_adapter()).to.equal("A");
+            expect(ds.adapter).to.equal("A");
             expect(prov1.provide.called).to.be.false;
             expect(prov2.provide.called).to.be.false;
         });
 
         it("should throw an error if nothing is defined", () => {
             let ds: any = new DSCollection<DSModel>({});
-            expect(ds.get_adapter.bind(ds)).to.throw("adapter service is not defined");
+            expect(() => { ds.adapter }).to.throw("adapter service is not defined");
         });
 
         it("should load provider's configuration from local values", () => {
@@ -69,7 +69,7 @@ describe("DSCollection", () => {
             let prov: any = {provide: sinon.stub().returns("A")};
             ds.adapter_provider = prov;
             ds.adapter_config = "C";
-            expect(ds.get_adapter()).to.equal("A");
+            expect(ds.adapter).to.equal("A");
             expect(prov.provide.calledOnce).to.be.true;
             expect(prov.provide.args[0][0]).to.equal("C");
         });
@@ -78,7 +78,7 @@ describe("DSCollection", () => {
             let ds: any = new DSCollection<DSModel>({adapter_config: "D"});
             let prov: any = {provide: sinon.stub().returns("A")};
             ds.adapter_provider = prov;
-            expect(ds.get_adapter()).to.equal("A");
+            expect(ds.adapter).to.equal("A");
             expect(prov.provide.calledOnce).to.be.true;
             expect(prov.provide.args[0][0]).to.equal("D");
         });
@@ -87,7 +87,7 @@ describe("DSCollection", () => {
             let prov: any = {provide: sinon.stub().returns("A")};
             ds.adapter_provider = prov;
             ds.adapter_config = "C";
-            expect(ds.get_adapter()).to.equal("A");
+            expect(ds.adapter).to.equal("A");
             expect(prov.provide.calledOnce).to.be.true;
             expect(prov.provide.args[0][0]).to.equal("C");
         });
@@ -95,32 +95,32 @@ describe("DSCollection", () => {
         it("should load adapter via get_adapter", () => {
             let ds: any = new DSCollection<DSModel>({});
             ds.adapter = <any>"A";
-            expect(ds.get_adapter()).to.equal("A");
+            expect(ds.adapter).to.equal("A");
         });
         it("should load backend via get_backend", () => {
             let ds: any = new DSCollection<DSModel>({});
             ds.backend = <any>"A";
-            expect(ds.get_backend()).to.equal("A");
+            expect(ds.backend).to.equal("A");
         });
         it("should load serializer via get_serializer", () => {
             let ds: any = new DSCollection<DSModel>({});
             ds.serializer = <any>"A";
-            expect(ds.get_serializer()).to.equal("A");
+            expect(ds.serializer).to.equal("A");
         });
         it("should load persistence via get_persistence", () => {
             let ds: any = new DSCollection<DSModel>({});
             ds.persistence = <any>"A";
-            expect(ds.get_persistence()).to.equal("A");
+            expect(ds.persistence).to.equal("A");
         });
         it("should load authentication via get_authentication", () => {
             let ds: any = new DSCollection<DSModel>({});
             ds.authentication = <any>"A";
-            expect(ds.get_authentication()).to.equal("A");
+            expect(ds.authentication).to.equal("A");
         });
         it("should load paginator via get_paginator", () => {
             let ds: any = new DSCollection<DSModel>({});
             ds.paginator = <any>"A";
-            expect(ds.get_paginator()).to.equal("A");
+            expect(ds.paginator).to.equal("A");
         });
     });
 

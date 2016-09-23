@@ -1,5 +1,5 @@
 import {Observable} from "rxjs/Rx";
-import {IDSModel, IDSModelConstructor} from "../model/interface";
+import {IDSModel, IDSModelClass} from "../model/interface";
 import {IDSAuthenticationProvider, IDSAuthentication, IDSAuthenticationClass} from "../authentication/interface";
 import {IDSPaginatorProvider, IDSPaginator, IDSPaginatorClass} from "../paginators/interface";
 import {IDSPersistenceProvider, IDSPersistence, IDSPersistenceClass} from "../persistence/interface";
@@ -9,6 +9,7 @@ import {IDSAdapterProvider, IDSAdapter, IDSAdapterClass} from "../adapters/inter
 import {IDSFilter, IDSFilterProvider, IDSFilterClass} from "../filters/interface";
 import {IDSSorterProvider, IDSSorter, IDSSorterClass} from "../sorters/interface";
 import {IDSRegister} from "../register/interface";
+import {IDSQueryset} from "../queryset/interface";
 
 
 export interface IDSCollectionCreateParams {
@@ -33,8 +34,16 @@ export interface IDSModelList<T extends IDSModel> {
 }
 
 export interface IDSCollection<T extends IDSModel> {
-    model: IDSModelConstructor<T>;
+    model: IDSModelClass<T>;
+    setup: any;
     datasources: IDSRegister;
+    queryset: IDSQueryset<T>;
+    adapter: IDSAdapter;
+    backend: IDSBackend;
+    serializer: IDSSerializer;
+    persistence: IDSPersistence;
+    authentication: IDSAuthentication;
+
     save(instance: T): Observable<T>;
     update(instance: T, fields: string[]): Observable<T>;
     remove(instance: T | number | string): Observable<any>;
@@ -42,8 +51,6 @@ export interface IDSCollection<T extends IDSModel> {
     create(values: any, params?: IDSCollectionCreateParams): Observable<T>;
     get(identifier: any, params?: IDSCollectionGetParams): Observable<T>;
     action?(instance: T, action: string, params: any): Observable<any>;
-    list(filter: any, params?: IDSCollectionGetParams): Observable<IDSModelList<T>>;
-    all(params?: IDSCollectionGetParams): Observable<IDSModelList<T>>;
 }
 
 

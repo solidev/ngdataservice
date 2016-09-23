@@ -2,7 +2,7 @@ import {
     IDSCollection, IDSCollectionSetup, IDSCollectionConstructor,
     COLLECTION_SETUP_NAMES
 } from "../collection/interface";
-import {IDSModel, IDSModelConstructor} from "../model/interface";
+import {IDSModel, IDSModelClass} from "../model/interface";
 import {DSCollection} from "../collection/collection";
 import * as _ from "lodash";
 import {IDSAdapter, IDSAdapterProvider} from "../adapters/interface";
@@ -15,7 +15,7 @@ import {IDSDataService} from "./interface";
 
 export class DSService<T extends IDSModel> implements IDSCollectionSetup, IDSDataService<T> {
     public collection: IDSCollectionConstructor<T>;
-    public model: IDSModelConstructor<T>;
+    public model: IDSModelClass<T>;
     public setup: IDSCollectionSetup;
 
     public adapter: IDSAdapter;

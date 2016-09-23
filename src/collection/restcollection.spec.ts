@@ -15,7 +15,7 @@ import {DSModel} from "../model/model";
 import {DSDummySorterProvider} from "../sorters/dummy";
 import {DSDummyFilterProvider} from "../filters/dummy";
 import {DSDummyPaginatorProvider} from "../paginators/dummy";
-import {IDSModelConstructor} from "../model/interface";
+import {IDSModelClass} from "../model/interface";
 import {MOCK_REST_API_PROVIDER, DSMockRestApi} from "../testing/mockrestapi";
 
 TestBed.initTestEnvironment(BrowserDynamicTestingModule, platformBrowserDynamicTesting());
@@ -23,7 +23,7 @@ TestBed.initTestEnvironment(BrowserDynamicTestingModule, platformBrowserDynamicT
 
 export class TrainCollection extends DSRestCollection<DSModel> {
     public adapter_config: any = {basePath: "/api/trains"};
-    public model: IDSModelConstructor<DSModel> = DSModel;
+    public model: IDSModelClass<DSModel> = DSModel;
 
     constructor(public setup: DSRestCollectionSetup) {
         super(setup);
@@ -85,7 +85,7 @@ describe("DSRestCollection", () => {
                     order: true
                 });
                 let coll = new TrainCollection(setup);
-                coll.list({}).subscribe((result) => {
+                coll.queryset.all().subscribe((result) => {
                     expect(result).to.have.property("items").to.have.lengthOf(2);
                     expect(result).to.have.property("pagination");
                     expect(persistence.list()).to.have.lengthOf(2);
