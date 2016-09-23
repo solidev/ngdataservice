@@ -1,6 +1,6 @@
 {
   "name": "ng2datastore",
-  "version": "0.0.0-alpha.3",
+  "version": "0.0.0-alpha.4",
   "description": "Angular2 data objects",
   "main": "./dist/index.js",
   "scripts": {
