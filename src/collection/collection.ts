@@ -17,6 +17,7 @@ export class DSCollection<T extends IDSModel> extends DSConfiguration implements
     public model: IDSModelClass<T>;
     public datasources: IDSRegister;
     public setup: any;
+    public context: {[index: string]: any};
 
     protected adapter_class: IDSAdapterClass;
     protected adapter_provider: IDSAdapterProvider;
@@ -59,7 +60,7 @@ export class DSCollection<T extends IDSModel> extends DSConfiguration implements
         if (!this.datasources) {
             this.datasources = this.setup.datasources;
         }
-        this._context = context;
+        this.context = context;
         this.init();
     }
 
@@ -74,7 +75,7 @@ export class DSCollection<T extends IDSModel> extends DSConfiguration implements
             return this.save(instance);
         } else if (!params.volatile) {
             this.persistence.save(
-                this.adapter.identifier(instance, {create: true}),
+                this.adapter.identifier(instance, {create: true, context: this.context}),
                 instance
             );
             return Observable.of(instance);
@@ -88,13 +89,13 @@ export class DSCollection<T extends IDSModel> extends DSConfiguration implements
         let identifier: any = this.adapter.identifier(instance);
         if (identifier == null) {
             // Pk is not defined, let's save this item
-            identifier = this.adapter.identifier(instance, {create: true});
-            let tosave: any = this.serializer.serialize(instance);
-            return <Observable<T>>this.backend.create(identifier, tosave, {})
+            identifier = this.adapter.identifier(instance, {create: true, context: this.context});
+            let tosave: any = this.serializer.serialize(instance, {context: this.context});
+            return <Observable<T>>this.backend.create(identifier, tosave, {context: this.context})
                 .map((fromdb) => {
-                    instance.assign(this.serializer.deserialize(fromdb));
-                    identifier = this.adapter.identifier(instance);
-                    this.persistence.save(identifier, instance);
+                    instance.assign(this.serializer.deserialize(fromdb, {context: this.context}));
+                    identifier = this.adapter.identifier(instance, {context: this.context});
+                    this.persistence.save(identifier, instance, {context: this.context});
                     return <T>instance;
                 });
         } else {
@@ -104,13 +105,13 @@ export class DSCollection<T extends IDSModel> extends DSConfiguration implements
     }
 
     public update(instance: T, fields: string[]): Observable<T> {
-        let identifier: any = this.adapter.identifier(instance);
+        let identifier: any = this.adapter.identifier(instance, {context: this.context});
         if (identifier) {
-            let tosave: any = this.serializer.serialize(instance);
-            return <Observable<T>>this.backend.update(identifier, tosave, {})
+            let tosave: any = this.serializer.serialize(instance, {context: this.context});
+            return <Observable<T>>this.backend.update(identifier, tosave, {context: this.context})
                 .map((fromdb) => {
-                    instance.assign(this.serializer.deserialize(fromdb));
-                    this.persistence.save(identifier, instance);
+                    instance.assign(this.serializer.deserialize(fromdb, {context: this.context}));
+                    this.persistence.save(identifier, instance, {context: this.context});
                     return instance;
                 });
         }
@@ -118,23 +119,23 @@ export class DSCollection<T extends IDSModel> extends DSConfiguration implements
     }
 
     public remove(instance: T | number | string): Observable<any> {
-        let identifier: any = this.adapter.identifier(instance);
+        let identifier: any = this.adapter.identifier(instance, this.context);
         if (identifier) {
-            return this.backend.destroy(identifier, {})
+            return this.backend.destroy(identifier, {context: this.context})
                 .do(() => {
-                    this.persistence.destroy(identifier);
+                    this.persistence.destroy(identifier, {context: this.context});
                 });
         }
         throw new Error("Cannot delete unsaved item");
     }
 
     public refresh(instance: T): Observable<T> {
-        let identifier: any = this.adapter.identifier(instance);
+        let identifier: any = this.adapter.identifier(instance, {context: this.context});
         if (identifier) {
-            return this.backend.retrieve(identifier, {})
+            return this.backend.retrieve(identifier, {context: this.context})
                 .do((fromdb) => {
-                    instance.assign(this.serializer.deserialize(fromdb));
-                    this.persistence.save(identifier, instance);
+                    instance.assign(this.serializer.deserialize(fromdb, {context: this.context}));
+                    this.persistence.save(identifier, instance, {context: this.context});
                 });
         }
         throw new Error("Cannot refresh unsaved item");
@@ -143,16 +144,16 @@ export class DSCollection<T extends IDSModel> extends DSConfiguration implements
     public get(pk: any, params: IDSCollectionGetParams = {}): Observable<T> {
         let identifier = this.adapter.identifier(pk);
         if (params.fromcache) {
-            return Observable.of(this.persistence.retrieve(identifier));
+            return Observable.of(this.persistence.retrieve(identifier, {context: this.context}));
         } else {
-            return <Observable<T>> this.backend.retrieve(identifier, {})
+            return <Observable<T>> this.backend.retrieve(identifier, {context: this.context})
                 .flatMap((instdata) => {
-                    let instance = this.persistence.retrieve(identifier);
+                    let instance = this.persistence.retrieve(identifier, {context: this.context});
                     if (!instance) {
-                        return this.create(this.serializer.deserialize(instdata), {});
+                        return this.create(this.serializer.deserialize(instdata, {context: this.context}), {});
                     } else {
-                        instance.assign(this.serializer.deserialize(instdata));
-                        this.persistence.save(identifier, instance);
+                        instance.assign(this.serializer.deserialize(instdata, {context: this.context}));
+                        this.persistence.save(identifier, instance, {context: this.context});
                         return Observable.of(instance);
                     }
                 });
@@ -160,8 +161,9 @@ export class DSCollection<T extends IDSModel> extends DSConfiguration implements
     }
 
     public action(instance: T, action: string, args: any): Observable<any> {
-        let identifier = this.adapter.identifier(instance);
-        return this.backend.action(identifier, action, args);
+        let identifier = this.adapter.identifier(instance, {context: this.context});
+        let actargs = _.extend({}, args, {context: this.context});
+        return this.backend.action(identifier, action, actargs);
     }
 
 

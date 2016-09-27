@@ -14,7 +14,7 @@ export interface IDSFilter {
     fields: {[index: string]: IDSFilterField};
     backendFilter: any;
     localFilter: IDSFilterFunction;
-    update(filter_params: any): void;
+    update(filter_params: any, params?: any): void;
 }
 
 export interface IDSFilterClass {

@@ -1,7 +1,4 @@
-import {
-    IDSAdapter, IDSAdapterIdentifierParams, IDSAdapterProvider, IDSAdapterFilterParams,
-    IDSAdapterSorterParams
-} from "./interface";
+import {IDSAdapter, IDSAdapterIdentifierParams, IDSAdapterProvider, IDSAdapterSearchParams} from "./interface";
 import {IDSRestIdentifier} from "../backends/rest";
 import {IDSModel} from "../model/interface";
 import {Injectable, OpaqueToken, Inject} from "@angular/core";
@@ -12,6 +9,7 @@ export let REST_ADAPTER_CONFIG = new OpaqueToken("adapter.resturl.config");
 
 export interface IDSFlatRestAdapterConfig {
     basePath: string;
+    replace?: string[];
 }
 
 
@@ -23,6 +21,12 @@ export class DSFlatRestUrlAdapter implements IDSAdapter {
     constructor(@Inject(REST_ADAPTER_CONFIG) protected _config: IDSFlatRestAdapterConfig) {
     }
 
+    /**
+     * Return instance identifier.
+     * @param instance
+     * @param params
+     * @returns {any}
+     */
     public identifier(instance: IDSModel | number | string = null,
                       params: IDSAdapterIdentifierParams = DEFAULT_IDENTIFIER_PARAMS): IDSRestIdentifier {
         let id: any = null;
@@ -36,7 +40,7 @@ export class DSFlatRestUrlAdapter implements IDSAdapter {
         } else if (params.create) {
             // returns creation path
             return {
-                path: this._config.basePath,
+                path: this.path_replace(this._config.basePath, instance, params.context),
                 headers: {},
                 query: {}
             };
@@ -55,17 +59,43 @@ export class DSFlatRestUrlAdapter implements IDSAdapter {
             return null;
         }
         return {
-            path: this._config.basePath + "/" + id,
+            // SEE: use id placeholder in path or direct id add depending on option ?
+            path: this.path_replace(this._config.basePath, instance, params.context) + "/" + id,
             headers: {},
             query: {}
         };
     }
 
-    public search(filter: IDSAdapterFilterParams = {}, sorter: IDSAdapterSorterParams = {}): any {
-        let query = _.cloneDeep(filter);
-        query = _.extend(query, sorter);
-        return {path: this._config.basePath, query: query, headers: {}};
+    /**
+     * Return search url
+     * @param params
+     * @returns {{path: string, query: IDSAdapterFilterParams, headers: {}}}
+     */
+    public search(params: IDSAdapterSearchParams = {}): any {
+        let query = _.cloneDeep(params.filter);
+        query = _.extend(query, params.sorter);
+        return {
+            path: this.path_replace(this._config.basePath, null, params.context),
+            query: query,
+            headers: {}
+        };
     }
+
+    /**
+     * Provides path replacement for url, using instance and context
+     * TODO: use dotted path for context/instance data (? templating engine ?)
+     * @param path
+     * @param instance
+     * @param context
+     * @returns {string}
+     */
+    public path_replace(path: string, instance: any, context: any = {}): string {
+        for (let r of this._config.replace || []) {
+            path = path.replace("{" + r + "}", instance[r] || context[r]);
+        }
+        return path;
+    }
+
 }
 
 

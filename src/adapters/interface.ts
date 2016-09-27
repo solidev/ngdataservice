@@ -1,16 +1,30 @@
 import {IDSModel} from "../model/interface";
+import {IDSContext} from "../collection/interface";
 
 export interface IDSAdapterIdentifierParams {
-    local?: boolean; // returns model's local identifier
-    create?: boolean; // returns creation identifier
+    local?: boolean;                        // returns model's local identifier
+    create?: boolean;                       // returns creation identifier
+    context?: IDSContext;                    // context used for identifier creation
 }
 
 export type IDSAdapterFilterParams  = any;
 export type IDSAdapterSorterParams = any;
+export type IDSAdapterPaginatorParams = any;
+
+
+export interface IDSAdapterSearchParams {
+    filter?: IDSAdapterFilterParams;
+    sorter?: IDSAdapterSorterParams;
+    paginator?: IDSAdapterPaginatorParams;
+    context?: IDSContext;
+}
+
+
 
 export interface IDSAdapter {
-    identifier(instance: IDSModel | number | string, params?: IDSAdapterIdentifierParams): any;
-    search(filter?: IDSAdapterFilterParams, sorter?: IDSAdapterSorterParams): any;
+    identifier(instance: IDSModel | number | string,   // instance or identifier used to build adapted identifier
+               params?: IDSAdapterIdentifierParams): any;
+    search(params: IDSAdapterSearchParams): any;
 }
 
 

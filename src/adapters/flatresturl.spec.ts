@@ -76,7 +76,7 @@ describe("DSFlatRestUrlAdapter", () => {
         });
 
         it("should add search parameters", () => {
-            let search = adapter.search({name: "train"});
+            let search = adapter.search({filter: {name: "train"}});
             expect(search.path).to.equal("/api/trains");
             expect(search.query).to.be.have.property("name").and.to.equal("train");
             expect(search.headers).to.be.empty;

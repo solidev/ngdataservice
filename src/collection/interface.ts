@@ -12,14 +12,8 @@ import {IDSRegister} from "../register/interface";
 import {IDSQueryset} from "../queryset/interface";
 
 
-export interface IDSCollectionCreateParams {
-    save?: boolean;
-    volatile?: boolean;
-}
+export type IDSContext = {[index: string]: any};
 
-export interface IDSCollectionGetParams {
-    fromcache?: boolean;
-}
 
 export interface IDSPaginationInfo {
     currentpage?: number;
@@ -31,36 +25,6 @@ export interface IDSPaginationInfo {
 export interface IDSModelList<T extends IDSModel> {
     items: T[];
     pagination?: IDSPaginationInfo;
-}
-
-export interface IDSCollection<T extends IDSModel> {
-    model: IDSModelClass<T>;
-    setup: any;
-    datasources: IDSRegister;
-    queryset: IDSQueryset<T>;
-    adapter: IDSAdapter;
-    backend: IDSBackend;
-    serializer: IDSSerializer;
-    persistence: IDSPersistence;
-    authentication: IDSAuthentication;
-
-    save(instance: T): Observable<T>;
-    update(instance: T, fields: string[]): Observable<T>;
-    remove(instance: T | number | string): Observable<any>;
-    refresh(instance: T): Observable<T>;
-    create(values: any, params?: IDSCollectionCreateParams): Observable<T>;
-    get(identifier: any, params?: IDSCollectionGetParams): Observable<T>;
-    action?(instance: T, action: string, params: any): Observable<any>;
-}
-
-
-export interface IDSCollectionConstructor<T extends IDSModel> {
-    new(setup: IDSCollectionSetup, context?: any): IDSCollection<T>;
-}
-
-export interface IDataCollectionConfig {
-    base: any; // TODO: typing of IDataObject constructor
-    identifier: string;
 }
 
 
@@ -98,6 +62,49 @@ export interface IDSCollectionSetup {
     sorter_class?: IDSSorterClass;
     sorter_provider?: IDSSorterProvider;
     sorter_config?: any;
+}
+
+export interface IDSCollectionCreateParams {
+    save?: boolean;
+    volatile?: boolean;
+    context?: IDSContext;
+}
+
+export interface IDSCollectionGetParams {
+    fromcache?: boolean;
+    context?: IDSContext;
+}
+
+export type IDSCollectionSaveParams = any;
+export type IDSCollectionUpdateParams = any;
+export type IDSCollectionRemoveParams = any;
+export type IDSCollectionRefreshParams = any;
+export type IDSCollectionActionParams = any;
+
+export interface IDSCollection<T extends IDSModel> {
+    model: IDSModelClass<T>;
+    context: IDSContext;
+    setup: IDSCollectionSetup;
+    datasources: IDSRegister;
+    queryset: IDSQueryset<T>;
+    adapter: IDSAdapter;
+    backend: IDSBackend;
+    serializer: IDSSerializer;
+    persistence: IDSPersistence;
+    authentication: IDSAuthentication;
+
+    save(instance: T, params?: IDSCollectionSaveParams): Observable<T>;
+    update(instance: T, fields: string[], params?: IDSCollectionUpdateParams): Observable<T>;
+    remove(instance: T | number | string, params?: IDSCollectionRemoveParams): Observable<any>;
+    refresh(instance: T, params?: IDSCollectionRefreshParams): Observable<T>;
+    create(values: any, params?: IDSCollectionCreateParams): Observable<T>;
+    get(identifier: any, params?: IDSCollectionGetParams): Observable<T>;
+    action?(instance: T, action: string, params?: IDSCollectionActionParams): Observable<any>;
+}
+
+
+export interface IDSCollectionConstructor<T extends IDSModel> {
+    new(setup: IDSCollectionSetup, context?: IDSContext): IDSCollection<T>;
 }
 
 export const COLLECTION_SETUP_NAMES: string[] = [

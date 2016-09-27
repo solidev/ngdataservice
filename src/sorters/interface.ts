@@ -7,12 +7,14 @@ export interface IDSSorterField {
     up: boolean;
 }
 
+export type IDSSorterUpdateParams = any;
+
 export interface IDSSorter {
     fields: IDSSorterField[];
     listener: Observer<any>;
     localSorter: IDSSorterFunction;
     backendSorter: any;
-    update(sorter_params: any): void;
+    update(sorter_params: any, params?: IDSSorterUpdateParams): void;
 }
 
 export interface IDSSorterClass {
