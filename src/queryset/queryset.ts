@@ -4,9 +4,10 @@ import {IDSPaginator, IDSPaginatorProvider, IDSPaginatorClass} from "../paginato
 import {IDSQueryset} from "./interface";
 import {IDSFilter, IDSFilterClass, IDSFilterProvider} from "../filters/interface";
 import {IDSSorter, IDSSorterClass, IDSSorterProvider} from "../sorters/interface";
-import {Observable, ReplaySubject} from "rxjs";
+import {Observable} from "rxjs/Observable";
+import {ReplaySubject} from "rxjs/ReplaySubject";
 import {DSConfiguration} from "../collection/configuration";
-import * as _ from "lodash";
+import * as defaults from "lodash/defaults";
 
 export class DSQueryset<T extends IDSModel> extends DSConfiguration implements IDSQueryset<T> {
 
@@ -34,7 +35,7 @@ export class DSQueryset<T extends IDSModel> extends DSConfiguration implements I
 
     constructor(public collection: IDSCollection<T>) {
         super();
-        this.setup = _.defaults(this.setup, collection.setup || {});
+        this.setup = defaults(this.setup, collection.setup || {});
         this.results = this._results.asObservable();
     }
 

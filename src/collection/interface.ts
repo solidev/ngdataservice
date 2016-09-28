@@ -1,4 +1,4 @@
-import {Observable} from "rxjs/Rx";
+import {Observable} from "rxjs/Observable";
 import {IDSModel, IDSModelClass} from "../model/interface";
 import {IDSAuthenticationProvider, IDSAuthentication, IDSAuthenticationClass} from "../authentication/interface";
 import {IDSPaginatorProvider, IDSPaginator, IDSPaginatorClass} from "../paginators/interface";

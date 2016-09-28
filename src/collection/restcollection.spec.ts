@@ -1,6 +1,4 @@
 import {expect} from "chai";
-import {Response, RequestMethod, ResponseOptions} from "@angular/http";
-import {MockBackend, MockConnection} from "@angular/http/testing/mock_backend";
 import {REST_BACKEND_CONFIG, DSRestBackend} from "../backends/rest";
 import {DSJsonRenderer} from "../renderers/json";
 import {DSJsonParser} from "../parsers/json";
@@ -17,6 +15,8 @@ import {DSDummyFilterProvider} from "../filters/dummy";
 import {DSDummyPaginatorProvider} from "../paginators/dummy";
 import {IDSModelClass} from "../model/interface";
 import {MOCK_REST_API_PROVIDER, DSMockRestApi} from "../testing/mockrestapi";
+import "rxjs/observable/of";
+import "rxjs/operator/mergeMap";
 
 TestBed.initTestEnvironment(BrowserDynamicTestingModule, platformBrowserDynamicTesting());
 

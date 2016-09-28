@@ -1,4 +1,4 @@
-import {Observer} from "rxjs";
+import {Observer} from "rxjs/Observer";
 
 export type IDSSorterFunction = (item1: any, item2: any) => number;
 

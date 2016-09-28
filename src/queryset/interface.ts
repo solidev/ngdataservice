@@ -1,6 +1,6 @@
 import {IDSModel} from "../model/interface";
 import {IDSModelList} from "../collection/interface";
-import {Observable} from "rxjs";
+import {Observable} from "rxjs/Observable";
 import {IDSFilter} from "../filters/interface";
 import {IDSSorter} from "../sorters/interface";
 import {IDSPaginator} from "../paginators/interface";

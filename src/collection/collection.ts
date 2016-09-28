@@ -1,5 +1,5 @@
 import {IDSModel, IDSModelClass} from "../model/interface";
-import {Observable} from "rxjs/Rx";
+import {Observable} from "rxjs/Observable";
 import {IDSBackend, IDSBackendProvider, IDSBackendClass} from "../backends/interface";
 import {IDSPersistence, IDSPersistenceProvider, IDSPersistenceClass} from "../persistence/interface";
 import {IDSAdapter, IDSAdapterProvider, IDSAdapterClass} from "../adapters/interface";

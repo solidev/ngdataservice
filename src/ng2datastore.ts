@@ -1,3 +1,8 @@
+import "rxjs/add/observable/of";
+import "rxjs/add/operator/do";
+import "rxjs/add/operator/mergeMap";
+
+
 export * from "./adapters/index";
 export * from "./authentication/index";
 export * from "./backends/index";

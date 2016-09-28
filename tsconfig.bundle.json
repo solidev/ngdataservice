@@ -6,10 +6,10 @@
     "target": "es5",
     "outDir": "../dist",
     "noImplicitAny": false,
-    "sourceMap": true,
+    "sourceMap": false,
     "inlineSourceMap": false,
     "inlineSources": false,
-    "declaration": true,
+    "declaration": false,
     "removeComments": true,
     "types": [
       "core-js",
@@ -17,6 +17,6 @@
       "node"
     ]
   },
-  "exclude": ["./index.d.ts", "../src/**/*.spec.ts", "./index.ts", "node_modules", "test", "example", "dist"],
-  "include": ["../src/**/*.ts"]
+  "exclude": ["../index.d.ts", "../src/**/*.spec.ts", "../index.ts", "../node_modules", "../test", "../example", "../dist"],
+  "include": ["../src/ng2datastore.ts"]
 }

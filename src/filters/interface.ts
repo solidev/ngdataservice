@@ -1,4 +1,4 @@
-import {Observer} from "rxjs";
+import {Observer} from "rxjs/Observer";
 export type IDSFilterFunction = (item: any) => boolean;
 
 export interface IDSFilterFieldFull {

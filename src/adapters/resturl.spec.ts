@@ -142,7 +142,7 @@ describe("DSRestUrlAdapter - flat url", () => {
         describe(".search()", () => {
             let adapter = new DSRestUrlAdapter({basePath: "/api/trains/${train.id}/wagons"});
             it("should return basePath", () => {
-                let search = adapter.search({context: {train: {id: 1}});
+                let search = adapter.search({context: {train: {id: 1}}});
                 expect(search.path).to.equal("/api/trains/1/wagons");
                 expect(search.query).to.be.empty;
                 expect(search.headers).to.be.empty;
