@@ -18,13 +18,12 @@ module.exports = {
             {test: /\.html$/, loader: 'raw'}
         ]
     },
-    stats: {colors: true, reasons: true},
     entry: {
-         ng2datastore: "src/ng2datastore.ts",
+         ng2datastore: "./src/ng2datastore.ts",
     //     vendors: "./src/vendors.ts"
     },
     output: {
-        path: './dist',
+        path: '../dist',
         library: 'ng2datastore',
         filename: "ng2datastore.umd.js",
         libraryTarget: "umd",
