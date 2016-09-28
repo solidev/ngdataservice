@@ -4,9 +4,10 @@ import {IDSPaginator, IDSPaginatorProvider, IDSPaginatorClass} from "../paginato
 import {IDSQueryset} from "./interface";
 import {IDSFilter, IDSFilterClass, IDSFilterProvider} from "../filters/interface";
 import {IDSSorter, IDSSorterClass, IDSSorterProvider} from "../sorters/interface";
-import {Observable, ReplaySubject} from "rxjs";
+import {Observable} from "rxjs/Observable";
+import {ReplaySubject} from "rxjs/ReplaySubject";
 import {DSConfiguration} from "../collection/configuration";
-import * as _ from "lodash";
+import * as defaults from "lodash/defaults";
 
 export class DSQueryset<T extends IDSModel> extends DSConfiguration implements IDSQueryset<T> {
 
@@ -34,7 +35,7 @@ export class DSQueryset<T extends IDSModel> extends DSConfiguration implements I
 
     constructor(public collection: IDSCollection<T>) {
         super();
-        this.setup = _.defaults(this.setup, collection.setup || {});
+        this.setup = defaults(this.setup, collection.setup || {});
         this.results = this._results.asObservable();
     }
 
@@ -61,35 +62,34 @@ export class DSQueryset<T extends IDSModel> extends DSConfiguration implements I
             return Observable.of(
                 this.collection.persistence.list(
                     this.filter.localFilter,
-                    this.sorter.localSorter
+                    this.sorter.localSorter,
+                    {context: this.collection.context}
                 )
             );
         } else {
             let search = this.collection.adapter.search(this.filter.backendFilter);
             console.log("Search", search);
-            this.collection.backend.list(search, {})
+            this.collection.backend.list(search, {context: this.collection.context})
                 .subscribe((result) => {
-                    let pagination = this.paginator.getPaginationInfos(result);
-                    let items = this.paginator.getResults(result);
+                    let pagination = this.paginator.getPaginationInfos(result, {context: this.collection.context});
+                    let items = this.paginator.getResults(result, {context: this.collection.context});
                     let _items = [];
                     for (let item of items) {
-                        let itemdata = this.collection.serializer.deserialize(item);
-                        console.log("Data", itemdata);
+                        let itemdata = this.collection.serializer.deserialize(item, {context: this.collection.context});
                         let temp = new this.collection.model(this.collection, itemdata);
-                        console.log("Temp", temp);
-                        let identifier = this.collection.adapter.identifier(temp);
-                        let instance = this.collection.persistence.retrieve(identifier);
+                        let identifier = this.collection.adapter.identifier(temp, {context: this.collection.context});
+                        let instance = this.collection.persistence.retrieve(
+                            identifier,
+                            {context: this.collection.context}
+                        );
                         if (instance) {
                             instance.assign(itemdata);
-                            this.collection.persistence.save(identifier, instance);
-                            console.log("Instance", instance);
+                            this.collection.persistence.save(identifier, instance, {context: this.collection.context});
                             _items.push(instance);
                         } else {
-                            console.log("Temp", temp);
-                            this.collection.persistence.save(identifier, temp);
+                            this.collection.persistence.save(identifier, temp, {context: this.collection.context});
                             _items.push(temp);
                         }
-                        console.log("Item", item);
                     }
                     // TODO: save persistence of results ids ?
                     let output = {items: _items, pagination: pagination};

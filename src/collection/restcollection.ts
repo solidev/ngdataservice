@@ -1,6 +1,6 @@
 import {DSCollection} from "./collection";
 import {IDSModel} from "../model/interface";
-import {DSFlatRestUrlAdapterProvider} from "../adapters/flatresturl";
+import {DSFlatRestUrlAdapterProvider} from "../adapters/resturl";
 import {DSRestBackend} from "../backends/rest";
 import {DSDefaultSerializer} from "../serializers/default";
 import {DSMemoryPersistence} from "../persistence/memory";

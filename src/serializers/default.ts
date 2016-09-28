@@ -1,5 +1,5 @@
 import {IDSSerializer, IDSSerializerProvider} from "./interface";
-import {omitBy} from "lodash";
+import * as omitBy from "lodash/omitBy";
 import {IDSModel} from "../model/interface";
 import {Injectable} from "@angular/core";
 

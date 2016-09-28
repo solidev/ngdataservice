@@ -1,19 +1,27 @@
 import {IDSModel} from "../model/interface";
-export interface IDataAdapterIdentifierParams {
-    create?: boolean;
-    unsaved?: boolean;
+import {IDSContext} from "../collection/interface";
+
+export interface IDSSerializerSerializeParams {
+    context: IDSContext;
 }
+
+export interface IDSSerializerDeserializeParams {
+    context: IDSContext;
+}
+
+export type IDSSerializerSerializeManyParams = any;
+export type IDSSerializerDeserializeManyParams = any;
 
 
 export interface IDSSerializer {
-    serialize(instance: IDSModel): any;
-    deserialize(values: any): any;
-    serializeMany(instances: IDSModel[]): any;
-    deserializeMany(result: any): any;
+    serialize(instance: IDSModel, context: IDSContext): any;
+    deserialize(values: any, context: IDSContext): any;
+    serializeMany(instances: IDSModel[], context: IDSContext): any;
+    deserializeMany(result: any, context: IDSContext): any;
 }
 
 export interface IDSSerializerClass {
-    new(params: any): IDSSerializer;
+    new(params: any, context: IDSContext): IDSSerializer;
 }
 
 export interface IDSSerializerProvider {
