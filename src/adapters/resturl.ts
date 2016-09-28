@@ -2,12 +2,15 @@ import {IDSAdapter, IDSAdapterIdentifierParams, IDSAdapterProvider, IDSAdapterSe
 import {IDSRestIdentifier} from "../backends/rest";
 import {IDSModel} from "../model/interface";
 import {Injectable, OpaqueToken, Inject} from "@angular/core";
-import {isNumber, isString} from "lodash";
+import {isNumber, isString, template, extend} from "lodash";
 import {DSModel} from "../model/model";
 
+/**
+ * Rest adapter configurator.
+ */
 export let REST_ADAPTER_CONFIG = new OpaqueToken("adapter.resturl.config");
 
-export interface IDSFlatRestAdapterConfig {
+export interface IDSRestUrlAdapterConfig {
     basePath: string;
     replace?: string[];
 }
@@ -16,9 +19,9 @@ export interface IDSFlatRestAdapterConfig {
 const DEFAULT_IDENTIFIER_PARAMS = {local: false, create: false};
 
 @Injectable()
-export class DSFlatRestUrlAdapter implements IDSAdapter {
+export class DSRestUrlAdapter implements IDSAdapter {
 
-    constructor(@Inject(REST_ADAPTER_CONFIG) protected _config: IDSFlatRestAdapterConfig) {
+    constructor(@Inject(REST_ADAPTER_CONFIG) protected _config: IDSRestUrlAdapterConfig) {
     }
 
     /**
@@ -90,9 +93,8 @@ export class DSFlatRestUrlAdapter implements IDSAdapter {
      * @returns {string}
      */
     public path_replace(path: string, instance: any, context: any = {}): string {
-        for (let r of this._config.replace || []) {
-            path = path.replace("{" + r + "}", instance[r] || context[r]);
-        }
+        let options = extend({}, {instance: instance}, context);
+        path = template(path)(options);
         return path;
     }
 
@@ -101,7 +103,7 @@ export class DSFlatRestUrlAdapter implements IDSAdapter {
 
 @Injectable()
 export class DSFlatRestUrlAdapterProvider implements IDSAdapterProvider {
-    public provide(params: IDSFlatRestAdapterConfig): IDSAdapter {
-        return new DSFlatRestUrlAdapter(params);
+    public provide(params: IDSRestUrlAdapterConfig): IDSAdapter {
+        return new DSRestUrlAdapter(params);
     }
 }
