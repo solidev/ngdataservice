@@ -1,11 +1,14 @@
-import {Headers, URLSearchParams, RequestOptions, Http, Request, RequestMethod} from "@angular/http";
-import {Observable} from "rxjs";
+import {Headers, URLSearchParams, RequestOptions, Http, RequestMethod} from "@angular/http";
+import {Observable} from "rxjs/Observable";
 import {IDSBackend, IDSBackendProvider} from "./interface";
 import {DSJsonParser} from "../parsers/json";
 import {Injectable, OpaqueToken, Inject, Optional} from "@angular/core";
 import {DSJsonRenderer} from "../renderers/json";
 import "rxjs/add/operator/map";
-import {capitalize, isString} from "lodash";
+import "rxjs/observable/of";
+import "rxjs/operator/mergeMap";
+import * as capitalize  from "lodash/capitalize";
+import * as isString from "lodash/isString";
 
 export interface IDSRestIdentifier {
     path: string;

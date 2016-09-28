@@ -1,4 +1,4 @@
-import {Observer} from "rxjs";
+import {Observer} from "rxjs/Observer";
 import {IDSSorter, IDSSorterField, IDSSorterFunction, IDSSorterProvider} from "./interface";
 import {Injectable} from "@angular/core";
 

@@ -1,13 +1,13 @@
 {
   "compilerOptions": {
-    "module": "system",
+    "module": "umd",
     "target": "es5",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "sourceMap": true,
     "inlineSourceMap": false,
+    "outDir": "../dist",
     "moduleResolution": "node",
-    "outFile": "../dist/ng2datastore-bundle.js",
     "types": [
       "core-js",
       "node",
