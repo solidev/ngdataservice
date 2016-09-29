@@ -3,8 +3,7 @@ var webpack = require("webpack");
 
 module.exports = {
     resolve: {
-        root: path.resolve(__dirname, "../"),
-        extensions: ['', '.js', '.ts']
+        extensions: ['.js', '.ts']
     },
     devtool: 'source-map',
     module: {
@@ -35,8 +34,15 @@ module.exports = {
         /rxjs/,
         /lodash/
     ],
-    ts: {
-        configFileName: "config/tsconfig.bundle.json"
-    }
+    plugins: [
+        new webpack.LoaderOptionsPlugin({
+            options: {
+                resolve: {},
+                ts: {
+                    configFileName: "config/tsconfig.bundle.json"
+                }
+            }
+        })
+    ]
 
 };
