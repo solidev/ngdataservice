@@ -8,6 +8,7 @@ import {Observable} from "rxjs/Observable";
 import {ReplaySubject} from "rxjs/ReplaySubject";
 import {DSConfiguration} from "../collection/configuration";
 import * as defaults from "lodash/defaults";
+import {IDSAdapterSearchParams} from "../adapters/interface";
 
 export class DSQueryset<T extends IDSModel> extends DSConfiguration implements IDSQueryset<T> {
 
@@ -67,7 +68,11 @@ export class DSQueryset<T extends IDSModel> extends DSConfiguration implements I
                 )
             );
         } else {
-            let search = this.collection.adapter.search(this.filter.backendFilter);
+            let searchArgs: IDSAdapterSearchParams = {
+                filter: this.filter.backendFilter,
+                context: this.collection.context
+            };
+            let search = this.collection.adapter.search(searchArgs);
             console.log("Search", search);
             this.collection.backend.list(search, {context: this.collection.context})
                 .subscribe((result) => {

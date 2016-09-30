@@ -6,6 +6,7 @@ import * as isNumber from "lodash/isNumber";
 import * as isString from "lodash/isString";
 import * as template from "lodash/template";
 import * as extend from "lodash/extend";
+import * as cloneDeep from "lodash/cloneDeep";
 import {DSModel} from "../model/model";
 
 /**
@@ -78,8 +79,8 @@ export class DSRestUrlAdapter implements IDSAdapter {
      * @returns {{path: string, query: IDSAdapterFilterParams, headers: {}}}
      */
     public search(params: IDSAdapterSearchParams = {}): any {
-        let query = _.cloneDeep(params.filter);
-        query = _.extend(query, params.sorter);
+        let query = cloneDeep(params.filter);
+        query = extend(query, params.sorter);
         return {
             path: this.path_replace(this._config.basePath, null, params.context),
             query: query,
@@ -105,7 +106,7 @@ export class DSRestUrlAdapter implements IDSAdapter {
 
 
 @Injectable()
-export class DSFlatRestUrlAdapterProvider implements IDSAdapterProvider {
+export class DSRestUrlAdapterProvider implements IDSAdapterProvider {
     public provide(params: IDSRestUrlAdapterConfig): IDSAdapter {
         return new DSRestUrlAdapter(params);
     }

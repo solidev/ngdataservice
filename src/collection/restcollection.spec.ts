@@ -8,7 +8,7 @@ import {DSMemoryPersistence} from "../persistence/memory";
 import {DSDefaultSerializer} from "../serializers/default";
 import {DSTokenAuthentication} from "../authentication/tokenauth";
 import {DSRestCollectionSetup, DSRestCollection} from "./restcollection";
-import {DSFlatRestUrlAdapterProvider} from "../adapters/resturl";
+import {DSRestUrlAdapterProvider} from "../adapters/resturl";
 import {DSModel} from "../model/model";
 import {DSDummySorterProvider} from "../sorters/dummy";
 import {DSDummyFilterProvider} from "../filters/dummy";
@@ -50,7 +50,7 @@ describe("DSRestCollection", () => {
                 DSDummyPaginatorProvider,
                 DSDummyFilterProvider,
                 DSDummySorterProvider,
-                DSFlatRestUrlAdapterProvider,
+                DSRestUrlAdapterProvider,
                 DSRestCollectionSetup
             ]
         });

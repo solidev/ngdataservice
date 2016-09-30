@@ -2,7 +2,7 @@ import {NgModule} from "@angular/core";
 import {HttpModule} from "@angular/http";
 import {DSRestBackend, DSRestBackendProvider} from "./backends/rest";
 import {DSDefaultSerializer, DSDefaultSerializerProvider} from "./serializers/default";
-import {DSRestUrlAdapter, DSFlatRestUrlAdapterProvider} from "./adapters/resturl";
+import {DSRestUrlAdapter, DSRestUrlAdapterProvider} from "./adapters/resturl";
 import {DSRegister} from "./register/register";
 import {DSMemoryPersistence, DSMemoryPersistenceProvider} from "./persistence/memory";
 import {DSJsonParser, DSJsonParserProvider} from "./parsers/json";
@@ -33,7 +33,7 @@ import {DS_FILTERS, DS_FILTER_PROVIDERS} from "./filters/index";
         DSJsonRenderer,
         DSRestBackendProvider,
         DSDefaultSerializerProvider,
-        DSFlatRestUrlAdapterProvider,
+        DSRestUrlAdapterProvider,
         DSMemoryPersistenceProvider,
         DSJsonParserProvider,
         DSJsonRendererProvider,
