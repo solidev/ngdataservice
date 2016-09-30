@@ -1,8 +1,9 @@
 var path = require("path");
+var webpack = require("webpack");
+
 module.exports = {
     resolve: {
-        root: path.resolve(__dirname, "../"),
-        extensions: ['', '.ts', '.js', '.json']
+        extensions: ['.ts', '.js', '.json']
     },
     devtool: 'inline-source-map',
     module: {
@@ -14,17 +15,23 @@ module.exports = {
             },
             {test: /\.json$/, loader: 'json'},
             {test: /\.html$/, loader: 'raw'}
-        ],
-        postLoaders: [
-            {
+            ,{
                 test: /\.ts$/,
-                loader: 'istanbul-instrumenter'
+                loader: 'istanbul-instrumenter',
+                enforce: "post"
             }
         ]
     },
     stats: {colors: true, reasons: true},
-    debug: false,
-    ts: {
-        configFileName: "config/tsconfig.test.json"
-    }
+    plugins: [
+        new webpack.LoaderOptionsPlugin({
+            options: {
+                resolve: {},
+                debug: false,
+                ts: {
+                    configFileName: "config/tsconfig.test.json"
+                }
+            }
+        })
+    ]
 };

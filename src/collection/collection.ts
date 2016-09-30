@@ -10,6 +10,8 @@ import {IDSRegister} from "../register/interface";
 import {DSConfiguration} from "./configuration";
 import {IDSQueryset, IDSQuerysetClass, IDSQuerysetProvider} from "../queryset/interface";
 import {DSQueryset} from "../queryset/queryset";
+import * as defaults from "lodash/defaults";
+import * as extend from "lodash/extend";
 
 
 export class DSCollection<T extends IDSModel> extends DSConfiguration implements IDSCollection<T> {
@@ -56,7 +58,7 @@ export class DSCollection<T extends IDSModel> extends DSConfiguration implements
 
     constructor(setup: IDSCollectionSetup = {}, context: any = {}) {
         super();
-        this.setup = _.defaults(this.setup || {}, setup);
+        this.setup = defaults(this.setup || {}, setup);
         if (!this.datasources) {
             this.datasources = this.setup.datasources;
         }
@@ -86,7 +88,7 @@ export class DSCollection<T extends IDSModel> extends DSConfiguration implements
     }
 
     public save(instance: T): Observable<T> {
-        let identifier: any = this.adapter.identifier(instance);
+        let identifier: any = this.adapter.identifier(instance, {context: this.context});
         if (identifier == null) {
             // Pk is not defined, let's save this item
             identifier = this.adapter.identifier(instance, {create: true, context: this.context});
@@ -162,7 +164,7 @@ export class DSCollection<T extends IDSModel> extends DSConfiguration implements
 
     public action(instance: T, action: string, args: any): Observable<any> {
         let identifier = this.adapter.identifier(instance, {context: this.context});
-        let actargs = _.extend({}, args, {context: this.context});
+        let actargs = extend({}, args, {context: this.context});
         return this.backend.action(identifier, action, actargs);
     }
 

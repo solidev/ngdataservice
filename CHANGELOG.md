@@ -1,5 +1,15 @@
-<a name="0.0.0-alpha.4"></a>
-# [0.0.0-alpha.4](https://gitlab.com/jmbarbier/ng2datastore/compare/v0.0.0-alpha.3...v0.0.0-alpha.4) (2016-09-23)
+<a name="0.0.0-alpha.6"></a>
+# [0.0.0-alpha.6](https://gitlab.com/jmbarbier/ng2datastore/compare/v0.0.0-alpha.5...v0.0.0-alpha.6) (2016-09-30)
+
+
+### Bug Fixes
+
+* **queryset:** Update queryset code to work with small lodash footprint. Updated build to commonjs. ([e5eed1f](https://gitlab.com/jmbarbier/ng2datastore/commit/e5eed1f))
+
+
+
+<a name="0.0.0-alpha.5"></a>
+# [0.0.0-alpha.5](https://gitlab.com/jmbarbier/ng2datastore/compare/v0.0.0-alpha.4...v0.0.0-alpha.5) (2016-09-29)
 
 
 ### Bug Fixes
@@ -9,6 +19,7 @@
 
 ### Features
 
+* **adapter:** Added coherent context to adapter for nested routes, sub collections, ... [WIP] ([a207069](https://gitlab.com/jmbarbier/ng2datastore/commit/a207069))
 * **collection:** Add xxxx_class for collection setup variants ([70645cc](https://gitlab.com/jmbarbier/ng2datastore/commit/70645cc))
 * **collection:** Added datasources property and setup methods for DSRegister ([5155b34](https://gitlab.com/jmbarbier/ng2datastore/commit/5155b34))
 * **collection:** added list to collection ([85d2b6a](https://gitlab.com/jmbarbier/ng2datastore/commit/85d2b6a))

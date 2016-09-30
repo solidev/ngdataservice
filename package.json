@@ -1,6 +1,6 @@
 {
   "name": "ng2datastore",
-  "version": "0.0.0-alpha.5",
+  "version": "0.0.0-alpha.6",
   "description": "Angular2 data objects",
   "main": "./dist/index.js",
   "scripts": {
@@ -10,9 +10,9 @@
     "coverage:remap": "remap-istanbul -i coverage/coverage.json -o coverage/coverage.json -t json -e node_modules,vendor.ts",
     "coverage:reporthtml": "remap-istanbul -i coverage/coverage.json -o coverage/html -t html -e node_modules,vendor.ts",
     "coverage:reporttxt": "remap-istanbul -i coverage/coverage.json -t text-summary -o coverage/summary.txt -e node_modules,vendor.ts && cat coverage/summary.txt",
-    "build": "rm -rf dist && tsc -p config/tsconfig.umd.json && webpack --config config/webpack.bundle.js",
+    "build": "rm -rf dist && tsc -p config/tsconfig.commonjs.json && webpack --config config/webpack.bundle.js",
     "build:dev": "rm -rf dist && tsc -w -p config/tsconfig.es5.json",
-    "changelog": "conventional-changelog  -p angular -i CHANGELOG.md -s -u -r 0  -c config/changelog.json",
+    "changelog": "conventional-changelog  -p angular -i CHANGELOG.md -s -u -r 1  -c config/changelog.json",
     "preversion": "npm test",
     "version": "npm run build"
   },
@@ -66,7 +66,7 @@
     "ts-loader": "^0.8.2",
     "tslint": "^3.15.1",
     "typescript": "^2.0.2",
-    "webpack": "2.1.0-beta.21",
+    "webpack": "2.1.0-beta.25",
     "webpack-dev-server": "2.1.0-beta.0"
   },
   "config": {

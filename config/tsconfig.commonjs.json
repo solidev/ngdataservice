@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "module": "umd",
+    "module": "commonjs",
     "target": "es5",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
@@ -8,6 +8,7 @@
     "inlineSourceMap": false,
     "outDir": "../dist",
     "moduleResolution": "node",
+    "declaration": true,
     "types": [
       "core-js",
       "node",

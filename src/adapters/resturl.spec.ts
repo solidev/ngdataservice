@@ -1,4 +1,4 @@
-import {DSRestUrlAdapter, REST_ADAPTER_CONFIG, DSFlatRestUrlAdapterProvider} from "./resturl";
+import {DSRestUrlAdapter, REST_ADAPTER_CONFIG, DSRestUrlAdapterProvider} from "./resturl";
 import {expect} from "chai";
 import {TestBed, inject} from "@angular/core/testing";
 import {BrowserDynamicTestingModule, platformBrowserDynamicTesting} from "@angular/platform-browser-dynamic/testing";
@@ -178,13 +178,13 @@ describe("DSRestUrlAdapter - flat url", () => {
 });
 
 
-describe("DSFlatRestUrlAdapterProvider", () => {
+describe("DSRestUrlAdapterProvider", () => {
 
     it("should return an adapter", (done) => {
         TestBed.configureTestingModule({
-            providers: [DSFlatRestUrlAdapterProvider]
+            providers: [DSRestUrlAdapterProvider]
         });
-        inject([DSFlatRestUrlAdapterProvider], (provider) => {
+        inject([DSRestUrlAdapterProvider], (provider) => {
             let adapter = provider.provide({basePath: "/api/trains"});
             let identifier = adapter.identifier(<any>{_pk: 12, name: "train"});
             expect(identifier.path).to.equal("/api/trains/12");
