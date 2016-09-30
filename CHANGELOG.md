@@ -1,5 +1,10 @@
-<a name="Unreleased"></a>
-# [Unreleased](https://gitlab.com/jmbarbier/ng2datastore/compare/v0.0.0-alpha.5...) (2016-09-29)
+<a name="0.0.0-alpha.6"></a>
+# [0.0.0-alpha.6](https://gitlab.com/jmbarbier/ng2datastore/compare/v0.0.0-alpha.5...v0.0.0-alpha.6) (2016-09-30)
+
+
+### Bug Fixes
+
+* **queryset:** Update queryset code to work with small lodash footprint. Updated build to commonjs. ([e5eed1f](https://gitlab.com/jmbarbier/ng2datastore/commit/e5eed1f))
 
 
 
