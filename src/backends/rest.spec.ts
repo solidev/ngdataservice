@@ -170,12 +170,12 @@ describe("DSRestBackend", () => {
             })();
     });
 
-    it("should create headers from identifier", (done) => {
+    it("should create headers from identifier, forcing application/json", (done) => {
         inject([DSRestBackend], (backend: DSRestBackend) => {
             let headers = backend.getRequestHeaders({path: "path", headers: {"x-token": "toto"}});
             expect(headers.get("x-token")).to.equal("toto");
             headers = backend.getRequestHeaders({path: "path"});
-            expect(headers.values()).to.have.lengthOf(0);
+            expect(headers.values()).to.have.lengthOf(1);
             done();
         })();
     });

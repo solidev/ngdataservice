@@ -1,5 +1,5 @@
 import {IDSModel} from "../model/interface";
-import {IDSCollection, IDSCollectionGetParams, IDSModelList} from "../collection/interface";
+import {IDSCollection, IDSCollectionGetParams, IDSModelList, COLLECTION_SETUP_NAMES} from "../collection/interface";
 import {IDSPaginator, IDSPaginatorProvider, IDSPaginatorClass} from "../paginators/interface";
 import {IDSQueryset} from "./interface";
 import {IDSFilter, IDSFilterClass, IDSFilterProvider} from "../filters/interface";
@@ -8,6 +8,7 @@ import {Observable} from "rxjs/Observable";
 import {ReplaySubject} from "rxjs/ReplaySubject";
 import {DSConfiguration} from "../collection/configuration";
 import * as defaults from "lodash/defaults";
+import * as pick from "lodash/pick";
 import {IDSAdapterSearchParams} from "../adapters/interface";
 
 export class DSQueryset<T extends IDSModel> extends DSConfiguration implements IDSQueryset<T> {
@@ -36,7 +37,11 @@ export class DSQueryset<T extends IDSModel> extends DSConfiguration implements I
 
     constructor(public collection: IDSCollection<T>) {
         super();
-        this.setup = defaults(this.setup, collection.setup || {});
+        // Setup is created from 1) this.setup, 2) collection properties 3) collection setup values
+        this.setup = defaults(
+            this.setup,
+            pick(<any>collection, COLLECTION_SETUP_NAMES),
+            collection.setup || {});
         this.results = this._results.asObservable();
     }
 

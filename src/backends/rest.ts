@@ -115,7 +115,10 @@ export class DSRestBackend implements IDSBackend {
      * @returns {Headers} Headers object
      */
     public getRequestHeaders(identifier: IDSRestIdentifier): Headers {
-        return new Headers(identifier.headers || {});
+        let headers = new Headers(identifier.headers || {});
+        // FIXME: parametrize accept header in config
+        headers.set("accept", "application/json");
+        return headers;
     }
 
     /**
