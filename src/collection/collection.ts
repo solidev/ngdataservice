@@ -12,6 +12,9 @@ import {IDSQueryset, IDSQuerysetClass, IDSQuerysetProvider} from "../queryset/in
 import {DSQueryset} from "../queryset/queryset";
 import * as defaults from "lodash/defaults";
 import * as extend from "lodash/extend";
+import {IDSSorterProvider, IDSSorterClass} from "../sorters/interface";
+import {IDSFilterProvider, IDSFilterClass} from "../filters/interface";
+import {IDSPaginatorProvider, IDSPaginatorClass} from "../paginators/interface";
 
 
 export class DSCollection<T extends IDSModel> extends DSConfiguration implements IDSCollection<T> {
@@ -20,6 +23,18 @@ export class DSCollection<T extends IDSModel> extends DSConfiguration implements
     public datasources: IDSRegister;
     public setup: any;
     public context: {[index: string]: any};
+
+    public paginator_class: IDSPaginatorClass;
+    public paginator_provider: IDSPaginatorProvider;
+    public paginator_config: any;
+
+    public filter_class: IDSFilterClass;
+    public filter_provider: IDSFilterProvider;
+    public filter_config: any;
+
+    public sorter_class: IDSSorterClass;
+    public sorter_provider: IDSSorterProvider;
+    public sorter_config: any;
 
     protected adapter_class: IDSAdapterClass;
     protected adapter_provider: IDSAdapterProvider;
@@ -44,6 +59,7 @@ export class DSCollection<T extends IDSModel> extends DSConfiguration implements
     protected queryset_class: IDSQuerysetClass<T> = DSQueryset;
     protected queryset_provider: IDSQuerysetProvider<T>;
     protected queryset_config: any;
+
 
     protected _context: any;
 
@@ -225,6 +241,7 @@ export class DSCollection<T extends IDSModel> extends DSConfiguration implements
     public set persistence(ps: IDSPersistence) {
         this._persistence = ps;
     }
+
     public get authentication(): IDSAuthentication {
         return <IDSAuthentication>this.get_service("authentication", this.get_authentication_config());
     }

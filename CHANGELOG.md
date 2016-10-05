@@ -1,3 +1,13 @@
+<a name="0.0.0-alpha.7"></a>
+# [0.0.0-alpha.7](https://gitlab.com/jmbarbier/ng2datastore/compare/v0.0.0-alpha.6...v0.0.0-alpha.7) (2016-10-05)
+
+
+### Bug Fixes
+
+* **backend:** Add application/json Accept header for all requests ([1feb1a8](https://gitlab.com/jmbarbier/ng2datastore/commit/1feb1a8)), closes [#1](https://gitlab.com/jmbarbier/ng2datastore/issues/1)
+
+
+
 <a name="0.0.0-alpha.6"></a>
 # [0.0.0-alpha.6](https://gitlab.com/jmbarbier/ng2datastore/compare/v0.0.0-alpha.5...v0.0.0-alpha.6) (2016-09-30)
 

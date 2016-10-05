@@ -1,7 +1,8 @@
 import {Observer} from "rxjs/Observer";
 import {IDSFilter, IDSFilterField, IDSFilterFunction, IDSFilterProvider} from "./interface";
-import {Injectable, OpaqueToken, Inject} from "@angular/core";
-
+import {Injectable, OpaqueToken, Inject, Optional} from "@angular/core";
+import * as extend from "lodash/extend";
+import * as clone from "lodash/clone";
 
 export interface IDSBasicFilterConfig {
     common?: {[index: string]: IDSFilterField};
@@ -16,15 +17,15 @@ export class DSBasicFilter implements IDSFilter {
     public fields: {[index: string]: IDSFilterField};
     private _common: {[index: string]: IDSFilterField} = {};
 
-    constructor(@Inject(BASIC_FILTER_CONFIG) params: IDSBasicFilterConfig = {}) {
+    constructor(@Optional() @Inject(BASIC_FILTER_CONFIG) params: IDSBasicFilterConfig = {}) {
         if (params) {
             this._common = (<any>params.common) || {};
         }
     }
 
     public get backendFilter(): any {
-        let fields = _.clone(this.fields);
-        _.extend(fields, this._common);
+        let fields = clone(this.fields);
+        extend(fields, this._common);
         return fields;
     }
 

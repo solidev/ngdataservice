@@ -13,11 +13,19 @@ export class DSPagePaginator implements IDSPaginator {
     }
 
     public getPaginationInfos(result: any): any {
-        return {page: 2, count: 3};
+        if (result.nav) {
+            return {nav: result.nav, parameters: result.parameters};
+        } else {
+            return {};
+        }
     }
 
     public getResults(results: any): any {
-        return results;
+        if (results.nav) {
+            return results.results;
+        } else {
+            return results;
+        }
     }
 }
 
