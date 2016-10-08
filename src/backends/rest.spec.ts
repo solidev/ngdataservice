@@ -172,6 +172,7 @@ describe("DSRestBackend", () => {
 
     it("should create headers from identifier, forcing application/json", (done) => {
         inject([DSRestBackend], (backend: DSRestBackend) => {
+            backend.setDefaultHeaders({"accept": "application/json"})
             let headers = backend.getRequestHeaders({path: "path", headers: {"x-token": "toto"}});
             expect(headers.get("x-token")).to.equal("toto");
             headers = backend.getRequestHeaders({path: "path"});

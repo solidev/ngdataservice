@@ -23,6 +23,7 @@ export interface IDSRestBackendConfig {
     port: string;
     scheme: string;
     url?: string;
+    headers?: {[index: string]: string}
 }
 
 /**
@@ -32,11 +33,15 @@ export interface IDSRestBackendConfig {
  */
 @Injectable()
 export class DSRestBackend implements IDSBackend {
+    private _defaultHeaders: {[index: string]: string} = {};
 
     constructor(private _http: Http,
                 protected _parser: DSJsonParser,
                 protected _renderer: DSJsonRenderer,
                 @Inject(REST_BACKEND_CONFIG) protected _config: IDSRestBackendConfig) {
+        if(this._config.headers) {
+            this._defaultHeaders = this._config.headers;
+        }
     }
 
     public retrieve(identifier: IDSRestIdentifier, params: any = {}): Observable<any> {
@@ -109,6 +114,12 @@ export class DSRestBackend implements IDSBackend {
     }
 
 
+    public setDefaultHeaders(headers: {[index: string]: string}): void {
+        for (let h of Object.keys(headers)) {
+            this._defaultHeaders[h] = headers[h];
+        }
+    }
+
     /**
      * Compute request headers.
      * @param identifier Rest identifier
@@ -116,8 +127,9 @@ export class DSRestBackend implements IDSBackend {
      */
     public getRequestHeaders(identifier: IDSRestIdentifier): Headers {
         let headers = new Headers(identifier.headers || {});
-        // FIXME: parametrize accept header in config
-        headers.set("accept", "application/json");
+        for (let h of Object.keys(this._defaultHeaders)) {
+            headers.set(h, this._defaultHeaders[h]);
+        }
         return headers;
     }
 
