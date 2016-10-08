@@ -1,3 +1,13 @@
+<a name="0.0.0-alpha.8"></a>
+# [0.0.0-alpha.8](https://gitlab.com/jmbarbier/ng2datastore/compare/v0.0.0-alpha.7...v0.0.0-alpha.8) (2016-10-08)
+
+
+### Features
+
+* **restbackend:** Add default headers in REST_BACKEND_CONFIG and setDefaultHeaders method to DSRest ([3172c5c](https://gitlab.com/jmbarbier/ng2datastore/commit/3172c5c))
+
+
+
 <a name="0.0.0-alpha.7"></a>
 # [0.0.0-alpha.7](https://gitlab.com/jmbarbier/ng2datastore/compare/v0.0.0-alpha.6...v0.0.0-alpha.7) (2016-10-05)
 
