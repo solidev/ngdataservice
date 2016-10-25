@@ -1,5 +1,6 @@
 var path = require("path");
 var webpack = require("webpack");
+// const ContextReplacementPlugin = require('webpack/lib/ContextReplacementPlugin');
 
 module.exports = {
     resolve: {
@@ -32,6 +33,11 @@ module.exports = {
                     configFileName: "config/tsconfig.test.json"
                 }
             }
-        })
+        }),
+       // new ContextReplacementPlugin(
+            // The (\\|\/) piece accounts for path separators in *nix and Windows
+         //   /angular(\\|\/)core(\\|\/)(esm(\\|\/)src|src)(\\|\/)linker/,
+         //   './src' // location of your src
+       // )
     ]
 };

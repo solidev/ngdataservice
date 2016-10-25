@@ -49,7 +49,8 @@ export class DSQueryset<T extends IDSModel> extends DSConfiguration implements I
         return this.get(params);
     }
 
-    public paginate(): IDSQueryset<T> {
+    public paginate(params: any): IDSQueryset<T> {
+        this.paginator.update(params);
         return this;
     }
 
@@ -75,10 +76,11 @@ export class DSQueryset<T extends IDSModel> extends DSConfiguration implements I
         } else {
             let searchArgs: IDSAdapterSearchParams = {
                 filter: this.filter.backendFilter,
+                paginator: this.paginator.backendPaginate,
+                sorter: this.sorter.backendSorter,
                 context: this.collection.context
             };
             let search = this.collection.adapter.search(searchArgs);
-            console.log("Search", search);
             this.collection.backend.list(search, {context: this.collection.context})
                 .subscribe((result) => {
                     let pagination = this.paginator.getPaginationInfos(result, {context: this.collection.context});

@@ -160,7 +160,8 @@ export class DSCollection<T extends IDSModel> extends DSConfiguration implements
     }
 
     public get(pk: any, params: IDSCollectionGetParams = {}): Observable<T> {
-        let identifier = this.adapter.identifier(pk);
+        let identifier = this.adapter.identifier(pk, {options: params.options});
+        console.log("Identifier", identifier);
         if (params.fromcache) {
             return Observable.of(this.persistence.retrieve(identifier, {context: this.context}));
         } else {

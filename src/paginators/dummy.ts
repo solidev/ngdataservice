@@ -9,6 +9,16 @@ export class DSDummyPaginator implements IDSPaginator {
     public getResults(result: any): any {
         return result;
     }
+
+    public update(params: any): void {
+        return;
+    }
+    public get backendPaginate(): any {
+        return {};
+    }
+    public get localPaginate(): any {
+        return {};
+    }
 }
 
 
