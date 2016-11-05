@@ -6,6 +6,7 @@ import * as isNumber from "lodash/isNumber";
 import * as isString from "lodash/isString";
 import * as template from "lodash/template";
 import * as extend from "lodash/extend";
+import * as isObject from "lodash/isObject";
 import * as cloneDeep from "lodash/cloneDeep";
 import {DSModel} from "../model/model";
 
@@ -15,8 +16,11 @@ import {DSModel} from "../model/model";
 export let REST_ADAPTER_CONFIG = new OpaqueToken("adapter.resturl.config");
 
 export interface IDSRestUrlAdapterConfig {
-    basePath: string;
+    basePath?: string;
     replace?: string[];
+    itemPath?: string;
+    createPath?: string;
+    listPath?: string;
 }
 
 
@@ -40,7 +44,7 @@ export class DSRestUrlAdapter implements IDSAdapter {
         let headers: any = {};
         let query: any = {};
         if (params.options) {
-            if(params.options.headers) {
+            if (params.options.headers) {
                 headers = params.options.headers;
             }
             if (params.options.query) {
@@ -75,8 +79,15 @@ export class DSRestUrlAdapter implements IDSAdapter {
         if (id === null) {
             return null;
         }
+        if (this._config.itemPath) {
+            let out =  {
+                path: this.path_replace(this._config.itemPath, instance, params.context),
+                headers: headers,
+                query: query
+            };
+            return out;
+        }
         return {
-            // SEE: use id placeholder in path or direct id add depending on option ?
             path: this.path_replace(this._config.basePath, instance, params.context) + "/" + id,
             headers: headers,
             query: query

@@ -13,6 +13,7 @@ const DEFAULT_VALIDATION_OPTIONS: IDSValidationOptions = {validate: true, async:
 export class DSModel implements IDSModel {
     protected _collection: IDSCollection<DSModel>;
     protected _datasources: IDSRegister;
+    public _context: any;
     private _localId: string;
 
 
@@ -21,10 +22,12 @@ export class DSModel implements IDSModel {
      * WARNING: initialisation does not work if fields have default values.
      * See http://bit.ly/2cwApxb
      * @param values Initial values (not validated)
+     * @param context Initial context (not validated)
      * @param collection Object's collection
      */
-    constructor(collection: IDSCollection<DSModel> = null, values: any = null) {
+    constructor(collection: IDSCollection<DSModel> = null, values: any = {}, context: any = {}) {
         Object.assign(this, values);
+        this._context = context;
         this._collection = collection;
         if (this._collection && this._collection.datasources) {
             this._datasources = collection.datasources;
@@ -56,14 +59,18 @@ export class DSModel implements IDSModel {
     /**
      * Assign values to object. Raises error / returns false is some problem happened.
      * @param values object containing values.
+     * @param context object containit context.
      * @param options validation options
      * @returns {IDSValidationResult} validation results
      */
-    public assign(values: any = null,
+    public assign(values: any = null, context: any = null,
                   options: IDSValidationOptions = DEFAULT_VALIDATION_OPTIONS): IDSValidationResult {
         if (values) {
             // TODO: implement validation
             extend(this, values);
+        }
+        if (context) {
+            this._context = context;
         }
         return true;
     }
@@ -102,7 +109,7 @@ export class DSModel implements IDSModel {
      * @see return value ?
      * @returns {Observable<boolean>}
      */
-    public update(fields: string[]): Observable<any> {
+    public update(fields: string[]=[]): Observable<any> {
         this._checkCollection();
         return this._collection.update(this, fields);
     }

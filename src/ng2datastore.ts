@@ -1,7 +1,7 @@
 import "rxjs/add/observable/of";
 import "rxjs/add/operator/do";
 import "rxjs/add/operator/mergeMap";
-
+import "reflect-metadata";
 
 export * from "./adapters/index";
 export * from "./authentication/index";
@@ -17,4 +17,5 @@ export * from "./renderers/index";
 export * from "./serializers/index";
 export * from "./sorters/index";
 export * from "./queryset/index";
+export * from "./fields/index";
 export * from "./datastore.module";

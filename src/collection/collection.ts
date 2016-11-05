@@ -88,7 +88,8 @@ export class DSCollection<T extends IDSModel> extends DSConfiguration implements
     }
 
     public create(values: any = {}, params: IDSCollectionCreateParams = {}): Observable<T> {
-        let instance: T = new this.model(this, values);
+        let context: any = extend({}, this.context, params.context || {});
+        let instance: T = new this.model(this, values, context);
         if (params.save) {
             return this.save(instance);
         } else if (!params.volatile) {
@@ -104,16 +105,17 @@ export class DSCollection<T extends IDSModel> extends DSConfiguration implements
     }
 
     public save(instance: T): Observable<T> {
-        let identifier: any = this.adapter.identifier(instance, {context: this.context});
+        let context: any = extend({}, this.context, (<any>instance)._context);
+        let identifier: any = this.adapter.identifier(instance, {context: context});
         if (identifier == null) {
             // Pk is not defined, let's save this item
-            identifier = this.adapter.identifier(instance, {create: true, context: this.context});
-            let tosave: any = this.serializer.serialize(instance, {context: this.context});
-            return <Observable<T>>this.backend.create(identifier, tosave, {context: this.context})
+            identifier = this.adapter.identifier(instance, {create: true, context: context});
+            let tosave: any = this.serializer.serialize(instance, context, []);
+            return <Observable<T>>this.backend.create(identifier, tosave, {context: context})
                 .map((fromdb) => {
-                    instance.assign(this.serializer.deserialize(fromdb, {context: this.context}));
-                    identifier = this.adapter.identifier(instance, {context: this.context});
-                    this.persistence.save(identifier, instance, {context: this.context});
+                    instance.assign(this.serializer.deserialize(fromdb, {context: context}), context);
+                    identifier = this.adapter.identifier(instance, {context: context});
+                    this.persistence.save(identifier, instance, {context: context});
                     return <T>instance;
                 });
         } else {
@@ -122,16 +124,26 @@ export class DSCollection<T extends IDSModel> extends DSConfiguration implements
         }
     }
 
-    public update(instance: T, fields: string[]): Observable<T> {
-        let identifier: any = this.adapter.identifier(instance, {context: this.context});
+    public update(instance: T, fields: string[] = []): Observable<T> {
+        let context: any = extend({}, this.context, (<any>instance)._context);
+        let identifier: any = this.adapter.identifier(instance, {context: context});
         if (identifier) {
-            let tosave: any = this.serializer.serialize(instance, {context: this.context});
-            return <Observable<T>>this.backend.update(identifier, tosave, {context: this.context})
-                .map((fromdb) => {
-                    instance.assign(this.serializer.deserialize(fromdb, {context: this.context}));
-                    this.persistence.save(identifier, instance, {context: this.context});
-                    return instance;
-                });
+            let tosave: any = this.serializer.serialize(instance, context, fields);
+            if (fields.length > 0) {
+                return <Observable<T>>this.backend.partial_update(identifier, tosave, {context: context})
+                    .map((fromdb) => {
+                        instance.assign(this.serializer.deserialize(fromdb, {context: context}), context);
+                        this.persistence.save(identifier, instance, {context: context});
+                        return instance;
+                    });
+            } else {
+                return <Observable<T>>this.backend.update(identifier, tosave, {context: context})
+                    .map((fromdb) => {
+                        instance.assign(this.serializer.deserialize(fromdb, {context: context}), context);
+                        this.persistence.save(identifier, instance, {context: context});
+                        return instance;
+                    });
+            }
         }
         throw new Error("Cannot update unsaved item");
     }
@@ -148,31 +160,33 @@ export class DSCollection<T extends IDSModel> extends DSConfiguration implements
     }
 
     public refresh(instance: T): Observable<T> {
-        let identifier: any = this.adapter.identifier(instance, {context: this.context});
+        let context: any = extend({}, this.context, (<any>instance)._context);
+        let identifier: any = this.adapter.identifier(instance, {context: context});
         if (identifier) {
-            return this.backend.retrieve(identifier, {context: this.context})
+            return this.backend.retrieve(identifier, {context: context})
                 .do((fromdb) => {
-                    instance.assign(this.serializer.deserialize(fromdb, {context: this.context}));
-                    this.persistence.save(identifier, instance, {context: this.context});
+                    instance.assign(this.serializer.deserialize(fromdb, {context: context}), context);
+                    this.persistence.save(identifier, instance, {context: context});
                 });
         }
         throw new Error("Cannot refresh unsaved item");
     }
 
     public get(pk: any, params: IDSCollectionGetParams = {}): Observable<T> {
+        let context: any = extend({}, this.context, params.options.context || {});
         let identifier = this.adapter.identifier(pk, {options: params.options});
-        console.log("Identifier", identifier);
         if (params.fromcache) {
-            return Observable.of(this.persistence.retrieve(identifier, {context: this.context}));
+            return Observable.of(this.persistence.retrieve(identifier, {context: context}));
         } else {
-            return <Observable<T>> this.backend.retrieve(identifier, {context: this.context})
+            return <Observable<T>> this.backend.retrieve(identifier, {context: context})
                 .flatMap((instdata) => {
-                    let instance = this.persistence.retrieve(identifier, {context: this.context});
+                    let instance = this.persistence.retrieve(identifier, {context: context});
                     if (!instance) {
-                        return this.create(this.serializer.deserialize(instdata, {context: this.context}), {});
+                        return this.create(this.serializer.deserialize(instdata, {context: context}),
+                            {context: context});
                     } else {
-                        instance.assign(this.serializer.deserialize(instdata, {context: this.context}));
-                        this.persistence.save(identifier, instance, {context: this.context});
+                        instance.assign(this.serializer.deserialize(instdata, {context: context}), context);
+                        this.persistence.save(identifier, instance, {context: context});
                         return Observable.of(instance);
                     }
                 });

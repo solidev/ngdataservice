@@ -19,7 +19,7 @@ export class DSDummySorter implements IDSSorter {
     };
 
     public update(sorter_params: any): void {
-        console.log("Dummy sorter in action, do nothing");
+        console.warn("Dummy sorter in action, do nothing");
     }
 
 }

@@ -20,7 +20,7 @@ export interface IDSModel {
     _pk: number|string;
     _local: number|string;
     id?: number|string;
-    assign(values: any): IDSValidationResult;
+    assign(values: any, context: any): IDSValidationResult;
     save(): Observable<IDSModel>;
     update(fields: string[]): Observable<IDSModel>;
     remove(): Observable<IDSModel>;
@@ -31,7 +31,8 @@ export interface IDSModel {
 
 export interface IDSModelClass<T extends IDSModel> {
     new(collection: IDSCollection<T>,
-        values: any): T;
+        values: any,
+        context: any): T;
 }
 
 
