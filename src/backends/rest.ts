@@ -115,9 +115,9 @@ export class DSRestBackend implements IDSBackend {
         options = this._renderer.prepare(options);
         options.method = RequestMethod[capitalize(action)];
         if (isString(params)) {
-            options.url = this.getRequestUrl(identifier) + <string>params;
+            options.url = this.getRequestUrl(identifier) + <string>params || "";
         } else {
-            options.url = this.getRequestUrl(identifier) + params.url;
+            options.url = this.getRequestUrl(identifier) + params.url || "";
             options.body = this._renderer.render(params.body);
         }
         return this._http.request(options.url, options)
