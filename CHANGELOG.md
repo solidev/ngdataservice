@@ -1,3 +1,20 @@
+<a name="0.0.0-beta.1"></a>
+# [0.0.0-beta.1](https://gitlab.com/jmbarbier/ng2datastore/compare/v0.0.0-alpha.8...v0.0.0-beta.1) (2016-11-10)
+
+### Features
+
+Added context
+
+- **collection**: add context
+- **adapter**: add context
+- **queryset**: add context
+
+### Bug Fixes
+
+* **testing:** Re-enable testing ([1d53668](https://gitlab.com/jmbarbier/ng2datastore/commit/1d53668))
+
+
+
 <a name="0.0.0-alpha.8"></a>
 # [0.0.0-alpha.8](https://gitlab.com/jmbarbier/ng2datastore/compare/v0.0.0-alpha.7...v0.0.0-alpha.8) (2016-10-08)
 
