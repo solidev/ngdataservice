@@ -5,10 +5,7 @@ import {DSJsonRenderer} from "../renderers/json";
 import {DSJsonParser} from "../parsers/json";
 import {expect} from "chai";
 import * as sinon from "sinon";
-
 import {TestBed, inject} from "@angular/core/testing";
-import {BrowserDynamicTestingModule, platformBrowserDynamicTesting} from "@angular/platform-browser-dynamic/testing";
-TestBed.initTestEnvironment(BrowserDynamicTestingModule, platformBrowserDynamicTesting());
 describe("DSRestBackend", () => {
 
     beforeEach(() => {

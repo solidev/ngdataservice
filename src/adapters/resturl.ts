@@ -15,8 +15,11 @@ import {DSModel} from "../model/model";
 export let REST_ADAPTER_CONFIG = new OpaqueToken("adapter.resturl.config");
 
 export interface IDSRestUrlAdapterConfig {
-    basePath: string;
+    basePath?: string;
     replace?: string[];
+    itemPath?: string;
+    createPath?: string;
+    listPath?: string;
 }
 
 
@@ -37,19 +40,29 @@ export class DSRestUrlAdapter implements IDSAdapter {
     public identifier(instance: IDSModel | number | string = null,
                       params: IDSAdapterIdentifierParams = DEFAULT_IDENTIFIER_PARAMS): IDSRestIdentifier {
         let id: any = null;
+        let headers: any = {};
+        let query: any = {};
+        if (params.options) {
+            if (params.options.headers) {
+                headers = params.options.headers;
+            }
+            if (params.options.query) {
+                query = params.options.query;
+            }
+        }
         if (params.local) {
             // returns local path
             return {
                 path: "?__local__" + this._config.basePath + "/" + (<DSModel>instance)._local,
-                headers: {},
-                query: {}
+                headers: headers,
+                query: query
             };
         } else if (params.create) {
             // returns creation path
             return {
                 path: this.path_replace(this._config.basePath, instance, params.context),
-                headers: {},
-                query: {}
+                headers: headers,
+                query: query
             };
         }
         if (instance === null) {
@@ -65,11 +78,18 @@ export class DSRestUrlAdapter implements IDSAdapter {
         if (id === null) {
             return null;
         }
+        if (this._config.itemPath) {
+            let out = {
+                path: this.path_replace(this._config.itemPath, instance, params.context),
+                headers: headers,
+                query: query
+            };
+            return out;
+        }
         return {
-            // SEE: use id placeholder in path or direct id add depending on option ?
             path: this.path_replace(this._config.basePath, instance, params.context) + "/" + id,
-            headers: {},
-            query: {}
+            headers: headers,
+            query: query
         };
     }
 
@@ -80,11 +100,17 @@ export class DSRestUrlAdapter implements IDSAdapter {
      */
     public search(params: IDSAdapterSearchParams = {}): any {
         let query = cloneDeep(params.filter);
-        query = extend(query, params.sorter);
+        query = extend(query, params.sorter || {});
+        query = extend(query, params.paginator || {});
+        let headers: any = {};
+        if (params.options) {
+            query = extend(query, params.options.query || {});
+            headers = extend(headers, params.options.headers || {});
+        }
         return {
             path: this.path_replace(this._config.basePath, null, params.context),
             query: query,
-            headers: {}
+            headers: headers
         };
     }
 

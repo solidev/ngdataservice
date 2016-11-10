@@ -4,7 +4,8 @@ import {IDSContext} from "../collection/interface";
 export interface IDSAdapterIdentifierParams {
     local?: boolean;                        // returns model's local identifier
     create?: boolean;                       // returns creation identifier
-    context?: IDSContext;                    // context used for identifier creation
+    context?: IDSContext;                   // context used for identifier creation
+    options?: any;                          // precisions for format
 }
 
 export type IDSAdapterFilterParams  = any;
@@ -17,6 +18,7 @@ export interface IDSAdapterSearchParams {
     sorter?: IDSAdapterSorterParams;
     paginator?: IDSAdapterPaginatorParams;
     context?: IDSContext;
+    options?: any;
 }
 
 

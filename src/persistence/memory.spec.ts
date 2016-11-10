@@ -1,8 +1,6 @@
 import {expect} from "chai";
 import {DSMemoryPersistence, DSMemoryPersistenceProvider} from "./memory";
 import {TestBed, inject} from "@angular/core/testing";
-import {BrowserDynamicTestingModule, platformBrowserDynamicTesting} from "@angular/platform-browser-dynamic/testing"
-TestBed.initTestEnvironment(BrowserDynamicTestingModule, platformBrowserDynamicTesting());
 
 describe("DSMemoryPersistence", () => {
     it("should be an OBJ type persistence", () => {

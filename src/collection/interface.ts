@@ -24,7 +24,7 @@ export interface IDSPaginationInfo {
 
 export interface IDSModelList<T extends IDSModel> {
     items: T[];
-    pagination?: IDSPaginationInfo;
+    pagination?: IDSPaginationInfo|any;
 }
 
 
@@ -73,6 +73,7 @@ export interface IDSCollectionCreateParams {
 export interface IDSCollectionGetParams {
     fromcache?: boolean;
     context?: IDSContext;
+    options?: any;
 }
 
 export type IDSCollectionSaveParams = any;

@@ -1,6 +1,9 @@
 export interface IDSPaginator {
     getPaginationInfos(result: any, params?: any): any;
     getResults(result: any, params?: any): any;
+    update(params: any): void;
+    backendPaginate: any;
+    localPaginate: any;
 }
 
 export interface IDSPaginatorClass {

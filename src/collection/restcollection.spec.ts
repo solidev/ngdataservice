@@ -3,7 +3,6 @@ import {REST_BACKEND_CONFIG, DSRestBackend} from "../backends/rest";
 import {DSJsonRenderer} from "../renderers/json";
 import {DSJsonParser} from "../parsers/json";
 import {TestBed, inject} from "@angular/core/testing";
-import {BrowserDynamicTestingModule, platformBrowserDynamicTesting} from "@angular/platform-browser-dynamic/testing";
 import {DSMemoryPersistence} from "../persistence/memory";
 import {DSDefaultSerializer} from "../serializers/default";
 import {DSTokenAuthentication} from "../authentication/tokenauth";
@@ -18,7 +17,6 @@ import {MOCK_REST_API_PROVIDER, DSMockRestApi} from "../testing/mockrestapi";
 import "rxjs/observable/of";
 import "rxjs/operator/mergeMap";
 
-TestBed.initTestEnvironment(BrowserDynamicTestingModule, platformBrowserDynamicTesting());
 
 
 export class TrainCollection extends DSRestCollection<DSModel> {

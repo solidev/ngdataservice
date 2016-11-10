@@ -14,9 +14,9 @@ export type IDSSerializerDeserializeManyParams = any;
 
 
 export interface IDSSerializer {
-    serialize(instance: IDSModel, context: IDSContext): any;
+    serialize(instance: IDSModel, context: IDSContext, fields: string[]): any;
     deserialize(values: any, context: IDSContext): any;
-    serializeMany(instances: IDSModel[], context: IDSContext): any;
+    serializeMany(instances: IDSModel[], context: IDSContext, fields: string[]): any;
     deserializeMany(result: any, context: IDSContext): any;
 }
 

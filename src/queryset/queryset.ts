@@ -10,6 +10,7 @@ import {DSConfiguration} from "../collection/configuration";
 import * as defaults from "lodash/defaults";
 import * as pick from "lodash/pick";
 import {IDSAdapterSearchParams} from "../adapters/interface";
+import * as extend from "lodash/extend";
 
 export class DSQueryset<T extends IDSModel> extends DSConfiguration implements IDSQueryset<T> {
 
@@ -49,7 +50,8 @@ export class DSQueryset<T extends IDSModel> extends DSConfiguration implements I
         return this.get(params);
     }
 
-    public paginate(): IDSQueryset<T> {
+    public paginate(params: any): IDSQueryset<T> {
+        this.paginator.update(params);
         return this;
     }
 
@@ -64,40 +66,42 @@ export class DSQueryset<T extends IDSModel> extends DSConfiguration implements I
     }
 
     public get(params: IDSCollectionGetParams = {}): Observable<IDSModelList<T>> {
+        let context: any = extend({}, this.collection.context || {}, params.context || {});
         if (params.fromcache) {
             return Observable.of(
                 this.collection.persistence.list(
                     this.filter.localFilter,
                     this.sorter.localSorter,
-                    {context: this.collection.context}
+                    {context: context}
                 )
             );
         } else {
             let searchArgs: IDSAdapterSearchParams = {
                 filter: this.filter.backendFilter,
-                context: this.collection.context
+                paginator: this.paginator.backendPaginate,
+                sorter: this.sorter.backendSorter,
+                context: context
             };
             let search = this.collection.adapter.search(searchArgs);
-            console.log("Search", search);
-            this.collection.backend.list(search, {context: this.collection.context})
+            this.collection.backend.list(search, {context: context})
                 .subscribe((result) => {
-                    let pagination = this.paginator.getPaginationInfos(result, {context: this.collection.context});
-                    let items = this.paginator.getResults(result, {context: this.collection.context});
+                    let pagination = this.paginator.getPaginationInfos(result, {context: context});
+                    let items = this.paginator.getResults(result, {context: context});
                     let _items = [];
                     for (let item of items) {
-                        let itemdata = this.collection.serializer.deserialize(item, {context: this.collection.context});
-                        let temp = new this.collection.model(this.collection, itemdata);
-                        let identifier = this.collection.adapter.identifier(temp, {context: this.collection.context});
+                        let itemdata = this.collection.serializer.deserialize(item, {context: context});
+                        let temp = new this.collection.model(this.collection, itemdata, context);
+                        let identifier = this.collection.adapter.identifier(temp, {context: context});
                         let instance = this.collection.persistence.retrieve(
                             identifier,
-                            {context: this.collection.context}
+                            {context: context}
                         );
                         if (instance) {
-                            instance.assign(itemdata);
-                            this.collection.persistence.save(identifier, instance, {context: this.collection.context});
+                            instance.assign(itemdata, context);
+                            this.collection.persistence.save(identifier, instance, {context: context});
                             _items.push(instance);
                         } else {
-                            this.collection.persistence.save(identifier, temp, {context: this.collection.context});
+                            this.collection.persistence.save(identifier, temp, {context: context});
                             _items.push(temp);
                         }
                     }

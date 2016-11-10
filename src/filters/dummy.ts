@@ -17,7 +17,7 @@ export class DSDummyFilter implements IDSFilter {
     };
 
     public update(filter_params: any): void {
-        console.log("Dummy filter in action, do nothing");
+        console.warn("Dummy filter in action, do nothing");
     }
 
 }

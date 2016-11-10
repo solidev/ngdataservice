@@ -30,7 +30,7 @@ export class DSBasicFilter implements IDSFilter {
     }
 
     public localFilter: IDSFilterFunction = (item: any) => {
-        console.log("NOT IMPLEMENTED");
+        console.error("NOT IMPLEMENTED");
         return true;
     };
 

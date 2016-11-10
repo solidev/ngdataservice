@@ -7,7 +7,7 @@ import {DSJsonRenderer} from "../renderers/json";
 import "rxjs/add/operator/map";
 import "rxjs/observable/of";
 import "rxjs/operator/mergeMap";
-import * as capitalize  from "lodash/capitalize";
+import * as capitalize from "lodash/capitalize";
 import * as isString from "lodash/isString";
 
 export interface IDSRestIdentifier {
@@ -39,7 +39,7 @@ export class DSRestBackend implements IDSBackend {
                 protected _parser: DSJsonParser,
                 protected _renderer: DSJsonRenderer,
                 @Inject(REST_BACKEND_CONFIG) protected _config: IDSRestBackendConfig) {
-        if(this._config.headers) {
+        if (this._config.headers) {
             this._defaultHeaders = this._config.headers;
         }
     }
@@ -84,13 +84,27 @@ export class DSRestBackend implements IDSBackend {
             });
     }
 
+    public partial_update(identifier: IDSRestIdentifier, values: any, params: any = {}): Observable<any> {
+        let options = this.getRequestOptions(identifier);
+        options = this._renderer.prepare(options);
+        return this._http
+            .patch(this.getRequestUrl(identifier), this._renderer.render(values), options)
+            .map((response) => {
+                return this._parser.parse(response);
+            });
+    }
+
     public destroy(identifier: IDSRestIdentifier, params: any = {}): Observable<any> {
         let options = this.getRequestOptions(identifier);
         options = this._renderer.prepare(options);
         return this._http
             .delete(this.getRequestUrl(identifier), options)
             .map((response) => {
-                return this._parser.parse(response);
+                if (response.status !== 204) {
+                    return this._parser.parse(response);
+                } else {
+                    return null;
+                }
             });
     }
 
@@ -101,9 +115,9 @@ export class DSRestBackend implements IDSBackend {
         options = this._renderer.prepare(options);
         options.method = RequestMethod[capitalize(action)];
         if (isString(params)) {
-            options.url = this.getRequestUrl(identifier) + <string>params;
+            options.url = this.getRequestUrl(identifier) + <string>params || "";
         } else {
-            options.url = this.getRequestUrl(identifier) + params.url;
+            options.url = this.getRequestUrl(identifier) + params.url || "";
             options.body = this._renderer.render(params.body);
         }
         return this._http.request(options.url, options)
