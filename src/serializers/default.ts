@@ -26,7 +26,7 @@ export class DSDefaultSerializer implements IDSSerializer {
     public serializeMany(instances: IDSModel[], context: IDSContext = {}, fields: string[] = []): any {
         let serialized: any[] = [];
         for (let instance of instances) {
-            serialized.push(this.serialize(instance, fields));
+            serialized.push(this.serialize(instance, context, fields));
         }
         return serialized;
 
