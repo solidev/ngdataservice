@@ -32,15 +32,14 @@ module.exports = function (config) {
         basePath: '../',
         frameworks: ['jasmine'],
         files: [
-            'src/vendors.ts',
-            {pattern: 'src/**/*.spec.ts', watched: false}
+            {pattern: './config/karma-test-shims.js', watched: false}
         ],
-        exclude: [],
+
         preprocessors: {
-            //      'dom-adapter-config.js': ['webpack'],
-            'src/vendors.ts': ['webpack', 'sourcemap'],
-            'src/**/*.spec.ts': ['webpack', 'sourcemap']
+            './config/karma-test-shims.js': ['webpack', 'sourcemap']
         },
+
+
         webpack: require("./webpack.test.conf.js"),
         coverageReporter: {
             dir: 'coverage',

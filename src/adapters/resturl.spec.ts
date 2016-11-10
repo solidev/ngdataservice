@@ -1,10 +1,9 @@
 import {DSRestUrlAdapter, REST_ADAPTER_CONFIG, DSRestUrlAdapterProvider} from "./resturl";
 import {expect} from "chai";
 import {TestBed, inject} from "@angular/core/testing";
-import {BrowserDynamicTestingModule, platformBrowserDynamicTesting} from "@angular/platform-browser-dynamic/testing";
 import {DSModel} from "../model/model";
 
-TestBed.initTestEnvironment(BrowserDynamicTestingModule, platformBrowserDynamicTesting());
+
 describe("DSRestUrlAdapter - flat url", () => {
     describe(".identifier()", () => {
         let adapter = new DSRestUrlAdapter({basePath: "/api/trains"});
@@ -159,38 +158,40 @@ describe("DSRestUrlAdapter - flat url", () => {
 
 
     describe("injectability", () => {
-        it("should be injected directly using REST_ADAPTER_CONFIG", (done) => {
+        beforeEach(() => {
             TestBed.configureTestingModule({
                 providers: [
+                    DSRestUrlAdapter,
                     {provide: REST_ADAPTER_CONFIG, useValue: {basePath: "/api/trains"}},
-                    DSRestUrlAdapter
+
                 ]
             });
-            inject([DSRestUrlAdapter], (adapter) => {
+        });
+
+        it("should be injected directly using REST_ADAPTER_CONFIG",
+            inject([DSRestUrlAdapter], (adapter: DSRestUrlAdapter) => {
                 let identifier = adapter.identifier(<any>{_pk: 12, name: "train"});
                 expect(identifier.path).to.equal("/api/trains/12");
                 expect(identifier.query).to.be.empty;
                 expect(identifier.headers).to.be.empty;
-                done();
-            })();
-        });
+            }));
     });
 });
 
 
 describe("DSRestUrlAdapterProvider", () => {
 
-    it("should return an adapter", (done) => {
+    beforeEach(() => {
         TestBed.configureTestingModule({
             providers: [DSRestUrlAdapterProvider]
         });
-        inject([DSRestUrlAdapterProvider], (provider) => {
-            let adapter = provider.provide({basePath: "/api/trains"});
-            let identifier = adapter.identifier(<any>{_pk: 12, name: "train"});
-            expect(identifier.path).to.equal("/api/trains/12");
-            expect(identifier.query).to.be.empty;
-            expect(identifier.headers).to.be.empty;
-            done();
-        })();
     });
+    it("should return an adapter", inject([DSRestUrlAdapterProvider], (provider) => {
+        let adapter = provider.provide({basePath: "/api/trains"});
+        let identifier = adapter.identifier(<any>{_pk: 12, name: "train"});
+        expect(identifier.path).to.equal("/api/trains/12");
+        expect(identifier.query).to.be.empty;
+        expect(identifier.headers).to.be.empty;
+    }));
+
 });

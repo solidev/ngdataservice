@@ -2,8 +2,6 @@ import {DSTokenAuthentication, DSTokenAuthenticationProvider} from "./tokenauth"
 import {expect} from "chai";
 import {Headers} from "@angular/http";
 import {TestBed, inject} from "@angular/core/testing";
-import {BrowserDynamicTestingModule, platformBrowserDynamicTesting} from "@angular/platform-browser-dynamic/testing"
-TestBed.initTestEnvironment(BrowserDynamicTestingModule, platformBrowserDynamicTesting());
 
 
 describe("DSTokenAuthentication", () => {

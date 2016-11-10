@@ -1,8 +1,6 @@
 import {expect} from "chai";
 import {DSLocalstoragePersistence, DSLocalstoragePersistenceProvider} from "./localstorage";
 import {TestBed, inject} from "@angular/core/testing";
-import {BrowserDynamicTestingModule, platformBrowserDynamicTesting} from "@angular/platform-browser-dynamic/testing"
-TestBed.initTestEnvironment(BrowserDynamicTestingModule, platformBrowserDynamicTesting());
 describe("DSLocalstoragePersistence", () => {
     beforeEach(() => {
         localStorage.clear();

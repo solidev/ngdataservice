@@ -6,7 +6,6 @@ import * as isNumber from "lodash/isNumber";
 import * as isString from "lodash/isString";
 import * as template from "lodash/template";
 import * as extend from "lodash/extend";
-import * as isObject from "lodash/isObject";
 import * as cloneDeep from "lodash/cloneDeep";
 import {DSModel} from "../model/model";
 
@@ -80,7 +79,7 @@ export class DSRestUrlAdapter implements IDSAdapter {
             return null;
         }
         if (this._config.itemPath) {
-            let out =  {
+            let out = {
                 path: this.path_replace(this._config.itemPath, instance, params.context),
                 headers: headers,
                 query: query
