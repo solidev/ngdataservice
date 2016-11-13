@@ -149,11 +149,12 @@ export class DSCollection<T extends IDSModel> extends DSConfiguration implements
     }
 
     public remove(instance: T | number | string): Observable<any> {
-        let identifier: any = this.adapter.identifier(instance, this.context);
+        let context: any = extend({}, this.context, (<any>instance)._context);
+        let identifier: any = this.adapter.identifier(instance, {context: context});
         if (identifier) {
-            return this.backend.destroy(identifier, {context: this.context})
+            return this.backend.destroy(identifier, {context: context})
                 .do(() => {
-                    this.persistence.destroy(identifier, {context: this.context});
+                    this.persistence.destroy(identifier, {context: context});
                 });
         }
         throw new Error("Cannot delete unsaved item");
