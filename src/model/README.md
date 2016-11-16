@@ -27,25 +27,11 @@ class Train extends DSModel {
 }
 ```
 
-## API
+## API / specs
 
 Models have to extend `DSModel` base class to get :
 
-### Public methods
-
-- **`.save(): Observable(model)`** : save all model fields, returning
-  an observable of saved model (= PUT for REST backends)
-
-- **`.update(fields: string[]): Observable(model)`** : save only some 
-  model fields (those with name given in fields argument. Returns an
-  observable of updated model.
-
-- **`.remove(): Observable(any)`** : remove model. Returns an observable
-  of backend response.
-
-- **`.refresh(): Observable(model)`** : retrieve fresh model data from
-  backend. Returns an observable of refreshed model.
-
+### Fields assignment and validation
 - **`.assign(data, options): DSValidationResult`** : assign data
   to model fields, returning a validation result
   (see [validate](#validate)) 
@@ -60,20 +46,40 @@ Models have to extend `DSModel` base class to get :
 - <a name="validate"></a> **`.validate(options): DSValidationResult`** :
   validate current model instance data. Returns a validation result or
   an observable of validation result (for async validation) :
-  `true | [ValidationError]`. Options : `async: true|false` : uses
-  async validators.
+  `true | [DSValidationError]`. Options : 
+    
+    - `async: *true*|false` : uses async validators
+    - `validate: *true*|false` : do validation
+  
 
 - **`.dirty()`: string[]** : return a list of fields updated since last
   save / retrieve / update operation.
 
-### Protected methods
+
+### Datastore operations
+
+- **`.save(): Observable(model)`** : save all model fields, returning
+  an observable of saved model (= PUT for REST backends)
+
+- **`.update(fields: string[]): Observable(model)`** : save only some 
+  model fields (those with name given in fields argument. Returns an
+  observable of updated model.
+
+- **`.remove(): Observable(any)`** : remove model. Returns an observable
+  of backend response.
+
+- **`.refresh(): Observable(model)`** : retrieve fresh model data from
+  backend. Returns an observable of refreshed model.
+
+### Protected methods / entrypoints
 
 - **`getPk()`** : returns primary key value (used for `pk` field, by
   default returns `id` field value). Customize it for special needs.
 
 ### Public properties 
 
-- **pk** :  primary key
+- **_pk** : read-only access to primary key (via `.getPk()`)
+- **_local** : read-only access to local id
 
 ### Protected properties
 

@@ -1,3 +1,5 @@
+import "reflect-metadata";
+
 export * from "./adapters/index";
 export * from "./authentication/index";
 export * from "./backends/index";
@@ -10,5 +12,7 @@ export * from "./persistence/index";
 export * from "./register/index";
 export * from "./renderers/index";
 export * from "./serializers/index";
-export * from "./service/index";
+export * from "./sorters/index";
+export * from "./queryset/index";
+export * from "./fields/index";
 export * from "./datastore.module";

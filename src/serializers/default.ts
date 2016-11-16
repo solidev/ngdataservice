@@ -1,13 +1,21 @@
 import {IDSSerializer, IDSSerializerProvider} from "./interface";
-import {omitBy} from "lodash";
+import * as omitBy from "lodash/omitBy";
+import * as pick from "lodash/pick";
 import {IDSModel} from "../model/interface";
 import {Injectable} from "@angular/core";
+import {IDSContext} from "../collection/interface";
 
 @Injectable()
 export class DSDefaultSerializer implements IDSSerializer {
-    public serialize(instance: IDSModel): any {
-        return omitBy(instance, (value, key) => {
-            return (key[0] === "_") || (key[0] === "$");
+    public serialize(instance: IDSModel, context: IDSContext = {}, fields: string[] = []): any {
+        let obj: any;
+        if (fields.length > 0) {
+            obj = pick(instance, fields);
+        } else {
+            obj = instance;
+        }
+        return omitBy(obj, (value, key) => {
+            return (key[0] === "_") || (key[0] === "$") || key[key.length - 1] === "$";
         });
     }
 
@@ -15,10 +23,10 @@ export class DSDefaultSerializer implements IDSSerializer {
         return values;
     }
 
-    public serializeMany(instances: IDSModel[]): any {
+    public serializeMany(instances: IDSModel[], context: IDSContext = {}, fields: string[] = []): any {
         let serialized: any[] = [];
         for (let instance of instances) {
-            serialized.push(this.serialize(instance));
+            serialized.push(this.serialize(instance, context, fields));
         }
         return serialized;
 

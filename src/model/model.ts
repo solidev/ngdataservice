@@ -1,39 +1,96 @@
-import {Observable} from "rxjs/Rx";
-import {IDSModel} from "./interface";
+import {Observable} from "rxjs";
+import {IDSModel, IDSValidationResult, IDSValidationOptions} from "./interface";
 import {IDSCollection} from "../collection/interface";
+import {IDSRegister} from "../register/interface";
+import * as omitBy from "lodash/omitBy";
+import * as extend from "lodash/extend";
 
-
-
+const DEFAULT_VALIDATION_OPTIONS: IDSValidationOptions = {validate: true, async: true};
 /**
  * Data object base class.
  * Provides base functions for save, remove, refresh and ?update object based functions.
  */
 export class DSModel implements IDSModel {
-    public pk: any = null;
-    private _collection: IDSCollection<DSModel>;
+    protected _collection: IDSCollection<DSModel>;
+    protected _datasources: IDSRegister;
+    public _context: any;
+    private _localId: string;
 
 
     /**
      * Construct object from (optional) value object.
-     * @param values Initial values
+     * WARNING: initialisation does not work if fields have default values.
+     * See http://bit.ly/2cwApxb
+     * @param values Initial values (not validated)
+     * @param context Initial context (not validated)
      * @param collection Object's collection
      */
-    constructor(collection: IDSCollection<DSModel> = null, values: any = null) {
-        this.assign(values);
+    constructor(collection: IDSCollection<DSModel> = null, values: any = {}, context: any = {}) {
+        Object.assign(this, values);
+        this._context = context;
         this._collection = collection;
+        if (this._collection && this._collection.datasources) {
+            this._datasources = collection.datasources;
+        }
+    }
+
+    /**
+     * Returns object primary key (from getPk()).
+     * @returns {number|string}
+     * @private
+     */
+    public get _pk(): number|string {
+        return this.getPk();
+    }
+
+    /**
+     * Returns (and generate if needed) object local key (random string).
+     * @returns {string} random string
+     * @private
+     */
+    public get _local(): any {
+        if (!this._localId) {
+            this._localId = Math.random().toString(36).substring(2, 15) +
+                Math.random().toString(36).substring(2, 15);
+        }
+        return this._localId;
     }
 
     /**
      * Assign values to object. Raises error / returns false is some problem happened.
      * @param values object containing values.
-     * @returns {boolean} true if assignation was successful
+     * @param context object containit context.
+     * @param options validation options
+     * @returns {IDSValidationResult} validation results
      */
-    public assign(values: any = null): DSModel {
+    public assign(values: any = null, context: any = null,
+                  options: IDSValidationOptions = DEFAULT_VALIDATION_OPTIONS): IDSValidationResult {
         if (values) {
-            // TODO: use validation
-            Object.assign(this, values);
+            // TODO: implement validation
+            extend(this, values);
         }
-        return this;
+        if (context) {
+            this._context = context;
+        }
+        return true;
+    }
+
+    /**
+     * Validate (sync/async) current object.
+     * @returns {IDSValidationResult} validation results
+     */
+    public validate(options: IDSValidationOptions = DEFAULT_VALIDATION_OPTIONS): IDSValidationResult {
+        return Observable.of(true);
+    }
+
+    /**
+     * Checks changed fields (from last retrieve/update/save/refresh).
+     * @param fields : array of fields to check; all fields if not given.
+     * @returns {Array} array of changed fields.
+     */
+    public dirty(fields: string[] = []): string[] {
+        // TODO: implement fields dirty checking
+        return [];
     }
 
     /**
@@ -52,7 +109,7 @@ export class DSModel implements IDSModel {
      * @see return value ?
      * @returns {Observable<boolean>}
      */
-    public update(fields: string[]): Observable<any> {
+    public update(fields: string[]=[]): Observable<any> {
         this._checkCollection();
         return this._collection.update(this, fields);
     }
@@ -79,11 +136,13 @@ export class DSModel implements IDSModel {
 
 
     /**
-     * Validate (sync/async) current object.
-     * @returns {Observable<errors>} observable(true) if valid, observable(error array) if invalid
+     * Helper toJSON that removes internal (and potentially circular) properties.
+     * @returns {DSModel} model with _ and $ properties removed.
      */
-    public validate(): Observable<any> {
-        return Observable.of(true);
+    public toJSON(): any {
+        return omitBy(this, (value, key) => {
+            return (key[0] === "_") || (key[0] === "$");
+        });
     }
 
     /**
@@ -101,5 +160,14 @@ export class DSModel implements IDSModel {
         }
         return true;
     }
+
+    /**
+     * Get primary key from object.
+     * @returns {any}
+     */
+    protected getPk(): number|string {
+        return this["id"];
+    }
+
 
 }

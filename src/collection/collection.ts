@@ -1,51 +1,84 @@
-import {IDSModel, IDSModelConstructor} from "../model/interface";
-import {Observable, ReplaySubject} from "rxjs/Rx";
-import {IDSBackend, IDSBackendProvider} from "../backends/interface";
-import {IDSPersistence, IDSPersistenceProvider} from "../persistence/interface";
-import {IDSAdapter, IDSAdapterProvider} from "../adapters/interface";
-import {IDSSerializer, IDSSerializerProvider} from "../serializers/interface";
-import {
-    IDSCollection,
-    IDSModelList,
-    IDSCollectionCreateParams,
-    IDSCollectionGetParams,
-    IDSCollectionSetup
-} from "./interface";
-import {IDSAuthentication, IDSAuthenticationProvider} from "../authentication/interface";
-import {IDSPaginator, IDSPaginatorProvider} from "../paginators/interface";
+import {IDSModel, IDSModelClass} from "../model/interface";
+import {Observable} from "rxjs/Observable";
+import {IDSBackend, IDSBackendProvider, IDSBackendClass} from "../backends/interface";
+import {IDSPersistence, IDSPersistenceProvider, IDSPersistenceClass} from "../persistence/interface";
+import {IDSAdapter, IDSAdapterProvider, IDSAdapterClass} from "../adapters/interface";
+import {IDSSerializer, IDSSerializerProvider, IDSSerializerClass} from "../serializers/interface";
+import {IDSCollection, IDSCollectionCreateParams, IDSCollectionGetParams, IDSCollectionSetup} from "./interface";
+import {IDSAuthentication, IDSAuthenticationProvider, IDSAuthenticationClass} from "../authentication/interface";
+import {IDSRegister} from "../register/interface";
+import {DSConfiguration} from "./configuration";
+import {IDSQueryset, IDSQuerysetClass, IDSQuerysetProvider} from "../queryset/interface";
+import {DSQueryset} from "../queryset/queryset";
+import * as defaults from "lodash/defaults";
+import * as extend from "lodash/extend";
+import {IDSSorterProvider, IDSSorterClass} from "../sorters/interface";
+import {IDSFilterProvider, IDSFilterClass} from "../filters/interface";
+import {IDSPaginatorProvider, IDSPaginatorClass} from "../paginators/interface";
 
 
-export class DSCollection<T extends IDSModel> implements IDSCollection<T> {
+export class DSCollection<T extends IDSModel> extends DSConfiguration implements IDSCollection<T> {
 
-    public model: IDSModelConstructor<T>;
-    public items$: Observable<IDSModelList<T>>;
+    public model: IDSModelClass<T>;
+    public datasources: IDSRegister;
+    public setup: any;
+    public context: {[index: string]: any};
 
-    protected adapter: IDSAdapter;
+    public paginator_class: IDSPaginatorClass;
+    public paginator_provider: IDSPaginatorProvider;
+    public paginator_config: any;
+
+    public filter_class: IDSFilterClass;
+    public filter_provider: IDSFilterProvider;
+    public filter_config: any;
+
+    public sorter_class: IDSSorterClass;
+    public sorter_provider: IDSSorterProvider;
+    public sorter_config: any;
+
+    protected adapter_class: IDSAdapterClass;
     protected adapter_provider: IDSAdapterProvider;
     protected adapter_config: any;
-    protected backend: IDSBackend;
+
+    protected backend_class: IDSBackendClass;
     protected backend_provider: IDSBackendProvider;
     protected backend_config: any;
-    protected serializer: IDSSerializer;
+
+    protected serializer_class: IDSSerializerClass;
     protected serializer_provider: IDSSerializerProvider;
     protected serializer_config: any;
-    protected persistence: IDSPersistence;
+
+    protected persistence_class: IDSPersistenceClass;
     protected persistence_provider: IDSPersistenceProvider;
     protected persistence_config: any;
-    protected authentication: IDSAuthentication;
+
+    protected authentication_class: IDSAuthenticationClass;
     protected authentication_provider: IDSAuthenticationProvider;
     protected authentication_config: any;
-    protected paginator: IDSPaginator;
-    protected paginator_provider: IDSPaginatorProvider;
-    protected paginator_config: any;
-    protected _context: any;
-    protected setup: IDSCollectionSetup;
-    protected _items: ReplaySubject<IDSModelList<T>> = new ReplaySubject<IDSModelList<T>>(1);
 
-    constructor(setup: IDSCollectionSetup, context: any = {}) {
-        this.setup = setup;
-        this._context = context;
-        this.items$ = this._items.asObservable();
+    protected queryset_class: IDSQuerysetClass<T> = DSQueryset;
+    protected queryset_provider: IDSQuerysetProvider<T>;
+    protected queryset_config: any;
+
+
+    protected _context: any;
+
+    /* tslint:disable:no-unused-variable */
+    private _adapter: IDSAdapter;
+    private _backend: IDSBackend;
+    private _serializer: IDSSerializer;
+    private _persistence: IDSPersistence;
+    private _authentication: IDSAuthentication;
+    /* tslint:enable */
+
+
+    constructor(setup: IDSCollectionSetup = {}, context: any = {}) {
+        super();
+        this.setup = defaults(this.setup || {}, setup);
+        if (!this.datasources) {
+            this.datasources = this.setup.datasources;
+        }
+        this.context = context;
         this.init();
     }
 
@@ -55,12 +88,13 @@ export class DSCollection<T extends IDSModel> implements IDSCollection<T> {
     }
 
     public create(values: any = {}, params: IDSCollectionCreateParams = {}): Observable<T> {
-        let instance: T = new this.model(this, values);
-        if (params.create) {
+        let context: any = extend({}, this.context, params.context || {});
+        let instance: T = new this.model(this, values, context);
+        if (params.save) {
             return this.save(instance);
         } else if (!params.volatile) {
-            this.get_persistence().save(
-                this.get_adapter().identifier(instance, {unsaved: true}),
+            this.persistence.save(
+                this.adapter.identifier(instance, {create: true, context: this.context}),
                 instance
             );
             return Observable.of(instance);
@@ -71,19 +105,17 @@ export class DSCollection<T extends IDSModel> implements IDSCollection<T> {
     }
 
     public save(instance: T): Observable<T> {
-        let identifier: any = this.get_adapter().identifier(instance, {});
-        console.log("saving", instance, identifier);
+        let context: any = extend({}, this.context, (<any>instance)._context);
+        let identifier: any = this.adapter.identifier(instance, {context: context});
         if (identifier == null) {
-            // Pk is not defined, let's create this item
-            identifier = this.get_adapter().identifier(instance, {create: true});
-            console.log("To create", identifier);
-            let tosave: any = this.get_serializer().serialize(instance);
-            return <Observable<T>>this.get_backend().create(identifier, tosave, {})
+            // Pk is not defined, let's save this item
+            identifier = this.adapter.identifier(instance, {create: true, context: context});
+            let tosave: any = this.serializer.serialize(instance, context, []);
+            return <Observable<T>>this.backend.create(identifier, tosave, {context: context})
                 .map((fromdb) => {
-                    instance.assign(this.get_serializer().deserialize(fromdb));
-                    identifier = this.get_adapter().identifier(instance, {});
-                    this.get_persistence().save(identifier, instance);
-                    // SEE : remove temporary localId ??
+                    instance.assign(this.serializer.deserialize(fromdb, {context: context}), context);
+                    identifier = this.adapter.identifier(instance, {context: context});
+                    this.persistence.save(identifier, instance, {context: context});
                     return <T>instance;
                 });
         } else {
@@ -92,153 +124,149 @@ export class DSCollection<T extends IDSModel> implements IDSCollection<T> {
         }
     }
 
-    public update(instance: T, fields: string[]): Observable<T> {
-        let identifier: any = this.get_adapter().identifier(instance, {});
+    public update(instance: T, fields: string[] = []): Observable<T> {
+        let context: any = extend({}, this.context, (<any>instance)._context);
+        let identifier: any = this.adapter.identifier(instance, {context: context});
         if (identifier) {
-            let tosave: any = this.get_serializer().serialize(instance);
-            return <Observable<T>>this.get_backend().update(identifier, tosave, {})
-                .map((fromdb) => {
-                    instance.assign(this.get_serializer().deserialize(fromdb));
-                    this.get_persistence().save(identifier, instance);
-                    return instance;
-                });
+            let tosave: any = this.serializer.serialize(instance, context, fields);
+            if (fields.length > 0) {
+                return <Observable<T>>this.backend.partial_update(identifier, tosave, {context: context})
+                    .map((fromdb) => {
+                        instance.assign(this.serializer.deserialize(fromdb, {context: context}), context);
+                        this.persistence.save(identifier, instance, {context: context});
+                        return instance;
+                    });
+            } else {
+                return <Observable<T>>this.backend.update(identifier, tosave, {context: context})
+                    .map((fromdb) => {
+                        instance.assign(this.serializer.deserialize(fromdb, {context: context}), context);
+                        this.persistence.save(identifier, instance, {context: context});
+                        return instance;
+                    });
+            }
         }
         throw new Error("Cannot update unsaved item");
     }
 
-    public remove(instance: T): Observable<T> {
-        let identifier: any = this.get_adapter().identifier(instance, {});
+    public remove(instance: T | number | string): Observable<any> {
+        let context: any = extend({}, this.context, (<any>instance)._context);
+        let identifier: any = this.adapter.identifier(instance, {context: context});
         if (identifier) {
-            return this.get_backend().destroy(identifier, {})
+            return this.backend.destroy(identifier, {context: context})
                 .do(() => {
-                    this.get_persistence().destroy(identifier);
+                    this.persistence.destroy(identifier, {context: context});
                 });
         }
         throw new Error("Cannot delete unsaved item");
     }
 
     public refresh(instance: T): Observable<T> {
-        let identifier: any = this.get_adapter().identifier(instance, {});
+        let context: any = extend({}, this.context, (<any>instance)._context);
+        let identifier: any = this.adapter.identifier(instance, {context: context});
         if (identifier) {
-            return this.get_backend().retrieve(identifier, {})
+            return this.backend.retrieve(identifier, {context: context})
                 .do((fromdb) => {
-                    instance.assign(this.get_serializer().deserialize(fromdb));
-                    this.get_persistence().save(identifier, instance);
+                    instance.assign(this.serializer.deserialize(fromdb, {context: context}), context);
+                    this.persistence.save(identifier, instance, {context: context});
                 });
         }
         throw new Error("Cannot refresh unsaved item");
     }
 
     public get(pk: any, params: IDSCollectionGetParams = {}): Observable<T> {
-        let identifier = this.get_adapter().identifier(<any>{pk: pk});
+        let context: any = extend({}, this.context, params.context || {});
+        let identifier = this.adapter.identifier(pk, {options: params.options});
         if (params.fromcache) {
-            return Observable.of(this.get_persistence().retrieve(identifier));
+            return Observable.of(this.persistence.retrieve(identifier, {context: context}));
         } else {
-            return <Observable<T>> this.get_backend().retrieve(identifier, {})
+            return <Observable<T>> this.backend.retrieve(identifier, {context: context})
                 .flatMap((instdata) => {
-                    let instance = this.get_persistence().retrieve(identifier);
+                    let instance = this.persistence.retrieve(identifier, {context: context});
                     if (!instance) {
-                        return this.create(this.get_serializer().deserialize(instdata), {});
+                        return this.create(this.serializer.deserialize(instdata, {context: context}),
+                            {context: context});
                     } else {
-                        instance.assign(this.get_serializer().deserialize(instdata));
-                        this.get_persistence().save(identifier, instance);
+                        instance.assign(this.serializer.deserialize(instdata, {context: context}), context);
+                        this.persistence.save(identifier, instance, {context: context});
                         return Observable.of(instance);
                     }
                 });
         }
     }
 
-    public filter(filter: any, params: IDSCollectionGetParams = {}): Observable<IDSModelList<T>> {
-        let search = this.get_adapter().search(filter);
-        if (params.fromcache) {
-            this.get_persistence().list(search);
-        } else {
-            this.get_backend().list(search, {})
-                .map((result) => {
-                    return this.get_serializer().deserializeMany(result);
-                });
-        }
-        return this.items$;
+    public action(instance: T, action: string, args: any): Observable<any> {
+        let identifier = this.adapter.identifier(instance, {context: this.context});
+        let actargs = extend({}, args, {context: this.context});
+        return this.backend.action(identifier, action, actargs);
     }
 
-    public all(params: IDSCollectionGetParams = {}): Observable<IDSModelList<T>> {
-        return this.filter({}, params);
+
+    public get queryset(): IDSQueryset<T> {
+        return <IDSQueryset<T>>this.get_service("queryset", this.get_queryset_config(), false);
     }
 
-    protected get_adapter(): IDSAdapter {
+    public get_queryset_config(): any {
+        return this;
+    }
+
+    public get adapter(): IDSAdapter {
         return <IDSAdapter>this.get_service("adapter", this.get_adapter_config());
     }
 
-    protected get_adapter_config(): any {
+    public set adapter(ad: IDSAdapter) {
+        this._adapter = ad;
+    }
+
+    public get_adapter_config(): any {
         return this.get_service_config("adapter");
     }
 
-    protected get_backend(): IDSBackend {
+    public get backend(): IDSBackend {
         return <IDSBackend>this.get_service("backend", this.get_backend_config());
     }
 
-    protected get_backend_config(): any {
+    public set backend(bk: IDSBackend) {
+        this._backend = bk;
+    }
+
+    public get_backend_config(): any {
         return this.get_service_config("backend");
     }
 
-    protected get_serializer(): IDSSerializer {
+    public get serializer(): IDSSerializer {
         return <IDSSerializer>this.get_service("serializer", this.get_serializer_config());
     }
 
-    protected get_serializer_config(): any {
+    public get_serializer_config(): any {
         return this.get_service_config("serializer");
     }
 
-    protected get_persistence(): IDSPersistence {
+    public set serializer(sr: IDSSerializer) {
+        this._serializer = sr;
+    }
+
+
+    public get persistence(): IDSPersistence {
         return <IDSPersistence>this.get_service("persistence", this.get_persistence_config());
     }
 
-    protected get_persistence_config(): any {
+    public get_persistence_config(): any {
         return this.get_service_config("persistence");
     }
 
-    protected get_authentication(): IDSAuthentication {
+    public set persistence(ps: IDSPersistence) {
+        this._persistence = ps;
+    }
+
+    public get authentication(): IDSAuthentication {
         return <IDSAuthentication>this.get_service("authentication", this.get_authentication_config());
     }
 
-    protected get_authentication_config(): any {
+    public get_authentication_config(): any {
         return this.get_service_config("authentication");
     }
 
-    protected get_paginator(): IDSPaginator {
-        return <IDSPaginator>this.get_service("paginator", this.get_paginator_config());
+    public set authentication(au: IDSAuthentication) {
+        this._authentication = au;
     }
-
-    protected get_paginator_config(): any {
-        return this.get_service_config("paginator");
-    }
-
-    private get_service(name: string, config: any): any {
-        if (!this[name]) {
-            if (this[name + "_provider"]) {
-                this[name] = this[name + "_provider"].provide(config);
-            } else if (this.setup[name]) {
-                this[name] = this.setup[name];
-            } else if (this.setup[name + "_provider"]) {
-                let provider: any = this.setup[name + "_provider"];
-                this[name] = provider.provide(config);
-            } else {
-                throw new Error(name + " service is not defined");
-            }
-        }
-        return this[name];
-    }
-
-    private get_service_config(name: string): any {
-        if (this[name + "_config"]) {
-            return this[name + "_config"];
-        } else if (this.setup[name + "_config"]) {
-            return this.setup[name + "_config"];
-        } else {
-            // SEE: default values ? false ? undefined ?
-            return null;
-        }
-    }
-
-
 }

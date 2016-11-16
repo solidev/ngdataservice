@@ -5,10 +5,7 @@ import {DSJsonRenderer} from "../renderers/json";
 import {DSJsonParser} from "../parsers/json";
 import {expect} from "chai";
 import * as sinon from "sinon";
-
 import {TestBed, inject} from "@angular/core/testing";
-import {BrowserDynamicTestingModule, platformBrowserDynamicTesting} from "@angular/platform-browser-dynamic/testing"
-TestBed.initTestEnvironment(BrowserDynamicTestingModule, platformBrowserDynamicTesting());
 describe("DSRestBackend", () => {
 
     beforeEach(() => {
@@ -170,12 +167,13 @@ describe("DSRestBackend", () => {
             })();
     });
 
-    it("should create headers from identifier", (done) => {
+    it("should create headers from identifier, forcing application/json", (done) => {
         inject([DSRestBackend], (backend: DSRestBackend) => {
+            backend.setDefaultHeaders({"accept": "application/json"})
             let headers = backend.getRequestHeaders({path: "path", headers: {"x-token": "toto"}});
             expect(headers.get("x-token")).to.equal("toto");
             headers = backend.getRequestHeaders({path: "path"});
-            expect(headers.values()).to.have.lengthOf(0);
+            expect(headers.values()).to.have.lengthOf(1);
             done();
         })();
     });
@@ -194,7 +192,7 @@ describe("DSRestBackend", () => {
         inject([DSRestBackend], (backend: DSRestBackend) => {
             let bk: any = <any>backend;
             let id = {path: "/trains"};
-            bk._config = {url: "http://example.com/api/v1"}
+            bk._config = {url: "http://example.com/api/v1"};
             expect(backend.getRequestUrl(id)).to.equal("http://example.com/api/v1/trains");
             bk._config = {host: "example.com"};
             expect(backend.getRequestUrl(id)).to.equal("http://example.com:80/trains");

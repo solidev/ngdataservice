@@ -1,8 +1,6 @@
 import {DSJsonRenderer, DSJsonRendererProvider} from "./json";
 import {expect} from "chai";
 import {TestBed, inject} from "@angular/core/testing";
-import {BrowserDynamicTestingModule, platformBrowserDynamicTesting} from "@angular/platform-browser-dynamic/testing"
-TestBed.initTestEnvironment(BrowserDynamicTestingModule, platformBrowserDynamicTesting());
 
 describe("DSJsonRenderer", () => {
     it("should return JSON stringified data", () => {

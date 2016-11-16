@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "module": "es2015",
+    "target": "es5",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "sourceMap": true,
+    "inlineSourceMap": false,
+    "outDir": "dist",
+    "moduleResolution": "node",
+    "declaration": true,
+    "types": [
+      "core-js",
+      "node",
+      "lodash"
+    ]
+  },
+  "files": [
+    "src/ng2datastore.ts",
+    "src/datastore.module.ts"
+  ],
+  "exclude": ["index.d.ts", "src/**/*.spec.ts", "node_modules", "test", "example", "dist"],
+  "angularCompilerOptions": {
+    "genDir": "aot",
+    "skipMetadataEmit" : false
+  }
+}

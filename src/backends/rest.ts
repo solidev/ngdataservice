@@ -1,11 +1,14 @@
-import {Headers, URLSearchParams, RequestOptions, Http} from "@angular/http";
-import {Observable} from "rxjs";
+import {Headers, URLSearchParams, RequestOptions, Http, RequestMethod} from "@angular/http";
+import {Observable} from "rxjs/Observable";
 import {IDSBackend, IDSBackendProvider} from "./interface";
 import {DSJsonParser} from "../parsers/json";
 import {Injectable, OpaqueToken, Inject, Optional} from "@angular/core";
 import {DSJsonRenderer} from "../renderers/json";
 import "rxjs/add/operator/map";
-
+import "rxjs/observable/of";
+import "rxjs/operator/mergeMap";
+import * as capitalize from "lodash/capitalize";
+import * as isString from "lodash/isString";
 
 export interface IDSRestIdentifier {
     path: string;
@@ -20,7 +23,18 @@ export interface IDSRestBackendConfig {
     port: string;
     scheme: string;
     url?: string;
+    headers?: {[index: string]: string}
 }
+
+// FIXME: AOT: wait for https://github.com/angular/angular/issues/12631
+export class DSRestBackendConfig implements IDSRestBackendConfig {
+    public host: string;
+    public port: string;
+    public scheme: string;
+    public url: string;
+    public headers: {[index: string]: string}
+}
+
 
 /**
  * Makes data requests to a REST API.
@@ -29,15 +43,20 @@ export interface IDSRestBackendConfig {
  */
 @Injectable()
 export class DSRestBackend implements IDSBackend {
+    private _defaultHeaders: {[index: string]: string} = {};
 
     constructor(private _http: Http,
                 protected _parser: DSJsonParser,
                 protected _renderer: DSJsonRenderer,
-                @Inject(REST_BACKEND_CONFIG) protected _config: IDSRestBackendConfig) {
+                @Inject(REST_BACKEND_CONFIG) protected _config: DSRestBackendConfig) {
+        if (this._config.headers) {
+            this._defaultHeaders = this._config.headers;
+        }
     }
 
     public retrieve(identifier: IDSRestIdentifier, params: any = {}): Observable<any> {
         let options = this.getRequestOptions(identifier);
+        options = this._renderer.prepare(options);
         return this._http
             .get(this.getRequestUrl(identifier), options)
             .map((response) => {
@@ -47,6 +66,7 @@ export class DSRestBackend implements IDSBackend {
 
     public list(identifier: IDSRestIdentifier, params: any = {}): Observable<any> {
         let options = this.getRequestOptions(identifier);
+        options = this._renderer.prepare(options);
         return this._http
             .get(this.getRequestUrl(identifier), options)
             .map((response) => {
@@ -56,6 +76,7 @@ export class DSRestBackend implements IDSBackend {
 
     public create(identifier: IDSRestIdentifier, values: any, params: any = {}): Observable<any> {
         let options = this.getRequestOptions(identifier);
+        options = this._renderer.prepare(options);
         return this._http
             .post(this.getRequestUrl(identifier), this._renderer.render(values), options)
             .map((response) => {
@@ -65,6 +86,7 @@ export class DSRestBackend implements IDSBackend {
 
     public update(identifier: IDSRestIdentifier, values: any, params: any = {}): Observable<any> {
         let options = this.getRequestOptions(identifier);
+        options = this._renderer.prepare(options);
         return this._http
             .put(this.getRequestUrl(identifier), this._renderer.render(values), options)
             .map((response) => {
@@ -72,15 +94,55 @@ export class DSRestBackend implements IDSBackend {
             });
     }
 
-    public destroy(identifier: IDSRestIdentifier, params: any = {}): Observable<any> {
+    public partial_update(identifier: IDSRestIdentifier, values: any, params: any = {}): Observable<any> {
         let options = this.getRequestOptions(identifier);
+        options = this._renderer.prepare(options);
         return this._http
-            .delete(this.getRequestUrl(identifier), options)
+            .patch(this.getRequestUrl(identifier), this._renderer.render(values), options)
             .map((response) => {
                 return this._parser.parse(response);
             });
     }
 
+    public destroy(identifier: IDSRestIdentifier, params: any = {}): Observable<any> {
+        let options = this.getRequestOptions(identifier);
+        options = this._renderer.prepare(options);
+        return this._http
+            .delete(this.getRequestUrl(identifier), options)
+            .map((response) => {
+                if (response.status !== 204) {
+                    return this._parser.parse(response);
+                } else {
+                    return null;
+                }
+            });
+    }
+
+    public action(identifier: IDSRestIdentifier, action: string, params: any = {}): Observable<any> {
+        // Params : string => url
+        // Params : object => {url, body}
+        let options = this.getRequestOptions(identifier);
+        options = this._renderer.prepare(options);
+        options.method = RequestMethod[capitalize(action)];
+        if (isString(params)) {
+            options.url = this.getRequestUrl(identifier) + <string>params || "";
+        } else {
+            options.url = this.getRequestUrl(identifier) + params.url || "";
+            options.body = this._renderer.render(params.body);
+        }
+        return this._http.request(options.url, options)
+            .map((response) => {
+                console.log("ACTION : ", response);
+                return this._parser.parse(response);
+            });
+    }
+
+
+    public setDefaultHeaders(headers: {[index: string]: string}): void {
+        for (let h of Object.keys(headers)) {
+            this._defaultHeaders[h] = headers[h];
+        }
+    }
 
     /**
      * Compute request headers.
@@ -88,7 +150,11 @@ export class DSRestBackend implements IDSBackend {
      * @returns {Headers} Headers object
      */
     public getRequestHeaders(identifier: IDSRestIdentifier): Headers {
-        return new Headers(identifier.headers || {});
+        let headers = new Headers(identifier.headers || {});
+        for (let h of Object.keys(this._defaultHeaders)) {
+            headers.set(h, this._defaultHeaders[h]);
+        }
+        return headers;
     }
 
     /**
@@ -145,11 +211,11 @@ export class DSRestBackendProvider implements IDSBackendProvider {
     constructor(protected _http: Http,
                 protected _parser: DSJsonParser,
                 protected _renderer: DSJsonRenderer,
-                @Optional() @Inject(REST_BACKEND_CONFIG) protected _config: IDSRestBackendConfig) {
+                @Optional() @Inject(REST_BACKEND_CONFIG) protected _config: DSRestBackendConfig) {
 
     }
 
-    public provide(params: IDSRestBackendConfig): IDSBackend {
+    public provide(params: DSRestBackendConfig): IDSBackend {
         return new DSRestBackend(
             this._http,
             this._parser,
