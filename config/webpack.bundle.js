@@ -1,5 +1,6 @@
 var path = require("path");
 var webpack = require("webpack");
+var ngtools = require("ngtools");
 
 module.exports = {
     resolve: {
@@ -9,12 +10,11 @@ module.exports = {
     module: {
         loaders: [
             {
-                test: /\.tsx?$/,
-                loader: 'ts-loader',
-                exclude: [/node_modules/]
-            },
-            {test: /\.json$/, loader: 'json'},
-            {test: /\.html$/, loader: 'raw'}
+                enforce: 'post',
+                test: /\.ts$/,
+                loaders: ['@ngtools/webpack'],
+                exclude: [/\.(spec|e2e)\.ts$/]
+            }
         ]
     },
     entry: {
@@ -42,7 +42,11 @@ module.exports = {
                     configFileName: "config/tsconfig.bundle.json"
                 }
             }
-        })
+        }),
+        new ngtools.AotPlugin({
+            tsConfigPath: 'tsconfig-aot.json',
+            typeChecking: false
+        }),
     ]
 
 };

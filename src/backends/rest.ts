@@ -26,6 +26,16 @@ export interface IDSRestBackendConfig {
     headers?: {[index: string]: string}
 }
 
+// FIXME: AOT: wait for https://github.com/angular/angular/issues/12631
+export class DSRestBackendConfig implements IDSRestBackendConfig {
+    public host: string;
+    public port: string;
+    public scheme: string;
+    public url: string;
+    public headers: {[index: string]: string}
+}
+
+
 /**
  * Makes data requests to a REST API.
  * FIXME: include authentication in backend ?
@@ -38,7 +48,7 @@ export class DSRestBackend implements IDSBackend {
     constructor(private _http: Http,
                 protected _parser: DSJsonParser,
                 protected _renderer: DSJsonRenderer,
-                @Inject(REST_BACKEND_CONFIG) protected _config: IDSRestBackendConfig) {
+                @Inject(REST_BACKEND_CONFIG) protected _config: DSRestBackendConfig) {
         if (this._config.headers) {
             this._defaultHeaders = this._config.headers;
         }
@@ -201,11 +211,11 @@ export class DSRestBackendProvider implements IDSBackendProvider {
     constructor(protected _http: Http,
                 protected _parser: DSJsonParser,
                 protected _renderer: DSJsonRenderer,
-                @Optional() @Inject(REST_BACKEND_CONFIG) protected _config: IDSRestBackendConfig) {
+                @Optional() @Inject(REST_BACKEND_CONFIG) protected _config: DSRestBackendConfig) {
 
     }
 
-    public provide(params: IDSRestBackendConfig): IDSBackend {
+    public provide(params: DSRestBackendConfig): IDSBackend {
         return new DSRestBackend(
             this._http,
             this._parser,
