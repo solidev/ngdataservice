@@ -8,6 +8,10 @@ export interface IDSBasicFilterConfig {
     common?: {[index: string]: IDSFilterField};
 }
 
+// FIXME: AOT: wait for https://github.com/angular/angular/issues/12631
+export class DSBasicFilterConfig {
+    public common: {[index: string]: IDSFilterField};
+}
 
 export let BASIC_FILTER_CONFIG = new OpaqueToken("filter.basic.config");
 
@@ -17,9 +21,11 @@ export class DSBasicFilter implements IDSFilter {
     public fields: {[index: string]: IDSFilterField};
     private _common: {[index: string]: IDSFilterField} = {};
 
-    constructor(@Optional() @Inject(BASIC_FILTER_CONFIG) params: IDSBasicFilterConfig = {}) {
+    constructor(@Optional() @Inject(BASIC_FILTER_CONFIG) params: DSBasicFilterConfig) {
         if (params) {
             this._common = (<any>params.common) || {};
+        } else {
+            this._common = {};
         }
     }
 
@@ -43,6 +49,6 @@ export class DSBasicFilter implements IDSFilter {
 @Injectable()
 export class DSBasicFilterProvider implements IDSFilterProvider {
     public provide(params: any): IDSFilter {
-        return new DSBasicFilter();
+        return new DSBasicFilter(params);
     }
 }
