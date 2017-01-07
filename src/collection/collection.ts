@@ -10,8 +10,7 @@ import {IDSRegister} from "../register/interface";
 import {DSConfiguration} from "./configuration";
 import {IDSQueryset, IDSQuerysetClass, IDSQuerysetProvider} from "../queryset/interface";
 import {DSQueryset} from "../queryset/queryset";
-import * as defaults from "lodash/defaults";
-import * as extend from "lodash/extend";
+import {defaults, extend} from "lodash";
 import {IDSSorterProvider, IDSSorterClass} from "../sorters/interface";
 import {IDSFilterProvider, IDSFilterClass} from "../filters/interface";
 import {IDSPaginatorProvider, IDSPaginatorClass} from "../paginators/interface";
@@ -149,11 +148,12 @@ export class DSCollection<T extends IDSModel> extends DSConfiguration implements
     }
 
     public remove(instance: T | number | string): Observable<any> {
-        let identifier: any = this.adapter.identifier(instance, this.context);
+        let context: any = extend({}, this.context, (<any>instance)._context);
+        let identifier: any = this.adapter.identifier(instance, {context: context});
         if (identifier) {
-            return this.backend.destroy(identifier, {context: this.context})
+            return this.backend.destroy(identifier, {context: context})
                 .do(() => {
-                    this.persistence.destroy(identifier, {context: this.context});
+                    this.persistence.destroy(identifier, {context: context});
                 });
         }
         throw new Error("Cannot delete unsaved item");
@@ -175,6 +175,9 @@ export class DSCollection<T extends IDSModel> extends DSConfiguration implements
     public get(pk: any, params: IDSCollectionGetParams = {}): Observable<T> {
         let context: any = extend({}, this.context, params.context || {});
         let identifier = this.adapter.identifier(pk, {options: params.options});
+        if (identifier === null) {
+            throw new Error("Unknow identifier, from " + pk);
+        }
         if (params.fromcache) {
             return Observable.of(this.persistence.retrieve(identifier, {context: context}));
         } else {

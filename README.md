@@ -6,7 +6,7 @@
 
 [![Sauce Test Status](https://saucelabs.com/browser-matrix/solidev.svg)](https://saucelabs.com/u/solidev)
 
-**This is a Work In Progress project - do not use it until it reaches at least `0.1`** 
+**This is a Work In Progress project - do not use it until it reaches at least `0.1`**
 
 # ng2datastore : data access for angular2
 This project is hosted on https://gitlab.com/solidev/ng2datastore
@@ -15,7 +15,7 @@ repository is read-only.
 
 ## Installation
 
-Works with **angular@2.0.2** : ```npm install ng2datastore --save```
+Works with **angular@2.4.x** / AOT "enabled" : ```npm install ng2datastore --save```
 
 ## Usage
 
@@ -24,7 +24,9 @@ with systemjs : (see [example](./example/simple.system/config.js))
 ```
 map: { ... "ng2datastore": "./node_modules/ng2datastore",  ... },
 packages: { "ng2datastore": { main: "index.js", defaultExtension: 'js' } ... }
-```    
+```
+
+No umd bundles are provided.
 
 ## Example : default REST backend
 
@@ -34,7 +36,7 @@ This example uses the default REST setup :
 - flat url adapter : urls in `http://apiurl/item/{id}` form
 - persistence backend : shared memory cache for objects
 - default serializer : removes all _ and $ prefixed properties of models
-- renderer and parser : json content-type, not wrapped 
+- renderer and parser : json content-type, not wrapped
 - no pagination for list results
 
 ### Models declaration
@@ -93,7 +95,7 @@ import {TrainService} from "models/train.service";
 })
 export class AppModule {
 }
-``` 
+```
 
 ### Usage
 
@@ -120,10 +122,10 @@ import {Train, TrainService} from "models/train.service";
 export class TrainComponent {
     public train: Train;
     public trains: Train[];
-    
+
     constructor(private _trains: TrainService) {
     }
-    
+
     public retrieveAction(): void {
         this._trains.get(1)
             .subscribe((t) => {
@@ -131,7 +133,7 @@ export class TrainComponent {
                 this.train = t;
             })
     }
-    
+
     public saveAction(): void {
         this.train.title = "Chugginton";
         this.train.save()
@@ -139,7 +141,7 @@ export class TrainComponent {
                 console.log("Saved train", t, this.train);
             });
     }
-    
+
     public createAction(): void {
         this._trains.save({title: "New train"})
             .subscribe((t) => {
@@ -147,7 +149,7 @@ export class TrainComponent {
                 this.train = t;
             })
      }
-     
+
     public createAndSaveAction(): void {
         this._trains.save({title: "New train"}, {create: true})
             .subscribe((t) => {
@@ -171,7 +173,7 @@ export class TrainComponent {
                 console.log("Deleted train 1);
             })
     }
-    
+
     public searchAction(): void {
         this._trains.queryset
             .filter({name: "chugginton"})
@@ -195,13 +197,13 @@ export class TrainComponent {
 
 [Details : see model](./src/model/README.md)
 
-- **`.save(): Observable(model)`** 
+- **`.save(): Observable(model)`**
 - **`.update(fields: string[]): Observable(model)`**
 - **`.remove(): Observable(any)`**
 - **`.refresh(): Observable(model)`**
 - **`.assign(data, options): DSValidationResult`**
     - `options.validate: true|false`
-    - `options.async: true|false`)    
+    - `options.async: true|false`)
 - **`.validate(options): DSValidationResult`**
     - `options.async = true|false`
 - **`.dirty()`: string[]**
@@ -218,7 +220,7 @@ Model instance operations :
 - **`save(values, options): Observable(model)`**
     - `options.validation = true|*false*|"sync"`
     - `options.save = true|*false*`
-    - `options.volatile = true|*false*`  
+    - `options.volatile = true|*false*`
 - **`save(model): Observable(model)`**
 - **`update(model, fields): Observable(model)`**
 - **`remove(model): Observable(any)`**
@@ -226,7 +228,7 @@ Model instance operations :
 - **`get(pk, params): Observable(model)`**
     - `params.fromcache = true|*false*`
     - `params.dual = true|*false*`
-    
+
 Queryset :
 
 - **`queryset`** : return a new queryset instance.

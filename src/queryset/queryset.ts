@@ -7,10 +7,8 @@ import {IDSSorter, IDSSorterClass, IDSSorterProvider} from "../sorters/interface
 import {Observable} from "rxjs/Observable";
 import {ReplaySubject} from "rxjs/ReplaySubject";
 import {DSConfiguration} from "../collection/configuration";
-import * as defaults from "lodash/defaults";
-import * as pick from "lodash/pick";
+import {defaults, pick, extend} from "lodash";
 import {IDSAdapterSearchParams} from "../adapters/interface";
-import * as extend from "lodash/extend";
 
 export class DSQueryset<T extends IDSModel> extends DSConfiguration implements IDSQueryset<T> {
 

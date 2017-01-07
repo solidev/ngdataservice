@@ -12,12 +12,6 @@ var customLaunchers = {
         browserName: 'firefox',
         version: '30'
     },
-    sl_ios_safari: {
-        base: 'SauceLabs',
-        browserName: 'iphone',
-        platform: 'OS X 10.9',
-        version: '7.1'
-    },
     sl_ie_11: {
         base: 'SauceLabs',
         browserName: 'internet explorer',
@@ -40,7 +34,7 @@ module.exports = function (config) {
         },
 
 
-        webpack: require("./webpack.test.conf.js"),
+        webpack: require("./webpack.test.js"),
         coverageReporter: {
             dir: 'coverage',
             reporters: [

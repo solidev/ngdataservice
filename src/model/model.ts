@@ -2,8 +2,7 @@ import {Observable} from "rxjs";
 import {IDSModel, IDSValidationResult, IDSValidationOptions} from "./interface";
 import {IDSCollection} from "../collection/interface";
 import {IDSRegister} from "../register/interface";
-import * as omitBy from "lodash/omitBy";
-import * as extend from "lodash/extend";
+import {omitBy, extend} from "lodash";
 
 const DEFAULT_VALIDATION_OPTIONS: IDSValidationOptions = {validate: true, async: true};
 /**
