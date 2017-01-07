@@ -1,3 +1,18 @@
+<a name="0.0.0-beta.3"></a>
+# [0.0.0-beta.3](https://gitlab.com/jmbarbier/ng2datastore/compare/0.0.0-beta.1...v0.0.0-beta.3) (2017-01-07)
+
+
+### Bug Fixes
+
+* **collection:** Add context to collection.remove ([8ea4a1b](https://gitlab.com/jmbarbier/ng2datastore/commit/8ea4a1b))
+
+
+### Features
+
+* **build:** Enable aot support. ([50b4ee0](https://gitlab.com/jmbarbier/ng2datastore/commit/50b4ee0))
+
+
+
 <a name="0.0.0-beta.2"></a>
 # [0.0.0-beta.2](https://gitlab.com/jmbarbier/ng2datastore/compare/0.0.0-beta.1...v0.0.0-beta.2) (2016-11-16)
 
