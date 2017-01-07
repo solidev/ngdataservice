@@ -15,7 +15,7 @@ repository is read-only.
 
 ## Installation
 
-Works with **angular@2.2.0** / AOT "enabled" : ```npm install ng2datastore --save```
+Works with **angular@2.4.x** / AOT "enabled" : ```npm install ng2datastore --save```
 
 ## Usage
 

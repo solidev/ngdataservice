@@ -10,8 +10,7 @@ import {IDSRegister} from "../register/interface";
 import {DSConfiguration} from "./configuration";
 import {IDSQueryset, IDSQuerysetClass, IDSQuerysetProvider} from "../queryset/interface";
 import {DSQueryset} from "../queryset/queryset";
-import * as defaults from "lodash/defaults";
-import * as extend from "lodash/extend";
+import {defaults, extend} from "lodash";
 import {IDSSorterProvider, IDSSorterClass} from "../sorters/interface";
 import {IDSFilterProvider, IDSFilterClass} from "../filters/interface";
 import {IDSPaginatorProvider, IDSPaginatorClass} from "../paginators/interface";
@@ -176,6 +175,9 @@ export class DSCollection<T extends IDSModel> extends DSConfiguration implements
     public get(pk: any, params: IDSCollectionGetParams = {}): Observable<T> {
         let context: any = extend({}, this.context, params.context || {});
         let identifier = this.adapter.identifier(pk, {options: params.options});
+        if (identifier === null) {
+            throw new Error("Unknow identifier, from " + pk);
+        }
         if (params.fromcache) {
             return Observable.of(this.persistence.retrieve(identifier, {context: context}));
         } else {

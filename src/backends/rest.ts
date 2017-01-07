@@ -7,8 +7,7 @@ import {DSJsonRenderer} from "../renderers/json";
 import "rxjs/add/operator/map";
 import "rxjs/observable/of";
 import "rxjs/operator/mergeMap";
-import * as capitalize from "lodash/capitalize";
-import * as isString from "lodash/isString";
+import {capitalize, isString} from "lodash";
 
 export interface IDSRestIdentifier {
     path: string;

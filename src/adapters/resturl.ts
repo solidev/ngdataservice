@@ -2,11 +2,7 @@ import {IDSAdapter, IDSAdapterIdentifierParams, IDSAdapterProvider, IDSAdapterSe
 import {IDSRestIdentifier} from "../backends/rest";
 import {IDSModel} from "../model/interface";
 import {Injectable, OpaqueToken, Inject} from "@angular/core";
-import * as isNumber from "lodash/isNumber";
-import * as isString from "lodash/isString";
-import * as template from "lodash/template";
-import * as extend from "lodash/extend";
-import * as cloneDeep from "lodash/cloneDeep";
+import {isNumber, isString, template, extend, cloneDeep} from "lodash";
 import {DSModel} from "../model/model";
 
 /**
