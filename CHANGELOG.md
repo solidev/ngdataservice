@@ -1,3 +1,13 @@
+<a name="0.0.0-beta.4"></a>
+# [0.0.0-beta.4](https://gitlab.com/jmbarbier/ng2datastore/compare/0.0.0-beta.3...v0.0.0-beta.4) (2017-01-16)
+
+
+### Features
+
+* **IDSModel:** Add action to model ([0006604](https://gitlab.com/jmbarbier/ng2datastore/commit/0006604))
+
+
+
 <a name="0.0.0-beta.3"></a>
 # [0.0.0-beta.3](https://gitlab.com/jmbarbier/ng2datastore/compare/0.0.0-beta.1...v0.0.0-beta.3) (2017-01-07)
 

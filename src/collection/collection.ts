@@ -4,7 +4,10 @@ import {IDSBackend, IDSBackendProvider, IDSBackendClass} from "../backends/inter
 import {IDSPersistence, IDSPersistenceProvider, IDSPersistenceClass} from "../persistence/interface";
 import {IDSAdapter, IDSAdapterProvider, IDSAdapterClass} from "../adapters/interface";
 import {IDSSerializer, IDSSerializerProvider, IDSSerializerClass} from "../serializers/interface";
-import {IDSCollection, IDSCollectionCreateParams, IDSCollectionGetParams, IDSCollectionSetup} from "./interface";
+import {
+    IDSCollection, IDSCollectionCreateParams, IDSCollectionGetParams, IDSCollectionSetup,
+    IDSCollectionActionParams
+} from "./interface";
 import {IDSAuthentication, IDSAuthenticationProvider, IDSAuthenticationClass} from "../authentication/interface";
 import {IDSRegister} from "../register/interface";
 import {DSConfiguration} from "./configuration";
@@ -196,7 +199,7 @@ export class DSCollection<T extends IDSModel> extends DSConfiguration implements
         }
     }
 
-    public action(instance: T, action: string, args: any): Observable<any> {
+    public action(instance: T, action: string, args: IDSCollectionActionParams): Observable<any> {
         let identifier = this.adapter.identifier(instance, {context: this.context});
         let actargs = extend({}, args, {context: this.context});
         return this.backend.action(identifier, action, actargs);
