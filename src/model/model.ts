@@ -1,6 +1,6 @@
 import {Observable} from "rxjs";
 import {IDSModel, IDSValidationResult, IDSValidationOptions} from "./interface";
-import {IDSCollection} from "../collection/interface";
+import {IDSCollection, IDSCollectionActionParams} from "../collection/interface";
 import {IDSRegister} from "../register/interface";
 import {omitBy, extend} from "lodash";
 
@@ -133,6 +133,17 @@ export class DSModel implements IDSModel {
         return this._collection.refresh(this);
     }
 
+    /**
+     * Makes action
+     *
+     * @param action string (method)
+     * @param args string (url) or object {url, body}
+     * @returns {Observable<any>}
+     */
+    public action(action: string, args: IDSCollectionActionParams): Observable<any> {
+        this._checkCollection();
+        return this._collection.action(this, action, args);
+    }
 
     /**
      * Helper toJSON that removes internal (and potentially circular) properties.
