@@ -1,3 +1,8 @@
+<a name="0.0.1"></a>
+## [0.0.1](https://gitlab.com/jmbarbier/ng2datastore/compare/0.0.0-beta.4...v0.0.1) (2017-01-18)
+
+First release for ng2datastore.
+
 <a name="0.0.0-beta.4"></a>
 # [0.0.0-beta.4](https://gitlab.com/jmbarbier/ng2datastore/compare/0.0.0-beta.3...v0.0.0-beta.4) (2017-01-16)
 
