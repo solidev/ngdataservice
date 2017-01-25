@@ -64,6 +64,7 @@ export class DSQueryset<T extends IDSModel> extends DSConfiguration implements I
     }
 
     public get(params: IDSCollectionGetParams = {}): Observable<IDSModelList<T>> {
+        console.log("Getting queryset", this);
         let context: any = extend({}, this.collection.context || {}, params.context || {});
         if (params.fromcache) {
             return Observable.of(
@@ -83,6 +84,7 @@ export class DSQueryset<T extends IDSModel> extends DSConfiguration implements I
             let search = this.collection.adapter.search(searchArgs);
             this.collection.backend.list(search, {context: context})
                 .subscribe((result) => {
+                    console.log("Got result", result);
                     let pagination = this.paginator.getPaginationInfos(result, {context: context});
                     let items = this.paginator.getResults(result, {context: context});
                     let _items = [];
