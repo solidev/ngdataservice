@@ -66,6 +66,7 @@ export class DSRestBackend implements IDSBackend {
     public list(identifier: IDSRestIdentifier, params: any = {}): Observable<any> {
         let options = this.getRequestOptions(identifier);
         options = this._renderer.prepare(options);
+        console.log("Calling list http");
         return this._http
             .get(this.getRequestUrl(identifier), options)
             .map((response) => {
