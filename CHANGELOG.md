@@ -1,3 +1,8 @@
+<a name="0.0.2"></a>
+## [0.0.2](https://gitlab.com/jmbarbier/ng2datastore/compare/0.0.1...v0.0.2) (2017-01-26)
+
+Updated for angular 2.4.4
+
 <a name="0.0.1"></a>
 ## [0.0.1](https://gitlab.com/jmbarbier/ng2datastore/compare/0.0.0-beta.4...v0.0.1) (2017-01-18)
 
