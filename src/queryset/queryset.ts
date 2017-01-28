@@ -64,7 +64,6 @@ export class DSQueryset<T extends IDSModel> extends DSConfiguration implements I
     }
 
     public get(params: IDSCollectionGetParams = {}): Observable<IDSModelList<T>> {
-        console.log("Getting queryset", this);
         let context: any = extend({}, this.collection.context || {}, params.context || {});
         if (params.fromcache) {
             return Observable.of(
