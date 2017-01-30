@@ -1,3 +1,14 @@
+<a name="0.0.4"></a>
+## [0.0.4](https://gitlab.com/jmbarbier/ng2datastore/compare/0.0.3...v0.0.4) (2017-01-30)
+
+
+### Features
+
+* **IDSCollection:** Add collection actions : Collection.action(null, action, args) ([540b634](https://gitlab.com/jmbarbier/ng2datastore/commit/540b634))
+* **IDSModel:** Add getLinked and getLinkedMany helper functions for model links ([5b4be65](https://gitlab.com/jmbarbier/ng2datastore/commit/5b4be65))
+
+
+
 <a name="0.0.3"></a>
 ## [0.0.3](https://gitlab.com/jmbarbier/ng2datastore/compare/0.0.2...v0.0.3) (2017-01-26)
 
