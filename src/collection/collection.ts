@@ -200,10 +200,16 @@ export class DSCollection<T extends IDSModel> extends DSConfiguration implements
     }
 
     public action(instance: T, action: string, args: IDSCollectionActionParams): Observable<any> {
-        let identifier = this.adapter.identifier(instance, {context: this.context});
+        let identifier: any;
+        if (instance === null) {
+            identifier = this.adapter.search({context: this.context});
+        } else {
+            identifier = this.adapter.identifier(instance, {context: this.context});
+        }
         let actargs = extend({}, args, {context: this.context});
         return this.backend.action(identifier, action, actargs);
     }
+
 
 
     public get queryset(): IDSQueryset<T> {
