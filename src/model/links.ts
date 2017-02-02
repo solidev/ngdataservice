@@ -9,9 +9,10 @@ import {IDSCollection} from "../collection/interface";
  * @param service service used for retrieval
  * @param name linked object id property name in parent object
  * @param options refresh: true
+ * @param context data : used for sub resources
  * @returns {any} observable of linked object
  */
-export function getLinked<T>(obj: IDSModel, service: string, name: string, options: any = {}): Observable<T> {
+export function getLinked<T>(obj: IDSModel, service: string, name: string, options: any = {}, ctx: any = {}): Observable<T> {
     if (!obj[name]) {
         return Observable.of(null);
     }
@@ -20,7 +21,7 @@ export function getLinked<T>(obj: IDSModel, service: string, name: string, optio
         options.refresh = true;
     }
     if (options.refresh) {
-        (<any>obj)._collection[service].get(obj[name]).subscribe((dt) => {
+        (<any>obj)._collection[service].get(obj[name], {context: ctx}).subscribe((dt) => {
             obj["_" + name].next(dt);
         });
     }

@@ -96,7 +96,7 @@ export class DSCollection<T extends IDSModel> extends DSConfiguration implements
             return this.save(instance);
         } else if (!params.volatile) {
             this.persistence.save(
-                this.adapter.identifier(instance, {create: true, context: this.context}),
+                this.adapter.identifier(instance, {create: true, context: context}),
                 instance
             );
             return Observable.of(instance);
@@ -177,7 +177,7 @@ export class DSCollection<T extends IDSModel> extends DSConfiguration implements
 
     public get(pk: any, params: IDSCollectionGetParams = {}): Observable<T> {
         let context: any = extend({}, this.context, params.context || {});
-        let identifier = this.adapter.identifier(pk, {options: params.options});
+        let identifier = this.adapter.identifier(pk, {options: params.options, context: context});
         if (identifier === null) {
             throw new Error("Unknow identifier, from " + pk);
         }
@@ -186,8 +186,10 @@ export class DSCollection<T extends IDSModel> extends DSConfiguration implements
         } else {
             return <Observable<T>> this.backend.retrieve(identifier, {context: context})
                 .flatMap((instdata) => {
+                    console.log("Received data", instdata);
                     let instance = this.persistence.retrieve(identifier, {context: context});
                     if (!instance) {
+                        console.log("Creating instance", instdata);
                         return this.create(this.serializer.deserialize(instdata, {context: context}),
                             {context: context});
                     } else {
