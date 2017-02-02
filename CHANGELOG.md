@@ -1,3 +1,13 @@
+<a name="0.0.5"></a>
+## [0.0.5](https://gitlab.com/jmbarbier/ng2datastore/compare/0.0.4...v0.0.5) (2017-02-02)
+
+
+### Bug Fixes
+
+* **links:** Add context option to getLinked function, and correct context use in Collection.get ([6e80ced](https://gitlab.com/jmbarbier/ng2datastore/commit/6e80ced))
+
+
+
 <a name="0.0.4"></a>
 ## [0.0.4](https://gitlab.com/jmbarbier/ng2datastore/compare/0.0.3...v0.0.4) (2017-01-30)
 
