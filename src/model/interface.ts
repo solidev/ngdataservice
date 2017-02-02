@@ -1,5 +1,5 @@
 import {Observable} from "rxjs/Observable";
-import {IDSCollection} from "../collection/interface";
+import {IDSCollection, IDSCollectionActionParams} from "../collection/interface";
 
 
 
@@ -24,6 +24,7 @@ export interface IDSModel {
     save(): Observable<IDSModel>;
     update(fields: string[]): Observable<IDSModel>;
     remove(): Observable<IDSModel>;
+    action(action: string, params: IDSCollectionActionParams): Observable<any>;
     refresh(): Observable<IDSModel>;
     validate(data: any, options: IDSValidationOptions): IDSValidationResult;
     dirty(fields: string[]): string[];

@@ -1,3 +1,64 @@
+<a name="0.0.5"></a>
+## [0.0.5](https://gitlab.com/jmbarbier/ng2datastore/compare/0.0.4...v0.0.5) (2017-02-02)
+
+
+### Bug Fixes
+
+* **links:** Add context option to getLinked function, and correct context use in Collection.get ([6e80ced](https://gitlab.com/jmbarbier/ng2datastore/commit/6e80ced))
+
+
+
+<a name="0.0.4"></a>
+## [0.0.4](https://gitlab.com/jmbarbier/ng2datastore/compare/0.0.3...v0.0.4) (2017-01-30)
+
+
+### Features
+
+* **IDSCollection:** Add collection actions : Collection.action(null, action, args) ([540b634](https://gitlab.com/jmbarbier/ng2datastore/commit/540b634))
+* **IDSModel:** Add getLinked and getLinkedMany helper functions for model links ([5b4be65](https://gitlab.com/jmbarbier/ng2datastore/commit/5b4be65))
+
+
+
+<a name="0.0.3"></a>
+## [0.0.3](https://gitlab.com/jmbarbier/ng2datastore/compare/0.0.2...v0.0.3) (2017-01-26)
+
+Updated for angular 2.4.5
+
+<a name="0.0.2"></a>
+## [0.0.2](https://gitlab.com/jmbarbier/ng2datastore/compare/0.0.1...v0.0.2) (2017-01-26)
+
+Updated for angular 2.4.4
+
+<a name="0.0.1"></a>
+## [0.0.1](https://gitlab.com/jmbarbier/ng2datastore/compare/0.0.0-beta.4...v0.0.1) (2017-01-18)
+
+First release for ng2datastore.
+
+<a name="0.0.0-beta.4"></a>
+# [0.0.0-beta.4](https://gitlab.com/jmbarbier/ng2datastore/compare/0.0.0-beta.3...v0.0.0-beta.4) (2017-01-16)
+
+
+### Features
+
+* **IDSModel:** Add action to model ([0006604](https://gitlab.com/jmbarbier/ng2datastore/commit/0006604))
+
+
+
+<a name="0.0.0-beta.3"></a>
+# [0.0.0-beta.3](https://gitlab.com/jmbarbier/ng2datastore/compare/0.0.0-beta.1...v0.0.0-beta.3) (2017-01-07)
+
+
+### Bug Fixes
+
+* **collection:** Add context to collection.remove ([8ea4a1b](https://gitlab.com/jmbarbier/ng2datastore/commit/8ea4a1b))
+
+
+### Features
+
+* **build:** Enable aot support. ([50b4ee0](https://gitlab.com/jmbarbier/ng2datastore/commit/50b4ee0))
+
+
+
 <a name="0.0.0-beta.2"></a>
 # [0.0.0-beta.2](https://gitlab.com/jmbarbier/ng2datastore/compare/0.0.0-beta.1...v0.0.0-beta.2) (2016-11-16)
 

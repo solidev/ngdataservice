@@ -1,8 +1,7 @@
 import {Observer} from "rxjs/Observer";
 import {IDSFilter, IDSFilterField, IDSFilterFunction, IDSFilterProvider} from "./interface";
 import {Injectable, OpaqueToken, Inject, Optional} from "@angular/core";
-import * as extend from "lodash/extend";
-import * as clone from "lodash/clone";
+import {extend, clone} from "lodash";
 
 export interface IDSBasicFilterConfig {
     common?: {[index: string]: IDSFilterField};
