@@ -7,7 +7,7 @@ instance, a context and a backend :
 
 ```typescript
 // Example with RestUrlAdapter 
-import {DSRestUrlAdapter} from "ngdatastore";
+import {DSRestUrlAdapter} from "ngdataservice";
 import {expect} from "chai";
 let adapter = new DSRestUrlAdapter();
 
@@ -78,7 +78,7 @@ wagon with `id=12` corresponds to a REST url
     
     Examples : 
     ```typescript
-    import {DSRestUrlAdapter} from "ngdatastore";
+    import {DSRestUrlAdapter} from "ngdataservice";
     let ad = new DSRestUrlAdapter({basePath: "/trains"});
     ad.identifier();               // null
     ad.identifier({_pk: 12});      // {path: "/trains/12", ...}

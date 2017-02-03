@@ -1,4 +1,4 @@
-# Contributing to ngdatastore
+# Contributing to ngdataservice
 
 ## Commit Message Guidelines
 

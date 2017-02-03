@@ -1,4 +1,4 @@
-import "./ngdatastore";
+import "./ngdataservice";
 import {expect} from "chai";
 describe("ng2-dataobjects", () => {
     it("should have all exports", () => {

@@ -77,7 +77,7 @@ module.exports = function (config) {
         // Use saucelabs for CI tests
         cfg.reporters.push("saucelabs");
         cfg.sauceLabs = {
-            testName: "ngDataStore unit tests",
+            testName: "ngdataservice unit tests",
             startConnect: true,
             build: process.env.CI_BUILD_ID || "manual"
         };

@@ -1,5 +1,5 @@
 {
-  "name": "ngdatastore",
+  "name": "ngdataservice",
   "version": "0.0.6",
   "description": "Angular data objects",
   "main": "./dist/index.js",
