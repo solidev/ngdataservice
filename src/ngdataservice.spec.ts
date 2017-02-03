@@ -1,6 +1,6 @@
 import "./ngdataservice";
 import {expect} from "chai";
-describe("ng2-dataobjects", () => {
+describe("ngdataservice", () => {
     it("should have all exports", () => {
         expect(true).to.be.true;
     });

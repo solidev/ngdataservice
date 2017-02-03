@@ -15,4 +15,4 @@ export * from "./serializers/index";
 export * from "./sorters/index";
 export * from "./queryset/index";
 export * from "./fields/index";
-export * from "./datastore.module";
+export * from "./dataservice.module";

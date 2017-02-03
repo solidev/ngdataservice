@@ -17,7 +17,7 @@
   },
   "files": [
     "src/ngdataservice.ts",
-    "src/datastore.module.ts"
+    "src/dataservice.module.ts"
   ],
   "exclude": ["index.d.ts", "src/**/*.spec.ts", "node_modules", "test", "example", "dist"],
   "angularCompilerOptions": {

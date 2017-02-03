@@ -2,7 +2,7 @@
 [![coverage report](https://gitlab.com/solidev/ngdataservice/badges/develop/coverage.svg)](https://gitlab.com/solidev/ngdataservice/commits/develop)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 [![Sauce Test Status](https://saucelabs.com/buildstatus/solidev)](https://saucelabs.com/u/solidev)
-[![Dependency Status](https://www.versioneye.com/user/projects/5824f7a8613b6801f3f430fc/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/5824f7a8613b6801f3f430fc)
+[![Dependency Status](https://www.versioneye.com/user/projects/589504dfa35eb600456de2d7/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/589504dfa35eb600456de2d7)
 
 [![Sauce Test Status](https://saucelabs.com/browser-matrix/solidev.svg)](https://saucelabs.com/u/solidev)
 

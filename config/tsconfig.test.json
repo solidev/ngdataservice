@@ -26,7 +26,7 @@
   },
   "files": [
     "../src/ngdataservice.ts",
-    "../src/datastore.module.ts"
+    "../src/dataservice.module.ts"
   ],
   "exclude": [
     "node_modules",
