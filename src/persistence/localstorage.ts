@@ -1,9 +1,6 @@
 import {Injectable} from "@angular/core";
 import {IDSPersistence, IDSPersistenceProvider} from "./interface";
-import * as map from "lodash/map";
-import * as isFunction from "lodash/isFunction";
-import * as _filter from "lodash/filter";
-import * as uniqueId from "lodash/uniqueId";
+import {map, isFunction, uniqueId, filter} from "lodash";
 import {IDSFilterFunction} from "../filters/interface";
 import {IDSSorterFunction} from "../sorters/interface";
 
@@ -44,13 +41,13 @@ export class DSLocalstoragePersistence implements IDSPersistence {
         this._saveItems();
     }
 
-    public list(filter: IDSFilterFunction = null, sorter: IDSSorterFunction = null): any {
+    public list(lfilter: IDSFilterFunction = null, sorter: IDSSorterFunction = null): any {
         this._getItems();
         let items = map(this._items, (value, key) => {
             return JSON.parse(value);
         });
-        if (isFunction(filter)) {
-            items = _filter(items, filter);
+        if (isFunction(lfilter)) {
+            items = filter(items, lfilter);
         }
         if (isFunction(sorter)) {
             items.sort(sorter);

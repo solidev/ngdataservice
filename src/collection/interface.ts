@@ -80,7 +80,12 @@ export type IDSCollectionSaveParams = any;
 export type IDSCollectionUpdateParams = any;
 export type IDSCollectionRemoveParams = any;
 export type IDSCollectionRefreshParams = any;
-export type IDSCollectionActionParams = any;
+
+export interface IDSCollectionActionFullParams {
+    url: string;
+    body: any;
+}
+export type IDSCollectionActionParams = IDSCollectionActionFullParams | string;
 
 export interface IDSCollection<T extends IDSModel> {
     model: IDSModelClass<T>;

@@ -1,6 +1,3 @@
-import "rxjs/add/observable/of";
-import "rxjs/add/operator/do";
-import "rxjs/add/operator/mergeMap";
 import "reflect-metadata";
 
 export * from "./adapters/index";

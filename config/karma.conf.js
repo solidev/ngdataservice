@@ -34,7 +34,7 @@ module.exports = function (config) {
         },
 
 
-        webpack: require("./webpack.test.conf.js"),
+        webpack: require("./webpack.test.js"),
         coverageReporter: {
             dir: 'coverage',
             reporters: [
