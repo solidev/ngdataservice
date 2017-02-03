@@ -1,7 +1,7 @@
 {
-  "name": "ng2datastore",
-  "version": "0.0.5",
-  "description": "Angular2 data objects",
+  "name": "ngdatastore",
+  "version": "0.0.6",
+  "description": "Angular data objects",
   "main": "./dist/index.js",
   "scripts": {
     "test": "rm -rf coverage; karma start config/karma.conf.js",
@@ -67,7 +67,7 @@
     "ts-loader": "^2.0.0",
     "tslint": "^4.4.2",
     "typescript": "2.1.5",
-    "webpack": "2.2.0-rc.3",
+    "webpack": "2.2",
     "webpack-dev-server": "2.2.0-rc.0"
   },
   "config": {

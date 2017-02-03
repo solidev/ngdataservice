@@ -18,7 +18,7 @@ module.exports = {
             {test: /\.html$/, loader: 'raw'}
             ,{
                 test: /\.ts$/,
-                loader: 'istanbul-instrumenter',
+                loader: 'istanbul-instrumenter-loader',
                 enforce: "post"
             }
         ]
