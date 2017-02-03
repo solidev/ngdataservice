@@ -70,14 +70,14 @@ module.exports = function (config) {
         browserNoActivityTimeout : 120000,
         // Continuous Integration mode
         // if true, Karma captures browsers, runs the tests and exits
-        singleRun: true,
+        singleRun: true
 
     };
     if(process.env.SAUCE_ACCESS_KEY) {
         // Use saucelabs for CI tests
         cfg.reporters.push("saucelabs");
         cfg.sauceLabs = {
-            testName: "Ng2Datastore unit tests",
+            testName: "ngDataStore unit tests",
             startConnect: true,
             build: process.env.CI_BUILD_ID || "manual"
         };

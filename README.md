@@ -1,29 +1,30 @@
-[![build status](https://gitlab.com/solidev/ng2datastore/badges/develop/build.svg)](https://gitlab.com/solidev/ng2datastore/commits/develop)
-[![coverage report](https://gitlab.com/solidev/ng2datastore/badges/develop/coverage.svg)](https://gitlab.com/solidev/ng2datastore/commits/develop)
+[![build status](https://gitlab.com/solidev/ngdatastore/badges/develop/build.svg)](https://gitlab.com/solidev/ng2datastore/commits/develop)
+[![coverage report](https://gitlab.com/solidev/ngdatastore/badges/develop/coverage.svg)](https://gitlab.com/solidev/ngdatastore/commits/develop)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 [![Sauce Test Status](https://saucelabs.com/buildstatus/solidev)](https://saucelabs.com/u/solidev)
-[![Dependency Status](https://www.versioneye.com/user/projects/57cfc79e8d1bad004c3d7812/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/57cfc79e8d1bad004c3d7812)
+[![Dependency Status](https://www.versioneye.com/user/projects/5824f7a8613b6801f3f430fc/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/5824f7a8613b6801f3f430fc)
 
 [![Sauce Test Status](https://saucelabs.com/browser-matrix/solidev.svg)](https://saucelabs.com/u/solidev)
 
+
 **This is a Work In Progress project - do not use it until it reaches at least `0.1`**
 
-# ng2datastore : data access for angular2
-This project is hosted on https://gitlab.com/solidev/ng2datastore
+# ngdatastore : data access for angular2+
+This project is hosted on https://gitlab.com/solidev/ngdatastore
 Issues, builds and pull(merge) requests are on gitlab side, github
 repository is read-only.
 
 ## Installation
 
-Works with **angular@2.4.x** / AOT "enabled" : ```npm install ng2datastore --save```
+Tested with **angular@2.4.5** / AOT enabled : ```npm install ngdatastore --save```
 
 ## Usage
 
 With webpack : as is (see [example](./example/simple.webpack/src/app/app.component.ts));
 with systemjs : (see [example](./example/simple.system/config.js))
 ```
-map: { ... "ng2datastore": "./node_modules/ng2datastore",  ... },
-packages: { "ng2datastore": { main: "index.js", defaultExtension: 'js' } ... }
+map: { ... "ngdatastore": "./node_modules/ngdatastore",  ... },
+packages: { "ngdatastore": { main: "index.js", defaultExtension: 'js' } ... }
 ```
 
 No umd bundles are provided.
@@ -44,7 +45,7 @@ This example uses the default REST setup :
 ```typescript
 // file models/train.service.ts
 // ----------------------------
-import {DSModel, DSCollection, DSRestCollectionSetup} from "ng2datastore";
+import {DSModel, DSCollection, DSRestCollectionSetup} from "ngdatastore";
 import {Injectable} from "@angular/core";
 
 // Model declaration
@@ -79,7 +80,7 @@ export class TrainService extends DSCollection<Train> {
 import {NgModule} from "@angular/core";
 
 // import Rest module and config providers
-import {RestModule, REST_ADAPTER_CONFIG} from "ng2datastore";
+import {RestModule, REST_ADAPTER_CONFIG} from "ngdatastore";
 
 import {TrainService} from "models/train.service";
 

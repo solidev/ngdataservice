@@ -25,7 +25,7 @@
     ]
   },
   "files": [
-    "../src/ng2datastore.ts",
+    "../src/ngdatastore.ts",
     "../src/datastore.module.ts"
   ],
   "exclude": [

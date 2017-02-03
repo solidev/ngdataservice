@@ -1,1 +1,1 @@
-export * from "./dist/ng2datastore";
+export * from "./dist/ngdatastore";
