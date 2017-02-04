@@ -1,6 +1,6 @@
 {
   "name": "ngdataservice",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Angular data objects",
   "main": "./dist/index.js",
   "scripts": {
