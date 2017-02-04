@@ -1,4 +1,9 @@
 <a name="Unreleased"></a>
+# [Unreleased](https://gitlab.com/solidev/ngdataservice/compare/v0.0.7...) (2017-02-04)
+
+
+
+<a name="Unreleased"></a>
 # [Unreleased](https://gitlab.com/solidev/ngdataservice/compare/v0.0.6...) (2017-02-03)
 
 
