@@ -6,7 +6,7 @@ import {IDSAdapter, IDSAdapterProvider, IDSAdapterClass} from "../adapters/inter
 import {IDSSerializer, IDSSerializerProvider, IDSSerializerClass} from "../serializers/interface";
 import {
     IDSCollection, IDSCollectionCreateParams, IDSCollectionGetParams, IDSCollectionSetup,
-    IDSCollectionActionParams
+    IDSCollectionActionParams, IDSCollectionRemoveParams
 } from "./interface";
 import {IDSAuthentication, IDSAuthenticationProvider, IDSAuthenticationClass} from "../authentication/interface";
 import {IDSRegister} from "../register/interface";
@@ -150,9 +150,10 @@ export class DSCollection<T extends IDSModel> extends DSConfiguration implements
         throw new Error("Cannot update unsaved item");
     }
 
-    public remove(instance: T | number | string): Observable<any> {
+    // SEE: use params for query/headers ?
+    public remove(instance: T | number | string, params: IDSCollectionRemoveParams = {}): Observable<any> {
         let context: any = extend({}, this.context, (<any>instance)._context);
-        let identifier: any = this.adapter.identifier(instance, {context: context});
+        let identifier: any = this.adapter.identifier(instance, {context: context, options: {query: params}});
         if (identifier) {
             return this.backend.destroy(identifier, {context: context})
                 .do(() => {

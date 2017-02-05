@@ -1,12 +1,14 @@
 import {IDSModel} from "../model/interface";
 import {IDSContext} from "../collection/interface";
 
+// FIXME: add options detailed interface
 export interface IDSAdapterIdentifierParams {
     local?: boolean;                        // returns model's local identifier
     create?: boolean;                       // returns creation identifier
     context?: IDSContext;                   // context used for identifier creation
     options?: any;                          // precisions for format
 }
+
 
 export type IDSAdapterFilterParams  = any;
 export type IDSAdapterSorterParams = any;

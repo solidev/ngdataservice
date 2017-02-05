@@ -2,6 +2,9 @@ import {Observable} from "rxjs/Observable";
 import {IDSCollection, IDSCollectionActionParams} from "../collection/interface";
 
 
+export interface IDSRemoveParams {
+    [index:string]: any
+}
 
 export interface IDSValidationOptions {
     validate?: boolean;
@@ -23,7 +26,7 @@ export interface IDSModel {
     assign(values: any, context: any): IDSValidationResult;
     save(): Observable<IDSModel>;
     update(fields: string[]): Observable<IDSModel>;
-    remove(): Observable<IDSModel>;
+    remove(params: IDSRemoveParams): Observable<IDSModel>;
     action(action: string, params: IDSCollectionActionParams): Observable<any>;
     refresh(): Observable<IDSModel>;
     validate(data: any, options: IDSValidationOptions): IDSValidationResult;
