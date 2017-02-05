@@ -107,6 +107,9 @@ export class DSQueryset<T extends IDSModel> extends DSConfiguration implements I
                     // TODO: save persistence of results ids ?
                     let output = {items: _items, pagination: pagination};
                     this._results.next(output);
+                }, (error) => {
+                    console.error("Error in Collection.get", error);
+                    this._results.error(error);
                 });
             return this.results;
         }
