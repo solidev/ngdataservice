@@ -1,3 +1,13 @@
+<a name="0.0.9"></a>
+## [0.0.9](https://gitlab.com/solidev/ngdataservice/compare/0.0.8...v0.0.9) (2017-02-13)
+
+
+### Features
+
+* **IDSFilter:** Add partial update parameter to filter.update() ([4ff8e9f](https://gitlab.com/solidev/ngdataservice/commit/4ff8e9f))
+
+
+
 <a name="0.0.8"></a>
 ## [0.0.8](https://gitlab.com/solidev/ngdataservice/compare/v0.0.7...v0.0.8) (2017-02-05)
 

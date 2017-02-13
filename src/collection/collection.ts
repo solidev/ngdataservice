@@ -5,15 +5,19 @@ import {IDSPersistence, IDSPersistenceProvider, IDSPersistenceClass} from "../pe
 import {IDSAdapter, IDSAdapterProvider, IDSAdapterClass} from "../adapters/interface";
 import {IDSSerializer, IDSSerializerProvider, IDSSerializerClass} from "../serializers/interface";
 import {
-    IDSCollection, IDSCollectionCreateParams, IDSCollectionGetParams, IDSCollectionSetup,
-    IDSCollectionActionParams, IDSCollectionRemoveParams
+    IDSCollection,
+    IDSCollectionCreateParams,
+    IDSCollectionGetParams,
+    IDSCollectionSetup,
+    IDSCollectionActionParams,
+    IDSCollectionRemoveParams
 } from "./interface";
 import {IDSAuthentication, IDSAuthenticationProvider, IDSAuthenticationClass} from "../authentication/interface";
 import {IDSRegister} from "../register/interface";
 import {DSConfiguration} from "./configuration";
 import {IDSQueryset, IDSQuerysetClass, IDSQuerysetProvider} from "../queryset/interface";
 import {DSQueryset} from "../queryset/queryset";
-import {defaults, extend} from "lodash";
+import {defaults, extend, isString} from "lodash";
 import {IDSSorterProvider, IDSSorterClass} from "../sorters/interface";
 import {IDSFilterProvider, IDSFilterClass} from "../filters/interface";
 import {IDSPaginatorProvider, IDSPaginatorClass} from "../paginators/interface";
@@ -183,23 +187,25 @@ export class DSCollection<T extends IDSModel> extends DSConfiguration implements
             throw new Error("Unknow identifier, from " + pk);
         }
         if (params.fromcache) {
-            return Observable.of(this.persistence.retrieve(identifier, {context: context}));
-        } else {
-            return <Observable<T>> this.backend.retrieve(identifier, {context: context})
-                .flatMap((instdata) => {
-                    console.log("Received data", instdata);
-                    let instance = this.persistence.retrieve(identifier, {context: context});
-                    if (!instance) {
-                        console.log("Creating instance", instdata);
-                        return this.create(this.serializer.deserialize(instdata, {context: context}),
-                            {context: context});
-                    } else {
-                        instance.assign(this.serializer.deserialize(instdata, {context: context}), context);
-                        this.persistence.save(identifier, instance, {context: context});
-                        return Observable.of(instance);
-                    }
-                });
+            let out: T = this.persistence.retrieve(identifier, {context: context});
+            if (out) {
+                return Observable.of(out);
+            }
         }
+        return <Observable<T>> this.backend.retrieve(identifier, {context: context})
+            .flatMap((instdata) => {
+                console.log("Received data", instdata);
+                let instance = this.persistence.retrieve(identifier, {context: context});
+                if (!instance) {
+                    console.log("Creating instance", instdata);
+                    return this.create(this.serializer.deserialize(instdata, {context: context}),
+                        {context: context});
+                } else {
+                    instance.assign(this.serializer.deserialize(instdata, {context: context}), context);
+                    this.persistence.save(identifier, instance, {context: context});
+                    return Observable.of(instance);
+                }
+            });
     }
 
     public action(instance: T, action: string, args: IDSCollectionActionParams): Observable<any> {
@@ -209,10 +215,10 @@ export class DSCollection<T extends IDSModel> extends DSConfiguration implements
         } else {
             identifier = this.adapter.identifier(instance, {context: this.context});
         }
-        let actargs = extend({}, args, {context: this.context});
+        let cargs: any = isString(args) ? {url: args} : args;
+        let actargs = extend({}, cargs, {context: this.context});
         return this.backend.action(identifier, action, actargs);
     }
-
 
 
     public get queryset(): IDSQueryset<T> {
