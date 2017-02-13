@@ -17,7 +17,7 @@ export let BASIC_FILTER_CONFIG = new OpaqueToken("filter.basic.config");
 @Injectable()
 export class DSBasicFilter implements IDSFilter {
     public listener: Observer<any>;
-    public fields: {[index: string]: IDSFilterField};
+    public fields: {[index: string]: IDSFilterField} = {};
     private _common: {[index: string]: IDSFilterField} = {};
 
     constructor(@Optional() @Inject(BASIC_FILTER_CONFIG) params: DSBasicFilterConfig) {
