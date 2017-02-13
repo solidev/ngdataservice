@@ -7,6 +7,9 @@ export interface IDSFilterFieldFull {
     value: any;
 }
 
+export interface IDSFilterUpdateParams {
+    partial?: boolean;
+}
 export type IDSFilterField = IDSFilterFieldFull | string;
 
 export interface IDSFilter {
@@ -14,7 +17,7 @@ export interface IDSFilter {
     fields: {[index: string]: IDSFilterField};
     backendFilter: any;
     localFilter: IDSFilterFunction;
-    update(filter_params: any, params?: any): void;
+    update(filter_params: any, params?: IDSFilterUpdateParams): void;
 }
 
 export interface IDSFilterClass {
