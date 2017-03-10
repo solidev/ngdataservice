@@ -1,3 +1,9 @@
+<a name="0.1.0-beta.1"></a>
+# [0.1.0-beta.1](https://gitlab.com/solidev/ngdataservice/compare/0.0.9...v0.1.0-beta.1) (2017-03-10)
+
+Added angular4 support
+
+
 <a name="0.0.9"></a>
 ## [0.0.9](https://gitlab.com/solidev/ngdataservice/compare/0.0.8...v0.0.9) (2017-02-13)
 
