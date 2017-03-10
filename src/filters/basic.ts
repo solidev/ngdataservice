@@ -1,7 +1,7 @@
 import {Observer} from "rxjs/Observer";
-import {IDSFilter, IDSFilterField, IDSFilterFunction, IDSFilterProvider} from "./interface";
+import {IDSFilter, IDSFilterField, IDSFilterFunction, IDSFilterProvider, IDSFilterUpdateParams} from "./interface";
 import {Injectable, OpaqueToken, Inject, Optional} from "@angular/core";
-import {extend, clone} from "lodash";
+import {extend, clone, assign} from "lodash";
 
 export interface IDSBasicFilterConfig {
     common?: {[index: string]: IDSFilterField};
@@ -39,8 +39,12 @@ export class DSBasicFilter implements IDSFilter {
         return true;
     };
 
-    public update(filter_params: any): void {
-        this.fields = filter_params;
+    public update(filter_params: any, params: IDSFilterUpdateParams = {}): void {
+        if (params.partial) {
+            assign(this.fields, filter_params);
+        } else {
+            this.fields = filter_params;
+        }
     }
 
 }

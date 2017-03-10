@@ -1,5 +1,5 @@
 import {Observer} from "rxjs/Observer";
-import {IDSFilter, IDSFilterField, IDSFilterFunction, IDSFilterProvider} from "./interface";
+import {IDSFilter, IDSFilterField, IDSFilterFunction, IDSFilterProvider, IDSFilterUpdateParams} from "./interface";
 import {Injectable} from "@angular/core";
 
 @Injectable()
@@ -16,7 +16,7 @@ export class DSDummyFilter implements IDSFilter {
         return true;
     };
 
-    public update(filter_params: any): void {
+    public update(filter_params: any, params: IDSFilterUpdateParams = {}): void {
         console.warn("Dummy filter in action, do nothing");
     }
 

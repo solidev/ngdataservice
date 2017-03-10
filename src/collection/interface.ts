@@ -1,5 +1,5 @@
 import {Observable} from "rxjs/Observable";
-import {IDSModel, IDSModelClass} from "../model/interface";
+import {IDSModel, IDSModelClass, IDSRemoveParams} from "../model/interface";
 import {IDSAuthenticationProvider, IDSAuthentication, IDSAuthenticationClass} from "../authentication/interface";
 import {IDSPaginatorProvider, IDSPaginator, IDSPaginatorClass} from "../paginators/interface";
 import {IDSPersistenceProvider, IDSPersistence, IDSPersistenceClass} from "../persistence/interface";
@@ -26,6 +26,8 @@ export interface IDSModelList<T extends IDSModel> {
     items: T[];
     pagination?: IDSPaginationInfo|any;
 }
+
+export type IDSCollectionContext = any;
 
 
 export interface IDSCollectionSetup {
@@ -78,7 +80,7 @@ export interface IDSCollectionGetParams {
 
 export type IDSCollectionSaveParams = any;
 export type IDSCollectionUpdateParams = any;
-export type IDSCollectionRemoveParams = any;
+export type IDSCollectionRemoveParams = IDSRemoveParams;
 export type IDSCollectionRefreshParams = any;
 
 export interface IDSCollectionActionFullParams {

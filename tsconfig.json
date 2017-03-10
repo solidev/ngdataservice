@@ -8,12 +8,7 @@
     "inlineSourceMap": false,
     "outDir": "dist",
     "moduleResolution": "node",
-    "declaration": true,
-    "types": [
-      "core-js",
-      "node",
-      "lodash"
-    ]
+    "declaration": true
   },
   "files": [
     "src/ngdataservice.ts",
