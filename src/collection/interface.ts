@@ -27,6 +27,8 @@ export interface IDSModelList<T extends IDSModel> {
     pagination?: IDSPaginationInfo|any;
 }
 
+export type IDSCollectionContext = any;
+
 
 export interface IDSCollectionSetup {
     adapter?: IDSAdapter;

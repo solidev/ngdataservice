@@ -1,5 +1,5 @@
 import {BaseRequestOptions, Http, Response, RequestMethod, ResponseOptions} from "@angular/http";
-import {MockBackend, MockConnection} from "@angular/http/testing/mock_backend";
+import {MockBackend, MockConnection} from "@angular/http/testing";
 import {REST_BACKEND_CONFIG, DSRestBackend} from "./rest";
 import {DSJsonRenderer} from "../renderers/json";
 import {DSJsonParser} from "../parsers/json";

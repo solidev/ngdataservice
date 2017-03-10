@@ -10,7 +10,7 @@ import {
     IDSCollectionGetParams,
     IDSCollectionSetup,
     IDSCollectionActionParams,
-    IDSCollectionRemoveParams
+    IDSCollectionRemoveParams, IDSCollectionContext
 } from "./interface";
 import {IDSAuthentication, IDSAuthenticationProvider, IDSAuthenticationClass} from "../authentication/interface";
 import {IDSRegister} from "../register/interface";
@@ -21,7 +21,7 @@ import {defaults, extend, isString} from "lodash";
 import {IDSSorterProvider, IDSSorterClass} from "../sorters/interface";
 import {IDSFilterProvider, IDSFilterClass} from "../filters/interface";
 import {IDSPaginatorProvider, IDSPaginatorClass} from "../paginators/interface";
-
+import {Optional} from "@angular/core";
 
 export class DSCollection<T extends IDSModel> extends DSConfiguration implements IDSCollection<T> {
 
@@ -78,7 +78,7 @@ export class DSCollection<T extends IDSModel> extends DSConfiguration implements
     /* tslint:enable */
 
 
-    constructor(setup: IDSCollectionSetup = {}, context: any = {}) {
+    constructor(setup: IDSCollectionSetup = {}, context: IDSCollectionContext = {}) {
         super();
         this.setup = defaults(this.setup || {}, setup);
         if (!this.datasources) {
