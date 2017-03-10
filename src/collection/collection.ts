@@ -5,19 +5,23 @@ import {IDSPersistence, IDSPersistenceProvider, IDSPersistenceClass} from "../pe
 import {IDSAdapter, IDSAdapterProvider, IDSAdapterClass} from "../adapters/interface";
 import {IDSSerializer, IDSSerializerProvider, IDSSerializerClass} from "../serializers/interface";
 import {
-    IDSCollection, IDSCollectionCreateParams, IDSCollectionGetParams, IDSCollectionSetup,
-    IDSCollectionActionParams
+    IDSCollection,
+    IDSCollectionCreateParams,
+    IDSCollectionGetParams,
+    IDSCollectionSetup,
+    IDSCollectionActionParams,
+    IDSCollectionRemoveParams, IDSCollectionContext
 } from "./interface";
 import {IDSAuthentication, IDSAuthenticationProvider, IDSAuthenticationClass} from "../authentication/interface";
 import {IDSRegister} from "../register/interface";
 import {DSConfiguration} from "./configuration";
 import {IDSQueryset, IDSQuerysetClass, IDSQuerysetProvider} from "../queryset/interface";
 import {DSQueryset} from "../queryset/queryset";
-import {defaults, extend} from "lodash";
+import {defaults, extend, isString} from "lodash";
 import {IDSSorterProvider, IDSSorterClass} from "../sorters/interface";
 import {IDSFilterProvider, IDSFilterClass} from "../filters/interface";
 import {IDSPaginatorProvider, IDSPaginatorClass} from "../paginators/interface";
-
+import {Optional} from "@angular/core";
 
 export class DSCollection<T extends IDSModel> extends DSConfiguration implements IDSCollection<T> {
 
@@ -74,7 +78,7 @@ export class DSCollection<T extends IDSModel> extends DSConfiguration implements
     /* tslint:enable */
 
 
-    constructor(setup: IDSCollectionSetup = {}, context: any = {}) {
+    constructor(setup: IDSCollectionSetup = {}, context: IDSCollectionContext = {}) {
         super();
         this.setup = defaults(this.setup || {}, setup);
         if (!this.datasources) {
@@ -150,9 +154,10 @@ export class DSCollection<T extends IDSModel> extends DSConfiguration implements
         throw new Error("Cannot update unsaved item");
     }
 
-    public remove(instance: T | number | string): Observable<any> {
+    // SEE: use params for query/headers ?
+    public remove(instance: T | number | string, params: IDSCollectionRemoveParams = {}): Observable<any> {
         let context: any = extend({}, this.context, (<any>instance)._context);
-        let identifier: any = this.adapter.identifier(instance, {context: context});
+        let identifier: any = this.adapter.identifier(instance, {context: context, options: {query: params}});
         if (identifier) {
             return this.backend.destroy(identifier, {context: context})
                 .do(() => {
@@ -182,23 +187,25 @@ export class DSCollection<T extends IDSModel> extends DSConfiguration implements
             throw new Error("Unknow identifier, from " + pk);
         }
         if (params.fromcache) {
-            return Observable.of(this.persistence.retrieve(identifier, {context: context}));
-        } else {
-            return <Observable<T>> this.backend.retrieve(identifier, {context: context})
-                .flatMap((instdata) => {
-                    console.log("Received data", instdata);
-                    let instance = this.persistence.retrieve(identifier, {context: context});
-                    if (!instance) {
-                        console.log("Creating instance", instdata);
-                        return this.create(this.serializer.deserialize(instdata, {context: context}),
-                            {context: context});
-                    } else {
-                        instance.assign(this.serializer.deserialize(instdata, {context: context}), context);
-                        this.persistence.save(identifier, instance, {context: context});
-                        return Observable.of(instance);
-                    }
-                });
+            let out: T = this.persistence.retrieve(identifier, {context: context});
+            if (out) {
+                return Observable.of(out);
+            }
         }
+        return <Observable<T>> this.backend.retrieve(identifier, {context: context})
+            .flatMap((instdata) => {
+                console.log("Received data", instdata);
+                let instance = this.persistence.retrieve(identifier, {context: context});
+                if (!instance) {
+                    console.log("Creating instance", instdata);
+                    return this.create(this.serializer.deserialize(instdata, {context: context}),
+                        {context: context});
+                } else {
+                    instance.assign(this.serializer.deserialize(instdata, {context: context}), context);
+                    this.persistence.save(identifier, instance, {context: context});
+                    return Observable.of(instance);
+                }
+            });
     }
 
     public action(instance: T, action: string, args: IDSCollectionActionParams): Observable<any> {
@@ -208,10 +215,10 @@ export class DSCollection<T extends IDSModel> extends DSConfiguration implements
         } else {
             identifier = this.adapter.identifier(instance, {context: this.context});
         }
-        let actargs = extend({}, args, {context: this.context});
+        let cargs: any = isString(args) ? {url: args} : args;
+        let actargs = extend({}, cargs, {context: this.context});
         return this.backend.action(identifier, action, actargs);
     }
-
 
 
     public get queryset(): IDSQueryset<T> {

@@ -1,5 +1,5 @@
 import {BaseRequestOptions, Http, RequestMethod, ResponseOptions, Response} from "@angular/http";
-import {MockBackend, MockConnection} from "@angular/http/testing/mock_backend";
+import {MockBackend, MockConnection} from "@angular/http/testing";
 import {Injectable} from "@angular/core";
 export const MOCK_REST_API_PROVIDER = [
     MockBackend,

@@ -1,5 +1,5 @@
 import {Observable} from "rxjs";
-import {IDSModel, IDSValidationResult, IDSValidationOptions} from "./interface";
+import {IDSModel, IDSValidationResult, IDSValidationOptions, IDSRemoveParams} from "./interface";
 import {IDSCollection, IDSCollectionActionParams} from "../collection/interface";
 import {IDSRegister} from "../register/interface";
 import {omitBy, extend} from "lodash";
@@ -118,9 +118,9 @@ export class DSModel implements IDSModel {
      * @see return value ?
      * @returns {Observable<boolean>}
      */
-    public remove(): Observable<any> {
+    public remove(params: IDSRemoveParams = {}): Observable<any> {
         this._checkCollection();
-        return this._collection.remove(this);
+        return this._collection.remove(this, params);
     }
 
     /**

@@ -10,9 +10,10 @@ import {IDSSorterFunction} from "../sorters/interface";
 export class DSLocalstoragePersistence implements IDSPersistence {
     public type: string = "JSON";
     protected storage: any;
+    protected _name: string = uniqueId("persist");
     private _items: {[index: string]: any} = {};
 
-    constructor(protected _name: string = uniqueId("persist")) {
+    constructor() {
         this.storage = localStorage;
     }
 
