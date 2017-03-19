@@ -1,3 +1,23 @@
+<a name="0.1.0-beta.2"></a>
+# [0.1.0-beta.2](https://gitlab.com/solidev/ngdataservice/compare/v0.1.0-beta.1...v0.1.0-beta.2) (2017-03-19)
+
+
+### Bug Fixes
+
+* **DSFilter:** Give an empty value (not undefined nor null) to filter fields by default ([d46f7a6](https://gitlab.com/solidev/ngdataservice/commit/d46f7a6))
+
+
+### Chores
+
+* **deps:** Upgrade deps to angular[@4](https://github.com/4).0.0-rc.5 + fix DI after angular#12631 solve ([f1f44d7](https://gitlab.com/solidev/ngdataservice/commit/f1f44d7)), closes [angular#12631](https://gitlab.com/angular/issues/12631)
+
+
+### BREAKING CHANGES
+
+* **deps:** Need angular >= 4.0.0-rc.5
+
+
+
 <a name="0.1.0-beta.1"></a>
 # [0.1.0-beta.1](https://gitlab.com/solidev/ngdataservice/compare/0.0.9...v0.1.0-beta.1) (2017-03-10)
 
