@@ -1,4 +1,4 @@
-image: node:latest
+image: yarnpkg/node-yarn:latest
 
 cache:
   paths:
@@ -6,10 +6,10 @@ cache:
 
 test:
   script:
-   - npm install
+   - yarn install
    - npm test
 
 build_npm:
   script:
-    - npm install
+    - yarn install
     - npm run build
