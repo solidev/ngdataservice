@@ -19,19 +19,12 @@ export interface IDSRestUrlAdapterConfig {
 }
 
 // FIXME: AOT: wait for https://github.com/angular/angular/issues/12631
-export class DSRestUrlAdapterConfig {
-    basePath: string;
-    replace: string[];
-    itemPath: string;
-    createPath: string;
-    listPath: string;
-}
 const DEFAULT_IDENTIFIER_PARAMS = {local: false, create: false};
 
 @Injectable()
 export class DSRestUrlAdapter implements IDSAdapter {
 
-    constructor(@Inject(REST_ADAPTER_CONFIG) protected _config: DSRestUrlAdapterConfig) {
+    constructor(@Inject(REST_ADAPTER_CONFIG) protected _config: IDSRestUrlAdapterConfig) {
     }
 
     /**
@@ -136,7 +129,7 @@ export class DSRestUrlAdapter implements IDSAdapter {
 
 @Injectable()
 export class DSRestUrlAdapterProvider implements IDSAdapterProvider {
-    public provide(params: DSRestUrlAdapterConfig): IDSAdapter {
+    public provide(params: IDSRestUrlAdapterConfig): IDSAdapter {
         return new DSRestUrlAdapter(params);
     }
 }

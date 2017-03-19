@@ -1,10 +1,14 @@
-import {Injectable} from "@angular/core";
+import {Injectable, Optional, Inject, OpaqueToken} from "@angular/core";
 import {IDSPersistence, IDSPersistenceProvider} from "./interface";
 import {map, isFunction, uniqueId, filter} from "lodash";
 import {IDSFilterFunction} from "../filters/interface";
 import {IDSSorterFunction} from "../sorters/interface";
 
 // FIXME: localstorage root key should be "settable" or "unique"
+
+export let DS_LOCALSTORAGE_NAME = new OpaqueToken("persist");
+
+
 
 @Injectable()
 export class DSLocalstoragePersistence implements IDSPersistence {
@@ -13,7 +17,8 @@ export class DSLocalstoragePersistence implements IDSPersistence {
     protected _name: string = uniqueId("persist");
     private _items: {[index: string]: any} = {};
 
-    constructor() {
+    constructor(@Optional() @Inject(DS_LOCALSTORAGE_NAME) name: string = "persist") {
+        this._name = uniqueId(name);
         this.storage = localStorage;
     }
 

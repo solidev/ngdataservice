@@ -16,7 +16,7 @@ describe("DSLocalstoragePersistence", () => {
         expect(mp.type).to.equal("JSON");
     });
     it("can allow own storage name", () => {
-        let mp = new DSLocalstoragePersistence("trains");
+        let mp = new DSLocalstoragePersistence();
         expect(mp.type).to.equal("JSON");
     });
     it("should save an item", () => {

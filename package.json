@@ -20,19 +20,19 @@
   "git-tag-version": false,
   "license": "MIT",
   "dependencies": {
-    "@angular/common": "4.0.0-rc.3",
-    "@angular/compiler": "^4.0.0-rc.3",
-    "@angular/compiler-cli": "^4.0.0-rc.3",
-    "@angular/core": "4.0.0-rc.3",
-    "@angular/http": "4.0.0-rc.3",
-    "@angular/platform-browser": "4.0.0-rc.3",
-    "@angular/platform-browser-dynamic": "4.0.0-rc.3",
-    "@angular/platform-server": "^4.0.0-rc.3",
+    "@angular/common": "4.0.0-rc.5",
+    "@angular/compiler": "4.0.0-rc.5",
+    "@angular/compiler-cli": "4.0.0-rc.5",
+    "@angular/core": "4.0.0-rc.5",
+    "@angular/http": "4.0.0-rc.5",
+    "@angular/platform-browser": "4.0.0-rc.5",
+    "@angular/platform-browser-dynamic": "4.0.0-rc.5",
+    "@angular/platform-server": "4.0.0-rc.5",
     "core-js": "2.4.1",
     "lodash": "^4.17.4",
     "reflect-metadata": "^0.1.10",
     "rxjs": "5.2.0",
-    "zone.js": "0.7.8"
+    "zone.js": "0.8.4"
   },
   "devDependencies": {
     "@types/chai": "^3.4.35",

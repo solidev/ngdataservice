@@ -6,7 +6,7 @@ import {DSDefaultSerializer} from "../serializers/default";
 import {DSMemoryPersistence} from "../persistence/memory";
 import {DSTokenAuthentication} from "../authentication/tokenauth";
 import {Injectable, Optional} from "@angular/core";
-import {IDSCollectionSetup} from "./interface";
+import {IDSCollectionSetup, IDSCollectionContext} from "./interface";
 import {DSDummyFilterProvider} from "../filters/dummy";
 import {DSDummySorterProvider} from "../sorters/dummy";
 import {DSDummyPaginatorProvider} from "../paginators/dummy";
@@ -28,6 +28,8 @@ export class DSRestCollectionSetup implements IDSCollectionSetup {
 @Injectable()
 export class DSRestCollection<T extends IDSModel> extends DSCollection<T> {
 
-
+    constructor(@Optional() setup: DSRestCollectionSetup, @Optional() context: IDSCollectionContext = {}) {
+        super(setup, context);
+    }
 }
 
