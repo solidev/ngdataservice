@@ -16,7 +16,7 @@ repository is read-only.
 
 ## Installation
 
-Tested with **angular@4.0.0-rc.1** / AOT enabled : ```npm install ngdataservice --save```
+Tested with **angular@4.1.2** / AOT OKe : ```npm install ngdataservice --save```
 
 ## Usage
 
