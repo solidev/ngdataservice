@@ -3,3 +3,5 @@ doc
 node_modules
 test
 example
+src
+index.ts

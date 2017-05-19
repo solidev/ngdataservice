@@ -77,10 +77,12 @@ export class TrainService extends DSCollection<Train> {
 ```typescript
 // file app.module.ts
 // ------------------
-import {NgModule} from "@angular/core";
 
 // import Rest module and config providers
 import {RestModule, REST_ADAPTER_CONFIG} from "ngdataservice";
+
+import {NgModule} from "@angular/core";
+
 
 import {TrainService} from "models/train.service";
 

@@ -1,14 +1,9 @@
 import {IDSAdapter, IDSAdapterIdentifierParams, IDSAdapterProvider, IDSAdapterSearchParams} from "./interface";
 import {IDSRestIdentifier} from "../backends/rest";
 import {IDSModel} from "../model/interface";
-import {Injectable, OpaqueToken, Inject} from "@angular/core";
-import {isNumber, isString, template, extend, cloneDeep} from "lodash";
+import {Inject, Injectable, InjectionToken} from "@angular/core";
+import {cloneDeep, extend, isNumber, isString, template} from "lodash";
 import {DSModel} from "../model/model";
-
-/**
- * Rest adapter configurator.
- */
-export let REST_ADAPTER_CONFIG = new OpaqueToken("adapter.resturl.config");
 
 export interface IDSRestUrlAdapterConfig {
     basePath?: string;
@@ -17,6 +12,12 @@ export interface IDSRestUrlAdapterConfig {
     createPath?: string;
     listPath?: string;
 }
+
+/**
+ * Rest adapter configurator.
+ */
+export let REST_ADAPTER_CONFIG = new InjectionToken<IDSRestUrlAdapterConfig>("adapter.resturl.config");
+
 
 // FIXME: AOT: wait for https://github.com/angular/angular/issues/12631
 const DEFAULT_IDENTIFIER_PARAMS = {local: false, create: false};

@@ -1,24 +1,24 @@
 import {Observer} from "rxjs/Observer";
 import {IDSFilter, IDSFilterField, IDSFilterFunction, IDSFilterProvider, IDSFilterUpdateParams} from "./interface";
-import {Injectable, OpaqueToken, Inject, Optional} from "@angular/core";
-import {extend, clone, assign} from "lodash";
+import {Inject, Injectable, InjectionToken, Optional} from "@angular/core";
+import {assign, clone, extend} from "lodash";
 
 export interface IDSBasicFilterConfig {
-    common?: {[index: string]: IDSFilterField};
+    common?: { [index: string]: IDSFilterField };
 }
 
 // FIXME: AOT: wait for https://github.com/angular/angular/issues/12631
 export class DSBasicFilterConfig {
-    public common: {[index: string]: IDSFilterField};
+    public common: { [index: string]: IDSFilterField };
 }
 
-export let BASIC_FILTER_CONFIG = new OpaqueToken("filter.basic.config");
+export let BASIC_FILTER_CONFIG = new InjectionToken<IDSBasicFilterConfig>("filter.basic.config");
 
 @Injectable()
 export class DSBasicFilter implements IDSFilter {
     public listener: Observer<any>;
-    public fields: {[index: string]: IDSFilterField} = {};
-    private _common: {[index: string]: IDSFilterField} = {};
+    public fields: { [index: string]: IDSFilterField } = {};
+    private _common: { [index: string]: IDSFilterField } = {};
 
     constructor(@Optional() @Inject(BASIC_FILTER_CONFIG) params: DSBasicFilterConfig) {
         if (params) {

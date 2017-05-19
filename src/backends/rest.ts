@@ -1,8 +1,8 @@
-import {Headers, URLSearchParams, RequestOptions, Http, RequestMethod} from "@angular/http";
+import {Headers, Http, RequestMethod, RequestOptions, URLSearchParams} from "@angular/http";
 import {Observable} from "rxjs/Observable";
 import {IDSBackend, IDSBackendProvider} from "./interface";
 import {DSJsonParser} from "../parsers/json";
-import {Injectable, OpaqueToken, Inject, Optional} from "@angular/core";
+import {Inject, Injectable, InjectionToken, Optional} from "@angular/core";
 import {DSJsonRenderer} from "../renderers/json";
 import "rxjs/add/operator/map";
 import "rxjs/observable/of";
@@ -11,28 +11,29 @@ import {capitalize, isString} from "lodash";
 
 export interface IDSRestIdentifier {
     path: string;
-    query?: {[index: string]: string};
-    headers?: {[index: string]: string};
+    query?: { [index: string]: string };
+    headers?: { [index: string]: string };
 }
 
-export let REST_BACKEND_CONFIG = new OpaqueToken("backend.rest.config");
 
 export interface IDSRestBackendConfig {
     host: string;
     port: string;
     scheme: string;
     url?: string;
-    headers?: {[index: string]: string}
+    headers?: { [index: string]: string }
 }
 
+export let REST_BACKEND_CONFIG = new InjectionToken<IDSRestBackendConfig>("backend.rest.config");
+
 // FIXME: AOT: wait for https://github.com/angular/angular/issues/12631
-export class DSRestBackendConfig implements IDSRestBackendConfig {
-    public host: string;
-    public port: string;
-    public scheme: string;
-    public url: string;
-    public headers: {[index: string]: string}
-}
+/* export class DSRestBackendConfig implements IDSRestBackendConfig {
+ public host: string;
+ public port: string;
+ public scheme: string;
+ public url: string;
+ public headers: {[index: string]: string}
+ } */
 
 
 /**
@@ -42,12 +43,12 @@ export class DSRestBackendConfig implements IDSRestBackendConfig {
  */
 @Injectable()
 export class DSRestBackend implements IDSBackend {
-    private _defaultHeaders: {[index: string]: string} = {};
+    private _defaultHeaders: { [index: string]: string } = {};
 
     constructor(private _http: Http,
                 protected _parser: DSJsonParser,
                 protected _renderer: DSJsonRenderer,
-                @Inject(REST_BACKEND_CONFIG) protected _config: DSRestBackendConfig) {
+                @Inject(REST_BACKEND_CONFIG) protected _config: IDSRestBackendConfig) {
         if (this._config.headers) {
             this._defaultHeaders = this._config.headers;
         }
@@ -138,7 +139,7 @@ export class DSRestBackend implements IDSBackend {
     }
 
 
-    public setDefaultHeaders(headers: {[index: string]: string}): void {
+    public setDefaultHeaders(headers: { [index: string]: string }): void {
         for (let h of Object.keys(headers)) {
             this._defaultHeaders[h] = headers[h];
         }
@@ -211,11 +212,11 @@ export class DSRestBackendProvider implements IDSBackendProvider {
     constructor(protected _http: Http,
                 protected _parser: DSJsonParser,
                 protected _renderer: DSJsonRenderer,
-                @Optional() @Inject(REST_BACKEND_CONFIG) protected _config: DSRestBackendConfig) {
+                @Optional() @Inject(REST_BACKEND_CONFIG) protected _config: IDSRestBackendConfig) {
 
     }
 
-    public provide(params: DSRestBackendConfig): IDSBackend {
+    public provide(params: IDSRestBackendConfig): IDSBackend {
         return new DSRestBackend(
             this._http,
             this._parser,

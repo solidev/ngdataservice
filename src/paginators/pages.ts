@@ -1,7 +1,7 @@
 import {IDSPaginator, IDSPaginatorProvider} from "./interface";
-import {Injectable, OpaqueToken, Inject, Optional} from "@angular/core";
+import {Inject, Injectable, InjectionToken, Optional} from "@angular/core";
 
-export let PAGINATOR_PAGE_CONFIG = new OpaqueToken("paginator.page.config");
+export let PAGINATOR_PAGE_CONFIG = new InjectionToken<any>("paginator.page.config");
 
 
 @Injectable()
