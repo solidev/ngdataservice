@@ -8,9 +8,9 @@ import {Injectable} from "@angular/core";
 export class DSTokenAuthentication implements IDSAuthentication {
     private _token: string;
     private _header: string;
-    private _authenticated: boolean = false;
+    private _authenticated = false;
 
-    public authenticate(token: string, header: string = "X-Token"): void {
+    public authenticate(token: string, header = "X-Token"): void {
         this._token = token;
         this._header = header;
         this._authenticated = true;

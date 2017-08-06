@@ -6,6 +6,7 @@
 
 [![Sauce Test Status](https://saucelabs.com/browser-matrix/solidev.svg)](https://saucelabs.com/u/solidev)
 
+[![Build Status](https://saucelabs.com/browser-matrix/ngdatastore.svg)](https://saucelabs.com/beta/builds/ff5dc073fc624478bd5f648eda45033d)
 
 **This is a Work In Progress project - do not use it until it reaches at least `0.1`**
 
