@@ -1,3 +1,8 @@
+<a name="0.1.2"></a>
+## [0.1.2](https://gitlab.com/solidev/ngdataservice/compare/v0.1.1...v0.1.2) (2017-08-06)
+
+
+
 <a name="0.1.1"></a>
 ## [0.1.1](https://gitlab.com/solidev/ngdataservice/compare/v0.1.0-beta.2...v0.1.1) (2017-08-06)
 
