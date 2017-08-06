@@ -1,5 +1,3 @@
-import "reflect-metadata";
-
 export * from "./adapters/index";
 export * from "./authentication/index";
 export * from "./backends/index";
