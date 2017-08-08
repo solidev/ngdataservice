@@ -1,4 +1,4 @@
-import {DSModel, DSService, DSRestCollection, DSRestCollectionSetup} from "ng2datastore";
+import {DSModel, DSRestCollection, DSRestCollectionSetup} from "ngdataservice";
 import {Injectable} from "@angular/core";
 
 export class Train extends DSModel {
@@ -29,12 +29,3 @@ export class TrainCollection extends DSRestCollection<Train> {
 
 }
 
-@Injectable()
-export class TrainService extends DSService<Train> {
-    public adapter_config: any = {basePath: "/posts"};
-    public model = Train;
-
-    constructor(public setup: DSRestCollectionSetup) {
-        super();
-    }
-}

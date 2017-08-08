@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "module": "es2015",
+    "module": "system",
     "target": "es5",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
@@ -10,7 +10,6 @@
       "es2015",
       "dom"
     ],
-    "outDir": "dist-commonjs",
     "moduleResolution": "node",
     "declaration": true
   },
@@ -19,14 +18,7 @@
     "src/dataservice.module.ts"
   ],
   "exclude": [
-    "index.d.ts",
-    "src/**/*.spec.ts",
-    "node_modules",
-    "test",
-    "examples",
-    "dist-commonjs",
-    "dist-esm",
-    "dist-umd"
+    "node_modules"
   ],
   "angularCompilerOptions": {
     "genDir": "aot",

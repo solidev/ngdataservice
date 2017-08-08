@@ -22,6 +22,8 @@ import { defaults, extend, isString } from "lodash";
 import { IDSSorterClass, IDSSorterProvider } from "../sorters/interface";
 import { IDSFilterClass, IDSFilterProvider } from "../filters/interface";
 import { IDSPaginatorClass, IDSPaginatorProvider } from "../paginators/interface";
+import "rxjs/add/operator/do";
+import "rxjs/add/operator/mergeMap";
 
 export class DSCollection<T extends IDSModel> extends DSConfig<IDSCollectionSetup> implements IDSCollection<T> {
 

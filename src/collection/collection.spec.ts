@@ -2,7 +2,10 @@ import {expect} from "chai";
 import * as sinon from "sinon";
 import {DSModel} from "../model/model";
 import {DSCollection} from "./collection";
-import {Observable} from "rxjs";
+import {Observable} from "rxjs/Observable";
+import "rxjs/add/observable/of";
+import "rxjs/add/operator/mergeMap";
+
 
 
 describe("DSCollection", () => {

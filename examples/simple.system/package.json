@@ -1,0 +1,14 @@
+{
+  "name": "simple",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "start": "live-server ./"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "live-server": "^1.2.0",
+    "ngdataservice": "file:../.."
+  }
+}

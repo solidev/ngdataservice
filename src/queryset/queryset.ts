@@ -5,6 +5,7 @@ import {IDSQueryset} from "./interface";
 import {IDSFilter, IDSFilterClass, IDSFilterProvider} from "../filters/interface";
 import {IDSSorter, IDSSorterClass, IDSSorterProvider} from "../sorters/interface";
 import {Observable} from "rxjs/Observable";
+import "rxjs/add/observable/of";
 import {ReplaySubject} from "rxjs/ReplaySubject";
 import {DSConfig} from "../configuration";
 import {defaults, pick, extend} from "lodash";
