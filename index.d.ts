@@ -1,1 +1,1 @@
-export * from "./dist/ngdataservice";
+export * from "./dist-commonjs/ngdataservice";
