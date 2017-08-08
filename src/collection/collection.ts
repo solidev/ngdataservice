@@ -48,10 +48,6 @@ export class DSCollection<T extends IDSModel> extends DSConfig<IDSCollectionSetu
     protected adapter_provider: IDSAdapterProvider;
     protected adapter_config: any;
 
-    protected backend_class: IDSBackendClass;
-    protected backend_provider: IDSBackendProvider;
-    protected backend_config: any;
-
     protected serializer_class: IDSSerializerClass;
     protected serializer_provider: IDSSerializerProvider;
     protected serializer_config: any;
@@ -60,14 +56,14 @@ export class DSCollection<T extends IDSModel> extends DSConfig<IDSCollectionSetu
     protected persistence_provider: IDSPersistenceProvider;
     protected persistence_config: any;
 
-    protected authentication_class: IDSAuthenticationClass;
-    protected authentication_provider: IDSAuthenticationProvider;
-    protected authentication_config: any;
 
     protected queryset_class: IDSQuerysetClass<T> = DSQueryset;
     protected queryset_provider: IDSQuerysetProvider<T>;
     protected queryset_config: any;
 
+    protected backend_class: IDSBackendClass;
+    protected backend_provider: IDSBackendProvider;
+    protected backend_config: any;
 
     protected _context: any;
 
@@ -252,6 +248,7 @@ export class DSCollection<T extends IDSModel> extends DSConfig<IDSCollectionSetu
     }
 
     public get_backend_config(): any {
+
         return this.get_service_config("backend");
     }
 
@@ -280,15 +277,5 @@ export class DSCollection<T extends IDSModel> extends DSConfig<IDSCollectionSetu
         this._persistence = ps;
     }
 
-    public get authentication(): IDSAuthentication {
-        return <IDSAuthentication>this.get_service("authentication", this.get_authentication_config());
-    }
 
-    public get_authentication_config(): any {
-        return this.get_service_config("authentication");
-    }
-
-    public set authentication(au: IDSAuthentication) {
-        this._authentication = au;
-    }
 }

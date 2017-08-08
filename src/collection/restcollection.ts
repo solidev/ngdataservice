@@ -15,7 +15,6 @@ import { DSDummyPaginatorProvider } from "../paginators/dummy";
 export class DSRestCollectionSetup implements IDSCollectionSetup {
     public constructor(public adapter_provider: DSRestUrlAdapterProvider,
                        public backend: DSRestBackend,
-                       public authentication: DSRestAuthentication,
                        public serializer: DSDefaultSerializer,
                        public persistence: DSMemoryPersistence,
                        public paginator_provider: DSDummyPaginatorProvider,
