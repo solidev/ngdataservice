@@ -1,11 +1,13 @@
-import {BaseRequestOptions, Http, Response, RequestMethod, ResponseOptions} from "@angular/http";
-import {MockBackend, MockConnection} from "@angular/http/testing";
-import {REST_BACKEND_CONFIG, DSRestBackend} from "./rest";
-import {DSJsonRenderer} from "../renderers/json";
-import {DSJsonParser} from "../parsers/json";
-import {expect} from "chai";
+import { BaseRequestOptions, Http, RequestMethod, Response, ResponseOptions } from "@angular/http";
+import { MockBackend, MockConnection } from "@angular/http/testing";
+import { DSRestBackend, REST_BACKEND_AUTHENTICATION, REST_BACKEND_CONFIG, REST_BACKEND_PARSER, REST_BACKEND_RENDERER } from "./rest";
+import { DSJsonRenderer } from "../renderers/json";
+import { DSJsonParser } from "../parsers/json";
+import { expect } from "chai";
 import * as sinon from "sinon";
-import {TestBed, inject} from "@angular/core/testing";
+import { inject, TestBed } from "@angular/core/testing";
+import { DSRestAuthentication } from "../authentication/tokenauth";
+import { DSRestBackendSetup } from "./index";
 describe("DSRestBackend", () => {
 
     beforeEach(() => {
@@ -22,6 +24,11 @@ describe("DSRestBackend", () => {
                 },
                 DSJsonParser,
                 DSJsonRenderer,
+                DSRestAuthentication,
+                {provide: REST_BACKEND_PARSER, useClass: DSJsonParser},
+                {provide: REST_BACKEND_RENDERER, useClass: DSJsonRenderer},
+                {provide: REST_BACKEND_AUTHENTICATION, useClass: DSRestAuthentication},
+                DSRestBackendSetup,
                 {
                     provide: REST_BACKEND_CONFIG,
                     useValue: {host: "example.com", port: 8123, scheme: "https"}
@@ -33,7 +40,7 @@ describe("DSRestBackend", () => {
 
     it("should call GET to api endpoint on retrieve then parse the result", (done) => {
         let connection: MockConnection;
-        inject([MockBackend, DSJsonParser, DSRestBackend],
+        inject([MockBackend, REST_BACKEND_PARSER, DSRestBackend],
             (mock: MockBackend, parser: DSJsonParser, backend: DSRestBackend) => {
                 sinon.spy(parser, "parse");
                 mock.connections.subscribe((c) => {
@@ -57,7 +64,7 @@ describe("DSRestBackend", () => {
 
     it("should call GET on api endpoint on list then parse the result", (done) => {
         let connection: MockConnection;
-        inject([MockBackend, DSJsonParser, DSRestBackend],
+        inject([MockBackend, REST_BACKEND_PARSER, DSRestBackend],
             (mock: MockBackend, parser: DSJsonParser, backend: DSRestBackend) => {
                 sinon.spy(parser, "parse");
                 mock.connections.subscribe((c) => {
@@ -81,7 +88,7 @@ describe("DSRestBackend", () => {
 
     it("should call POST on api endpoint on create, render payload & parse result", (done) => {
         let connection: MockConnection;
-        inject([MockBackend, DSJsonParser, DSJsonRenderer, DSRestBackend],
+        inject([MockBackend, REST_BACKEND_PARSER, REST_BACKEND_RENDERER, DSRestBackend],
             (mock: MockBackend, parser: DSJsonParser, renderer: DSJsonRenderer, backend: DSRestBackend) => {
                 sinon.spy(parser, "parse");
                 sinon.spy(renderer, "render");
@@ -112,7 +119,7 @@ describe("DSRestBackend", () => {
 
     it("should call PUT on api endpoint on update, render payload & parse result", (done) => {
         let connection: MockConnection;
-        inject([MockBackend, DSJsonParser, DSJsonRenderer, DSRestBackend],
+        inject([MockBackend, REST_BACKEND_PARSER, REST_BACKEND_RENDERER, DSRestBackend],
             (mock: MockBackend, parser: DSJsonParser, renderer: DSJsonRenderer, backend: DSRestBackend) => {
                 sinon.spy(parser, "parse");
                 sinon.spy(renderer, "render");
@@ -143,7 +150,7 @@ describe("DSRestBackend", () => {
 
     it("should call DELETE on api endpoint on destroy, and parse result", (done) => {
         let connection: MockConnection;
-        inject([MockBackend, DSJsonParser, DSRestBackend],
+        inject([MockBackend, REST_BACKEND_PARSER, DSRestBackend],
             (mock: MockBackend, parser: DSJsonParser, backend: DSRestBackend) => {
                 sinon.spy(parser, "parse");
                 mock.connections.subscribe((c) => {
@@ -169,7 +176,7 @@ describe("DSRestBackend", () => {
 
     it("should create headers from identifier, forcing application/json", (done) => {
         inject([DSRestBackend], (backend: DSRestBackend) => {
-            backend.setDefaultHeaders({"accept": "application/json"})
+            backend.setDefaultHeaders({"accept": "application/json"});
             let headers = backend.getRequestHeaders({path: "path", headers: {"x-token": "toto"}});
             expect(headers.get("x-token")).to.equal("toto");
             headers = backend.getRequestHeaders({path: "path"});

@@ -1,21 +1,21 @@
-import {IDSModel} from "../model/interface";
-import {IDSContext} from "../collection/interface";
+import { IDSModel } from "../model/interface";
+import { IDSContext } from "../collection/interface";
 
 // FIXME: add options detailed interface
-export interface IDSAdapterIdentifierParams {
-    local?: boolean;                        // returns model's local identifier
-    create?: boolean;                       // returns creation identifier
-    context?: IDSContext;                   // context used for identifier creation
+export interface IDSAdapterDetailParams {
+    local?: boolean;                        // returns model's local detail
+    create?: boolean;                       // returns creation detail
+    context?: IDSContext;                   // context used for detail creation
     options?: any;                          // precisions for format
 }
 
 
-export type IDSAdapterFilterParams  = any;
+export type IDSAdapterFilterParams = any;
 export type IDSAdapterSorterParams = any;
 export type IDSAdapterPaginatorParams = any;
 
 
-export interface IDSAdapterSearchParams {
+export interface IDSAdapterListParams {
     filter?: IDSAdapterFilterParams;
     sorter?: IDSAdapterSorterParams;
     paginator?: IDSAdapterPaginatorParams;
@@ -24,11 +24,10 @@ export interface IDSAdapterSearchParams {
 }
 
 
-
 export interface IDSAdapter {
-    identifier(instance: IDSModel | number | string,   // instance or identifier used to build adapted identifier
-               params?: IDSAdapterIdentifierParams): any;
-    search(params: IDSAdapterSearchParams): any;
+    detail(instance: IDSModel | number | string,   // instance or detail used to build adapted detail
+           params?: IDSAdapterDetailParams): any;
+    list(params: IDSAdapterListParams): any;
 }
 
 

@@ -1,34 +1,34 @@
-import {IDSModel, IDSModelClass} from "../model/interface";
-import {Observable} from "rxjs/Observable";
-import {IDSBackend, IDSBackendProvider, IDSBackendClass} from "../backends/interface";
-import {IDSPersistence, IDSPersistenceProvider, IDSPersistenceClass} from "../persistence/interface";
-import {IDSAdapter, IDSAdapterProvider, IDSAdapterClass} from "../adapters/interface";
-import {IDSSerializer, IDSSerializerProvider, IDSSerializerClass} from "../serializers/interface";
+import { IDSModel, IDSModelClass } from "../model/interface";
+import { Observable } from "rxjs/Observable";
+import { IDSBackend, IDSBackendClass, IDSBackendProvider } from "../backends/interface";
+import { IDSPersistence, IDSPersistenceClass, IDSPersistenceProvider } from "../persistence/interface";
+import { IDSAdapter, IDSAdapterClass, IDSAdapterProvider } from "../adapters/interface";
+import { IDSSerializer, IDSSerializerClass, IDSSerializerProvider } from "../serializers/interface";
 import {
     IDSCollection,
+    IDSCollectionActionParams,
+    IDSCollectionContext,
     IDSCollectionCreateParams,
     IDSCollectionGetParams,
-    IDSCollectionSetup,
-    IDSCollectionActionParams,
-    IDSCollectionRemoveParams, IDSCollectionContext
+    IDSCollectionRemoveParams,
+    IDSCollectionSetup
 } from "./interface";
-import {IDSAuthentication, IDSAuthenticationProvider, IDSAuthenticationClass} from "../authentication/interface";
-import {IDSRegister} from "../register/interface";
-import {DSConfiguration} from "./configuration";
-import {IDSQueryset, IDSQuerysetClass, IDSQuerysetProvider} from "../queryset/interface";
-import {DSQueryset} from "../queryset/queryset";
-import {defaults, extend, isString} from "lodash";
-import {IDSSorterProvider, IDSSorterClass} from "../sorters/interface";
-import {IDSFilterProvider, IDSFilterClass} from "../filters/interface";
-import {IDSPaginatorProvider, IDSPaginatorClass} from "../paginators/interface";
-import {Optional} from "@angular/core";
+import { IDSAuthentication, IDSAuthenticationClass, IDSAuthenticationProvider } from "../authentication/interface";
+import { IDSRegister } from "../register/interface";
+import { DSConfig } from "../configuration";
+import { IDSQueryset, IDSQuerysetClass, IDSQuerysetProvider } from "../queryset/interface";
+import { DSQueryset } from "../queryset/queryset";
+import { defaults, extend, isString } from "lodash";
+import { IDSSorterClass, IDSSorterProvider } from "../sorters/interface";
+import { IDSFilterClass, IDSFilterProvider } from "../filters/interface";
+import { IDSPaginatorClass, IDSPaginatorProvider } from "../paginators/interface";
 
-export class DSCollection<T extends IDSModel> extends DSConfiguration implements IDSCollection<T> {
+export class DSCollection<T extends IDSModel> extends DSConfig<IDSCollectionSetup> implements IDSCollection<T> {
 
     public model: IDSModelClass<T>;
     public datasources: IDSRegister;
     public setup: any;
-    public context: {[index: string]: any};
+    public context: { [index: string]: any };
 
     public paginator_class: IDSPaginatorClass;
     public paginator_provider: IDSPaginatorProvider;
@@ -100,7 +100,7 @@ export class DSCollection<T extends IDSModel> extends DSConfiguration implements
             return this.save(instance);
         } else if (!params.volatile) {
             this.persistence.save(
-                this.adapter.identifier(instance, {create: true, context: context}),
+                this.adapter.detail(instance, {create: true, context: context}),
                 instance
             );
             return Observable.of(instance);
@@ -112,15 +112,15 @@ export class DSCollection<T extends IDSModel> extends DSConfiguration implements
 
     public save(instance: T): Observable<T> {
         let context: any = extend({}, this.context, (<any>instance)._context);
-        let identifier: any = this.adapter.identifier(instance, {context: context});
+        let identifier: any = this.adapter.detail(instance, {context: context});
         if (identifier == null) {
             // Pk is not defined, let's save this item
-            identifier = this.adapter.identifier(instance, {create: true, context: context});
+            identifier = this.adapter.detail(instance, {create: true, context: context});
             let tosave: any = this.serializer.serialize(instance, context, []);
             return <Observable<T>>this.backend.create(identifier, tosave, {context: context})
                 .map((fromdb) => {
                     instance.assign(this.serializer.deserialize(fromdb, {context: context}), context);
-                    identifier = this.adapter.identifier(instance, {context: context});
+                    identifier = this.adapter.detail(instance, {context: context});
                     this.persistence.save(identifier, instance, {context: context});
                     return <T>instance;
                 });
@@ -132,7 +132,7 @@ export class DSCollection<T extends IDSModel> extends DSConfiguration implements
 
     public update(instance: T, fields: string[] = []): Observable<T> {
         let context: any = extend({}, this.context, (<any>instance)._context);
-        let identifier: any = this.adapter.identifier(instance, {context: context});
+        let identifier: any = this.adapter.detail(instance, {context: context});
         if (identifier) {
             let tosave: any = this.serializer.serialize(instance, context, fields);
             if (fields.length > 0) {
@@ -157,7 +157,7 @@ export class DSCollection<T extends IDSModel> extends DSConfiguration implements
     // SEE: use params for query/headers ?
     public remove(instance: T | number | string, params: IDSCollectionRemoveParams = {}): Observable<any> {
         let context: any = extend({}, this.context, (<any>instance)._context);
-        let identifier: any = this.adapter.identifier(instance, {context: context, options: {query: params}});
+        let identifier: any = this.adapter.detail(instance, {context: context, options: {query: params}});
         if (identifier) {
             return this.backend.destroy(identifier, {context: context})
                 .do(() => {
@@ -169,7 +169,7 @@ export class DSCollection<T extends IDSModel> extends DSConfiguration implements
 
     public refresh(instance: T): Observable<T> {
         let context: any = extend({}, this.context, (<any>instance)._context);
-        let identifier: any = this.adapter.identifier(instance, {context: context});
+        let identifier: any = this.adapter.detail(instance, {context: context});
         if (identifier) {
             return this.backend.retrieve(identifier, {context: context})
                 .do((fromdb) => {
@@ -182,7 +182,7 @@ export class DSCollection<T extends IDSModel> extends DSConfiguration implements
 
     public get(pk: any, params: IDSCollectionGetParams = {}): Observable<T> {
         let context: any = extend({}, this.context, params.context || {});
-        let identifier = this.adapter.identifier(pk, {options: params.options, context: context});
+        let identifier = this.adapter.detail(pk, {options: params.options, context: context});
         if (identifier === null) {
             throw new Error("Unknow identifier, from " + pk);
         }
@@ -211,9 +211,9 @@ export class DSCollection<T extends IDSModel> extends DSConfiguration implements
     public action(instance: T, action: string, args: IDSCollectionActionParams): Observable<any> {
         let identifier: any;
         if (instance === null) {
-            identifier = this.adapter.search({context: this.context});
+            identifier = this.adapter.list({context: this.context});
         } else {
-            identifier = this.adapter.identifier(instance, {context: this.context});
+            identifier = this.adapter.detail(instance, {context: this.context});
         }
         let cargs: any = isString(args) ? {url: args} : args;
         let actargs = extend({}, cargs, {context: this.context});

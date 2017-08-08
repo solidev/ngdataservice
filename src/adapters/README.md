@@ -3,7 +3,10 @@
 ## Description
 
 A backend adapter provides the identification step between a model 
-instance, a context and a backend :
+instance and a backend.
+
+For example, with a REST model instance, it returns the REST API
+endpoint url associated with this object.
 
 ```typescript
 // Example with RestUrlAdapter 
@@ -14,38 +17,38 @@ let adapter = new DSRestUrlAdapter();
 // Existing item, basic mode (adding identifier to basePath)
 adapter.config = {basePath: "/train"};
 let train = { id: 12, name: "train" };
-expect(adapter.identifier(train))
+expect(adapter.detail(train))
   .to.equal("/trains/12");
 
 // Existing item, template mode (using itemPath, listPath, createPath)
 adapter.config = {itemPath: "/trains/${instance.id}/details"};
 let train = { id: 12, name: "train" };
-expect(adapter.identifier(train))
+expect(adapter.detail(train))
   .to.equal("/trains/12/details");
   
 // Existing item, using context
 adapter.config = {basePath: "/countries/${country.code}/trains"};
 train = { id: 12, name: "train" };
-expect(adapter.identifier(train, {context: {country: {code: "fr"}}}))
+expect(adapter.detail(train, {context: {country: {code: "fr"}}}))
   .to.equal("/countries/fr/trains/1");
 
 // Unsaved item, create mode
 adapter.config({basePath: "/trains"});
 train = {id: null, name: "new train"}
-expect(adapter.identifier(train, {create: true}))
+expect(adapter.detail(train, {create: true}))
   .to.equal("/trains");
 
 // Unsaved item, create mode using template and context
 adapter.config({createPath: "/countries/${country}/trains/prepare"});
 train = {id: null, name: "new train"}
-expect(adapter.identifier(train, {
+expect(adapter.detail(train, {
     context: {country: "fr"},
     create: true}))
   .to.equal("/countries/fr/trains/prepare");
 
 // Search / get list, basic mode
 adapter.config({basePath: "/trains"});
-expect(adapter.search({filter: {name: "train"}}))
+expect(adapter.list({filter: {name: "train"}}))
   .to.equal("/trains?name=train");
 
 ```
@@ -62,7 +65,7 @@ wagon with `id=12` corresponds to a REST url
     object to get translation parameters (example: 
     `IDSRestUrlAdapterConfig: {basePath: string}`
 
-- **`.identifier(instance: DSModel = null | string | number, params = {}): Identifier`** :
+- **`.detail(instance: DSModel = null | string | number, params = {}): Identifier`** :
     returns an instance identifier, result depends on given parameters :
     
     - `params.local = true|*false*` : returns local instance identifier
@@ -80,21 +83,21 @@ wagon with `id=12` corresponds to a REST url
     ```typescript
     import {DSRestUrlAdapter} from "ngdataservice";
     let ad = new DSRestUrlAdapter({basePath: "/trains"});
-    ad.identifier();               // null
-    ad.identifier({_pk: 12});      // {path: "/trains/12", ...}
-    ad.identifier(12);             // {path: "/trains/12", ...}
-    ad.identifier("12");           // {path: "/trains/12", ...}
-    ad.identifier({name: "tchou"},
+    ad.detail();               // null
+    ad.detail({_pk: 12});      // {path: "/trains/12", ...}
+    ad.detail(12);             // {path: "/trains/12", ...}
+    ad.detail("12");           // {path: "/trains/12", ...}
+    ad.detail({name: "tchou"},
                   {create: true}); // {path: "/trains", ...}
-    ad.identifier({_local: 123});  // null
-    ad.identifier({_local: 123},
+    ad.detail({_local: 123});  // null
+    ad.detail({_local: 123},
                   {local: true});  // {path: "?__local__/trains/123", ...}
     ```
     
     `params.context` is used to provide all necesary context for
     identifier generation. 
 
-- **`.search(params): any`** : returns a search identifier
+- **`.list(params): any`** : returns a search identifier
     from *filter*, sort, pagination and context params
 
 
@@ -125,12 +128,12 @@ trailing slash
 import DSRestUrlAdapter = DSRestUrlAdapter;
 let adapter = new DSRestUrlAdapter({basePath: "/api/v1/trains"});
 let train = {_pk 12, name: "train"};
-console.log(adapter.identifier(train));
+console.log(adapter.detail(train));
 // {path: '/api/v1/trains/12', query: {}, headers: {}}
 
-console.log(adapter.search())
+console.log(adapter.list())
 // {path: '/api/v1/trains', query: {}, headers: {}}
 
-console.log(adapter.search({name: "train"})
+console.log(adapter.list({name: "train"})
 // {path: '/api/v1/trains', query: {name: 'train'}, headers: {}}
 ```

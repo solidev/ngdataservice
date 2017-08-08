@@ -3,14 +3,15 @@
 ## Description
 
 
-Backend service provides operations between collections and databases :
+Backend service provides operations between collections and database
+ endpoints :
 
 - retrieve
-- list
+- list / search
 - create
 - update
 - destroy
-
+- other actions
 
 BackendService are injectable using `XXXX_BACKEND_CONFIG` parameters.
 

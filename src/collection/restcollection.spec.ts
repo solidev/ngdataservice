@@ -1,22 +1,24 @@
-import {expect} from "chai";
-import {REST_BACKEND_CONFIG, DSRestBackend} from "../backends/rest";
-import {DSJsonRenderer} from "../renderers/json";
-import {DSJsonParser} from "../parsers/json";
-import {TestBed, inject} from "@angular/core/testing";
-import {DSMemoryPersistence} from "../persistence/memory";
-import {DSDefaultSerializer} from "../serializers/default";
-import {DSTokenAuthentication} from "../authentication/tokenauth";
-import {DSRestCollectionSetup, DSRestCollection} from "./restcollection";
-import {DSRestUrlAdapterProvider} from "../adapters/resturl";
-import {DSModel} from "../model/model";
-import {DSDummySorterProvider} from "../sorters/dummy";
-import {DSDummyFilterProvider} from "../filters/dummy";
-import {DSDummyPaginatorProvider} from "../paginators/dummy";
-import {IDSModelClass} from "../model/interface";
-import {MOCK_REST_API_PROVIDER, DSMockRestApi} from "../testing/mockrestapi";
+import { expect } from "chai";
+import {
+    DSRestBackend, DSRestBackendSetup, REST_BACKEND_AUTHENTICATION, REST_BACKEND_CONFIG,
+    REST_BACKEND_RENDERER
+} from "../backends/rest";
+import { inject, TestBed } from "@angular/core/testing";
+import { DSMemoryPersistence } from "../persistence/memory";
+import { DSDefaultSerializer } from "../serializers/default";
+import { DSRestCollection, DSRestCollectionSetup } from "./restcollection";
+import { DSRestUrlAdapterProvider } from "../adapters/resturl";
+import { DSModel } from "../model/model";
+import { DSDummySorterProvider } from "../sorters/dummy";
+import { DSDummyFilterProvider } from "../filters/dummy";
+import { DSDummyPaginatorProvider } from "../paginators/dummy";
+import { IDSModelClass } from "../model/interface";
+import { DSMockRestApi, MOCK_REST_API_PROVIDER } from "../testing/mockrestapi";
 import "rxjs/observable/of";
 import "rxjs/operator/mergeMap";
-
+import { DSJsonParser } from "../parsers/json";
+import { DSJsonRenderer } from "../renderers/json";
+import { DSRestAuthentication, REST_BACKEND_PARSER } from "../ngdataservice";
 
 
 export class TrainCollection extends DSRestCollection<DSModel> {
@@ -37,19 +39,24 @@ describe("DSRestCollection", () => {
                 DSMockRestApi,
                 DSJsonParser,
                 DSJsonRenderer,
+                DSRestAuthentication,
+                DSRestBackendSetup,
                 {
                     provide: REST_BACKEND_CONFIG,
                     useValue: {host: "example.com", port: 8123, scheme: "https"}
                 },
+                {provide: REST_BACKEND_PARSER, useClass: DSJsonParser},
+                {provide: REST_BACKEND_RENDERER, useClass: DSJsonRenderer},
+                {provide: REST_BACKEND_AUTHENTICATION, useClass: DSRestAuthentication},
+                DSRestBackendSetup,
                 DSRestBackend,
-                DSTokenAuthentication,
                 DSDefaultSerializer,
                 DSMemoryPersistence,
                 DSDummyPaginatorProvider,
                 DSDummyFilterProvider,
                 DSDummySorterProvider,
                 DSRestUrlAdapterProvider,
-                DSRestCollectionSetup
+                DSRestCollectionSetup,
             ]
         });
     });

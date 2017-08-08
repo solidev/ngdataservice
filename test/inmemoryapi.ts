@@ -236,12 +236,12 @@ export class InMemoryBackendService {
   }
 
   /**
-   * Apply query/search parameters as a filter over the collection
+   * Apply query/list parameters as a filter over the collection
    * This impl only supports RegExp queries on string properties of the collection
    * ANDs the conditions together
    */
   protected applyQuery(collection:any[], query:URLSearchParams):any {
-    // extract filtering conditions - {propertyName, RegExps) - from query/search parameters
+    // extract filtering conditions - {propertyName, RegExps) - from query/list parameters
     let conditions:{name:string, rx:RegExp}[] = [];
     query.paramsMap.forEach((value:string[], name:string) => {
       value.forEach(v => conditions.push({name, rx: new RegExp(decodeURI(v), "i")}));

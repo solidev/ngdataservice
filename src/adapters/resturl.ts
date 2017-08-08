@@ -1,9 +1,9 @@
-import {IDSAdapter, IDSAdapterIdentifierParams, IDSAdapterProvider, IDSAdapterSearchParams} from "./interface";
-import {IDSRestIdentifier} from "../backends/rest";
-import {IDSModel} from "../model/interface";
-import {Inject, Injectable, InjectionToken} from "@angular/core";
-import {cloneDeep, extend, isNumber, isString, template} from "lodash";
-import {DSModel} from "../model/model";
+import { IDSAdapter, IDSAdapterDetailParams, IDSAdapterListParams, IDSAdapterProvider } from "./interface";
+import { IDSRestIdentifier } from "../backends/rest";
+import { IDSModel } from "../model/interface";
+import { Inject, Injectable, InjectionToken } from "@angular/core";
+import { cloneDeep, extend, isNumber, isString, template } from "lodash";
+import { DSModel } from "../model/model";
 
 export interface IDSRestUrlAdapterConfig {
     basePath?: string;
@@ -19,7 +19,6 @@ export interface IDSRestUrlAdapterConfig {
 export let REST_ADAPTER_CONFIG = new InjectionToken<IDSRestUrlAdapterConfig>("adapter.resturl.config");
 
 
-// FIXME: AOT: wait for https://github.com/angular/angular/issues/12631
 const DEFAULT_IDENTIFIER_PARAMS = {local: false, create: false};
 
 @Injectable()
@@ -29,13 +28,13 @@ export class DSRestUrlAdapter implements IDSAdapter {
     }
 
     /**
-     * Return instance identifier.
+     * Return instance detail.
      * @param instance
      * @param params
      * @returns {any}
      */
-    public identifier(instance: IDSModel | number | string = null,
-                      params: IDSAdapterIdentifierParams = DEFAULT_IDENTIFIER_PARAMS): IDSRestIdentifier {
+    public detail(instance: IDSModel | number | string = null,
+                  params: IDSAdapterDetailParams = DEFAULT_IDENTIFIER_PARAMS): IDSRestIdentifier {
         let id: any = null;
         let headers: any = {};
         let query: any = {};
@@ -95,7 +94,7 @@ export class DSRestUrlAdapter implements IDSAdapter {
      * @param params
      * @returns {{path: string, query: IDSAdapterFilterParams, headers: {}}}
      */
-    public search(params: IDSAdapterSearchParams = {}): any {
+    public list(params: IDSAdapterListParams = {}): any {
         let query = cloneDeep(params.filter);
         query = extend(query, params.sorter || {});
         query = extend(query, params.paginator || {});
