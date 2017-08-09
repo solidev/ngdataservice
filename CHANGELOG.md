@@ -1,3 +1,18 @@
+<a name="0.2.0-beta.1"></a>
+# [0.2.0-beta.1](https://gitlab.com/solidev/ngdataservice/compare/v0.1.0-beta.2...v0.2.0-beta.1) (2017-08-09)
+
+
+### build
+
+* **OpaqueTokens:** OpaqueTokens replaced by InjectionTokens (this makes ngdataservice angular>=4 o ([08b71c1](https://gitlab.com/solidev/ngdataservice/commit/08b71c1))
+
+
+### BREAKING CHANGES
+
+* **OpaqueTokens:** Breaks angular<4 compatibility
+
+
+
 <a name="0.1.2"></a>
 ## [0.1.2](https://gitlab.com/solidev/ngdataservice/compare/v0.1.1...v0.1.2) (2017-08-06)
 
