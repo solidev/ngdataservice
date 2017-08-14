@@ -11,7 +11,7 @@
     "coverage:reporthtml": "remap-istanbul -i coverage/coverage.json -o coverage/html -t html -e node_modules,vendor.ts",
     "coverage:reporttxt": "remap-istanbul -i coverage/coverage.json -t text-summary -o coverage/summary.txt -e node_modules,vendor.ts && cat coverage/summary.txt",
     "clean": "shx rm -rf aot dist-umd dist-commonjs dist-esm",
-    "build": "npm run clean && ngc && tsc -m es6 --outDir dist-esm && webpack",
+    "build": "npm run clean && ngc -p tsconfig.json && tsc -p tsconfig.json -m es6 --outDir dist-esm && webpack",
     "build:dev": "tsc -w -p tsconfig.json",
     "changelog": "conventional-changelog  -p angular -i CHANGELOG.md -s -r 1  -c config/changelog.json",
     "preversion": "npm test",
