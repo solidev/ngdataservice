@@ -5,7 +5,7 @@ import { IDSPersistence, IDSPersistenceClass, IDSPersistenceProvider } from "../
 import { IDSAdapter, IDSAdapterClass, IDSAdapterProvider } from "../adapters/interface";
 import { IDSSerializer, IDSSerializerClass, IDSSerializerProvider } from "../serializers/interface";
 import {
-    IDSCollection,
+    IDSCollection, IDSCollectionActionFullParams,
     IDSCollectionActionParams,
     IDSCollectionContext,
     IDSCollectionCreateParams,
@@ -207,14 +207,15 @@ export class DSCollection<T extends IDSModel> extends DSConfig<IDSCollectionSetu
     }
 
     public action(instance: T, action: string, args: IDSCollectionActionParams): Observable<any> {
+        let cargs: IDSCollectionActionFullParams = isString(args) ? {url: args, body: {}} : args;
+        let context: any = extend({}, this.context, cargs.context || {});
         let identifier: any;
         if (instance === null) {
-            identifier = this.adapter.list({context: this.context});
+            identifier = this.adapter.list({context: context});
         } else {
-            identifier = this.adapter.detail(instance, {context: this.context});
+            identifier = this.adapter.detail(instance, {context: context});
         }
-        let cargs: any = isString(args) ? {url: args} : args;
-        let actargs = extend({}, cargs, {context: this.context});
+        let actargs = extend({}, cargs, {context: context});
         return this.backend.action(identifier, action, actargs);
     }
 

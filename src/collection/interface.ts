@@ -82,6 +82,7 @@ export type IDSCollectionRefreshParams = any;
 export interface IDSCollectionActionFullParams {
     url: string;
     body: any;
+    context?: any;
 }
 export type IDSCollectionActionParams = IDSCollectionActionFullParams | string;
 

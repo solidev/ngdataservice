@@ -252,4 +252,7 @@ describe("DSCollection", () => {
             done();
         });
     });
+
+    // TODO: add action() tests
+
 });
