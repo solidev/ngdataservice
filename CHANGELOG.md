@@ -1,3 +1,13 @@
+<a name="0.2.0-beta.2"></a>
+# [0.2.0-beta.2](https://gitlab.com/solidev/ngdataservice/compare/v0.2.0-beta.1...v0.2.0-beta.2) (2017-08-25)
+
+
+### Bug Fixes
+
+* **Collection.action:** Add context param to collection.action arguments ([959aae6](https://gitlab.com/solidev/ngdataservice/commit/959aae6))
+
+
+
 <a name="0.2.0-beta.1"></a>
 # [0.2.0-beta.1](https://gitlab.com/solidev/ngdataservice/compare/v0.1.0-beta.2...v0.2.0-beta.1) (2017-08-09)
 
