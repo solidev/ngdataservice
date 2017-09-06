@@ -6,6 +6,9 @@ export interface IDSRequestRenderer {
     render(data: any, params?: IDSRequestRendererRenderParams): any;
 }
 
+export interface IDSRequestRendererClass {
+    new(params: any): IDSRequestRenderer;
+}
 export interface IDSRequestRendererProvider {
     provide(params: any): IDSRequestRenderer;
 }

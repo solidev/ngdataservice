@@ -1,6 +1,8 @@
 npm-debug.log
 .idea
 node_modules
-dist
+dist-commonjs
+dist-esm
+dist-umd
 aot
 coverage

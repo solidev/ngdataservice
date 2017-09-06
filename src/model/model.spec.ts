@@ -1,7 +1,7 @@
 import {expect} from "chai";
 import * as sinon from "sinon";
 import {DSModel} from "./model";
-import {Observable} from "rxjs";
+import {Observable} from "rxjs/Observable";
 
 describe("DSModel", () => {
     describe("field assignment and validation", () => {

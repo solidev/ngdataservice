@@ -8,96 +8,132 @@
 
 [![Build Status](https://saucelabs.com/browser-matrix/ngdatastore.svg)](https://saucelabs.com/beta/builds/ff5dc073fc624478bd5f648eda45033d)
 
-**This is a Work In Progress project - do not use it until it reaches at least `0.1`**
+**This is a Work In Progress project, api is not yet fully stabilized**
 
-# ngdataservice : data access for angular2+
+Tested with **angular@4.3.1**. AOT ready.
+
 This project is hosted on https://gitlab.com/solidev/ngdataservice
-Issues, builds and pull(merge) requests are on gitlab side, github
-repository is read-only.
+and mirrored to github. Issues, builds and pull(merge) requests are
+on gitlab side, github repository is read-only.
+
+# ngdataservice : data access for angular4+
+
+Ngdataservice provides collections and models behaviour (create, save,
+update, delete, search, ...).
 
 ## Installation
 
-Tested with **angular@4.1.2** / AOT OKe : ```npm install ngdataservice --save```
+```npm install ngdataservice --save``` or ```yarn add ngdataservice```
 
 ## Usage
 
-With webpack : as is (see [example](./example/simple.webpack/src/app/app.component.ts));
-with systemjs : (see [example](./example/simple.system/config.js))
-```
-map: { ... "ngdataservice": "./node_modules/ngdataservice",  ... },
-packages: { "ngdataservice": { main: "index.js", defaultExtension: 'js' } ... }
-```
+- with webpack : see [example](./example/simple.webpack/src/app/app.component.ts));
+- with systemjs : see [example](./example/simple.system/config.js))
 
-No umd bundles are provided.
+    ```
+    map: { ... "ngdataservice": "./node_modules/ngdataservice",  ... },
+    packages: { "ngdataservice": { main: "index.js", defaultExtension: 'js' } ... }
+    ```
 
-## Example : default REST backend
+No umd bundles provided.
+
+## Example with REST backend
 
 This example uses the default REST setup :
 
 - REST api backend (GET/POST/PUT/PATCH/DELETE)
 - flat url adapter : urls in `http://apiurl/item/{id}` form
 - persistence backend : shared memory cache for objects
-- default serializer : removes all _ and $ prefixed properties of models
+- default serializer : removes all _ and $ prefixed properties of
+  models
 - renderer and parser : json content-type, not wrapped
 - no pagination for list results
 
-### Models declaration
+### Models and collection declaration
+#### Model declaration
+
+Models are the base blocks. Model declaration must provide model fields,
+and custom properties if needed. The common model behaviour (save,
+create, ...) is inherited from `DSModel`.
 
 ```typescript
-// file models/train.service.ts
-// ----------------------------
-import {DSModel, DSCollection, DSRestCollectionSetup} from "ngdataservice";
+// file models/train.model.ts
+
+import {DSModel} from "ngdataservice";
 import {Injectable} from "@angular/core";
 
 // Model declaration
 export class Train extends DSModel {
+    
     // Model fields
-    public id: number;
-    public title: string;
-    // Model methods
-    public honk(): void {
+    id: number;
+    title: string;
+    
+    // Custom model methods
+    honk() {
         console.log(`${this.title} is honking`);
     }
 }
+```
+
+#### Collection declaration
+
+Collections are the bridge between models and database. They provide
+CRUD operations from `DSCollection` inheritance.
+
+```typescript
+// file collections/train.collection.ts
+import {DSCollection, REST_COLLECTION_SETUP} from "ngdataservice";
+import {Injectable} from "@angular/core";
+import {Train} from "../models/train.model";
 
 // Train collections provider
 @Injectable()
 export class TrainService extends DSCollection<Train> {
-    public adapter_config = {basePath: "/trains"};
-    public model = Train;
+    
+    // Associated model
+    model = Train;
+        
+    // Custom setup values
+    adapter_config = {basePath: "/trains"};
+    
     // Needed to inject default settings
-    constructor(public setup: DSRestCollectionSetup) {
+    constructor(public setup: REST_COLLECTION_SETUP) {
         super(setup);
     }
 }
 
 ```
 
+All default collection parameters are provided through `DSRestCollectionSetup`,
+and custom parameters are given as collection properties.
+
 ### Module and providers
 
+Global parameters for collections can be setup at module level, and
+then used through dependency injection.
+
 ```typescript
-// file app.module.ts
+// file data.module.ts
 // ------------------
 
 // import Rest module and config providers
-import {RestModule, REST_ADAPTER_CONFIG} from "ngdataservice";
+import {RestModule, REST_BACKEND_CONFIG} from "ngdataservice";
 
-import {NgModule} from "@angular/core";
+import {NgModule, CommonModule} from "@angular/core";
 
 
 import {TrainService} from "models/train.service";
 
 @NgModule({
-    imports: [BrowserModule, RestModule],
-    declarations: [AppComponent],
-    bootstrap: [AppComponent],
+    imports: [CommonModule, RestModule],
     providers: [
-        // providing backend config
+        // providing some global config
         {provide: REST_BACKEND_CONFIG, useValue: {url: "https://example.com/api/v1"}},
         // our train service
         TrainService]
 })
-export class AppModule {
+export class DataModule {
 }
 ```
 
@@ -121,7 +157,7 @@ import {Train, TrainService} from "models/train.service";
         <li><a (click)="retrieveAction()">Retrieve</a></li>
         <li>...</li>
     </ul>
-    `;
+    `
 })
 export class TrainComponent {
     public train: Train;
@@ -247,6 +283,8 @@ TODO
 TODO
 
 ## Stack
+
+TODO: drawing
 
 ### Backend
 

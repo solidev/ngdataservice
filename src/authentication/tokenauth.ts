@@ -1,7 +1,7 @@
 // Sample authentication service.
-import {IDSAuthentication, IDSAuthenticationProvider} from "./interface";
-import {Headers} from "@angular/http";
-import {Injectable} from "@angular/core";
+import { IDSAuthentication, IDSAuthenticationProvider } from "./interface";
+import { Headers } from "@angular/http";
+import { Injectable } from "@angular/core";
 
 
 @Injectable()
@@ -16,13 +16,14 @@ export class DSTokenAuthentication implements IDSAuthentication {
         this._authenticated = true;
     }
 
-    public anonymous():void {
+    public anonymous(): void {
         this._token = null;
         this._header = null;
         this._authenticated = false;
     }
 
     public setAuthHeaders(headers: Headers): Headers {
+        console.log("Authenticating request ?", this._token, this._authenticated);
         if (this._authenticated) {
             headers.set(this._header, this._token);
         }
@@ -39,5 +40,17 @@ export class DSTokenAuthentication implements IDSAuthentication {
 export class DSTokenAuthenticationProvider implements IDSAuthenticationProvider {
     public provide(): IDSAuthentication {
         return new DSTokenAuthentication();
+    }
+}
+
+@Injectable()
+export class DSRestAuthentication extends DSTokenAuthentication {
+
+}
+
+@Injectable()
+export class DSRestAuthenticationProvider implements IDSAuthenticationProvider {
+    public provide(): IDSAuthentication {
+        return new DSRestAuthentication();
     }
 }

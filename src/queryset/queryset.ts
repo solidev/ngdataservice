@@ -5,12 +5,28 @@ import {IDSQueryset} from "./interface";
 import {IDSFilter, IDSFilterClass, IDSFilterProvider} from "../filters/interface";
 import {IDSSorter, IDSSorterClass, IDSSorterProvider} from "../sorters/interface";
 import {Observable} from "rxjs/Observable";
+import "rxjs/add/observable/of";
 import {ReplaySubject} from "rxjs/ReplaySubject";
-import {DSConfiguration} from "../collection/configuration";
+import {DSConfig} from "../configuration";
 import {defaults, pick, extend} from "lodash";
-import {IDSAdapterSearchParams} from "../adapters/interface";
+import {IDSAdapterListParams} from "../adapters/interface";
 
-export class DSQueryset<T extends IDSModel> extends DSConfiguration implements IDSQueryset<T> {
+export class IDSQuerysetSetup {
+    paginator?: IDSPaginator;
+    paginator_class?: IDSPaginatorClass;
+    paginator_provider?: IDSPaginatorProvider;
+    filter?: IDSFilter;
+    filter_class?: IDSFilterClass;
+    filter_provider?: IDSFilterProvider;
+    sorter?: IDSSorter;
+    sorter_class?: IDSSorterClass;
+    sorter_provider?: IDSSorterProvider;
+
+}
+
+
+
+export class DSQueryset<T extends IDSModel> extends DSConfig<IDSQuerysetSetup> implements IDSQueryset<T> {
 
     public results: Observable<IDSModelList<T>>;
 
@@ -74,13 +90,13 @@ export class DSQueryset<T extends IDSModel> extends DSConfiguration implements I
                 )
             );
         } else {
-            let searchArgs: IDSAdapterSearchParams = {
+            let searchArgs: IDSAdapterListParams = {
                 filter: this.filter.backendFilter,
                 paginator: this.paginator.backendPaginate,
                 sorter: this.sorter.backendSorter,
                 context: context
             };
-            let search = this.collection.adapter.search(searchArgs);
+            let search = this.collection.adapter.list(searchArgs);
             this.collection.backend.list(search, {context: context})
                 .subscribe((result) => {
                     console.log("Got result", result);
@@ -90,7 +106,7 @@ export class DSQueryset<T extends IDSModel> extends DSConfiguration implements I
                     for (let item of items) {
                         let itemdata = this.collection.serializer.deserialize(item, {context: context});
                         let temp = new this.collection.model(this.collection, itemdata, context);
-                        let identifier = this.collection.adapter.identifier(temp, {context: context});
+                        let identifier = this.collection.adapter.detail(temp, {context: context});
                         let instance = this.collection.persistence.retrieve(
                             identifier,
                             {context: context}

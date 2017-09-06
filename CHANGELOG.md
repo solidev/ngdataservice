@@ -1,3 +1,55 @@
+<a name="0.2.0"></a>
+# [0.2.0](https://dev.solidev.net/solidev/ngdataservice/compare/v0.2.0-beta.2...v0.2.0) (2017-09-06)
+
+### build
+
+* **package.json** updated peer & dev deps for proper semver
+
+<a name="0.2.0-beta.2"></a>
+# [0.2.0-beta.2](https://gitlab.com/solidev/ngdataservice/compare/v0.2.0-beta.1...v0.2.0-beta.2) (2017-08-25)
+
+
+### Bug Fixes
+
+* **Collection.action:** Add context param to collection.action arguments ([959aae6](https://gitlab.com/solidev/ngdataservice/commit/959aae6))
+
+
+
+<a name="0.2.0-beta.1"></a>
+# [0.2.0-beta.1](https://gitlab.com/solidev/ngdataservice/compare/v0.1.0-beta.2...v0.2.0-beta.1) (2017-08-09)
+
+
+### build
+
+* **OpaqueTokens:** OpaqueTokens replaced by InjectionTokens (this makes ngdataservice angular>=4 o ([08b71c1](https://gitlab.com/solidev/ngdataservice/commit/08b71c1))
+
+
+### BREAKING CHANGES
+
+* **OpaqueTokens:** Breaks angular<4 compatibility
+
+
+
+<a name="0.1.2"></a>
+## [0.1.2](https://gitlab.com/solidev/ngdataservice/compare/v0.1.1...v0.1.2) (2017-08-06)
+
+
+
+<a name="0.1.1"></a>
+## [0.1.1](https://gitlab.com/solidev/ngdataservice/compare/v0.1.0-beta.2...v0.1.1) (2017-08-06)
+
+
+### build
+
+* **OpaqueTokens:** OpaqueTokens replaced by InjectionTokens (this makes ngdataservice angular>=4 o ([08b71c1](https://gitlab.com/solidev/ngdataservice/commit/08b71c1))
+
+
+### BREAKING CHANGES
+
+* **OpaqueTokens:** Breaks angular<4 compatibility
+
+
+
 <a name="0.1.0-beta.5"></a>
 # [0.1.0-beta.5](https://gitlab.com/solidev/ngdataservice/compare/v0.1.0-beta.4...v0.1.0-beta.5) (2017-05-19)
 

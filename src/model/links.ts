@@ -1,4 +1,6 @@
-import {ReplaySubject, Observable} from "rxjs";
+import {Observable} from "rxjs/Observable";
+import "rxjs/add/observable/of";
+import {ReplaySubject} from "rxjs/ReplaySubject";
 import {cloneDeep} from "lodash";
 import {IDSModel} from "./interface";
 import {IDSCollection} from "../collection/interface";

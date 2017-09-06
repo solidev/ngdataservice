@@ -2,7 +2,10 @@ import {expect} from "chai";
 import * as sinon from "sinon";
 import {DSModel} from "../model/model";
 import {DSCollection} from "./collection";
-import {Observable} from "rxjs";
+import {Observable} from "rxjs/Observable";
+import "rxjs/add/observable/of";
+import "rxjs/add/operator/mergeMap";
+
 
 
 describe("DSCollection", () => {
@@ -134,7 +137,7 @@ describe("DSCollection", () => {
         let ds: DSCollection<DSModel>;
 
         beforeEach(() => {
-            mockAdapter = {identifier: sinon.stub()};
+            mockAdapter = {detail: sinon.stub()};
             mockBackend = {
                 create: (obj) => {
                     obj.id = 1;
@@ -167,7 +170,7 @@ describe("DSCollection", () => {
 
 
         it("should create an empty object, storing it in persistence", (done) => {
-            mockAdapter.identifier.returns({path: "?__local__/api/123"});
+            mockAdapter.detail.returns({path: "?__local__/api/123"});
             ds.create().subscribe((obj) => {
                 expect(obj).to.be.instanceOf(DSModel);
                 expect(mockPersistence.save.called).to.be.true;
@@ -183,7 +186,7 @@ describe("DSCollection", () => {
             });
         });
         it("should create and save an empty object", (done) => {
-            mockAdapter.identifier
+            mockAdapter.detail
                 .onFirstCall().returns(null)
                 .onSecondCall().returns("/api")
                 .onThirdCall().returns("/api/1");
@@ -202,7 +205,7 @@ describe("DSCollection", () => {
         });
 
         it("should save(update) an existing object", (done) => {
-            mockAdapter.identifier.returns("/api/1");
+            mockAdapter.detail.returns("/api/1");
             sinon.stub(mockSerializer, "serialize")
                 .returns({id: 1, name: "train"});
             sinon.stub(mockSerializer, "deserialize")
@@ -219,14 +222,14 @@ describe("DSCollection", () => {
         });
 
         it("should not update a non-existing object", (done) => {
-            mockAdapter.identifier.returns(null);
+            mockAdapter.detail.returns(null);
             let obj = new DSModel(this, {name: "train"});
             expect(ds.update.bind(ds, [obj])).to.throw("Cannot update unsaved item");
             done();
         });
 
         it("should delete an existing existing object", (done) => {
-            mockAdapter.identifier.returns("/api/1");
+            mockAdapter.detail.returns("/api/1");
             sinon.stub(mockSerializer, "serialize")
                 .returns({id: 1, name: "train"});
             sinon.stub(mockSerializer, "deserialize")
@@ -243,10 +246,13 @@ describe("DSCollection", () => {
         });
 
         it("should not remove a non-existing object", (done) => {
-            mockAdapter.identifier.returns(null);
+            mockAdapter.detail.returns(null);
             let obj = new DSModel(this, {name: "train"});
             expect(ds.remove.bind(ds, [obj])).to.throw("Cannot delete unsaved item");
             done();
         });
     });
+
+    // TODO: add action() tests
+
 });
