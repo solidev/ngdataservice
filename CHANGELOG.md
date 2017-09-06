@@ -1,3 +1,10 @@
+<a name="0.2.0"></a>
+# [0.2.0](https://dev.solidev.net/solidev/ngdataservice/compare/v0.2.0-beta.2...v0.2.0) (2017-09-06)
+
+### build
+
+* **package.json** updated peer & dev deps for proper semver
+
 <a name="0.2.0-beta.2"></a>
 # [0.2.0-beta.2](https://gitlab.com/solidev/ngdataservice/compare/v0.2.0-beta.1...v0.2.0-beta.2) (2017-08-25)
 
