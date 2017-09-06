@@ -1,11 +1,17 @@
 image: yarnpkg/node-yarn:latest
 
-test:
-  script:
-   - yarn install
-   - npm test
+stages:
+  - build
+  - test
 
-build_npm:
+build:
+  stage: build
   script:
     - yarn install
     - npm run build
+
+test:
+  stage: test
+  script:
+   - yarn install
+   - npm test
