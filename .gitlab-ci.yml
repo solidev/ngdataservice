@@ -1,9 +1,5 @@
 image: yarnpkg/node-yarn:latest
 
-cache:
-  paths:
-  - node_modules/
-
 test:
   script:
    - yarn install
