@@ -1,20 +1,20 @@
-[![build status](https://gitlab.com/solidev/ngdataservice/badges/develop/build.svg)](https://gitlab.com/solidev/ng2datastore/commits/develop)
-[![coverage report](https://gitlab.com/solidev/ngdataservice/badges/develop/coverage.svg)](https://gitlab.com/solidev/ngdataservice/commits/develop)
+[![build status](https://dev.solidev.net/solidev/ngdataservice/badges/develop/build.svg)](https://dev.solidev.net/solidev/ngdataservice/commits/develop)
+[![coverage report](https://dev.solidev.net/solidev/ngdataservice/badges/develop/coverage.svg)](https://dev.solidev.net/solidev/ngdataservice/commits/develop)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
-[![Sauce Test Status](https://saucelabs.com/buildstatus/solidev)](https://saucelabs.com/u/solidev)
-[![Dependency Status](https://www.versioneye.com/user/projects/589504dfa35eb600456de2d7/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/589504dfa35eb600456de2d7)
-
+[![Dependency Status](https://www.versioneye.com/user/projects/59afb398368b080014d24ba5/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/59afb398368b080014d24ba5)
+<!--[![Sauce Test Status](https://saucelabs.com/buildstatus/solidev)](https://saucelabs.com/u/solidev)-->
+<!--
 [![Sauce Test Status](https://saucelabs.com/browser-matrix/solidev.svg)](https://saucelabs.com/u/solidev)
 
 [![Build Status](https://saucelabs.com/browser-matrix/ngdatastore.svg)](https://saucelabs.com/beta/builds/ff5dc073fc624478bd5f648eda45033d)
-
+-->
 **This is a Work In Progress project, api is not yet fully stabilized**
 
-Tested with **angular@4.3.1**. AOT ready.
+Tested with **angular@4.x.x**. AOT ready.
 
-This project is hosted on https://gitlab.com/solidev/ngdataservice
-and mirrored to github. Issues, builds and pull(merge) requests are
-on gitlab side, github repository is read-only.
+This project is hosted on gitlab : https://dev.solidev.net/solidev/ngdataservice and mirrored to github. Issues,
+builds and pull(merge) requests are on gitlab side, for now
+github repository is read-only.
 
 # ngdataservice : data access for angular4+
 
