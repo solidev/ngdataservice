@@ -4,6 +4,7 @@ import {IDSCollection, IDSCollectionActionParams} from "../collection/interface"
 import {IDSRegister} from "../register/interface";
 import {omitBy, extend} from "lodash";
 import "rxjs/add/observable/of";
+import { IDSFieldList } from "../fields/interface";
 
 
 const DEFAULT_VALIDATION_OPTIONS: IDSValidationOptions = {validate: true, async: true};
@@ -12,6 +13,7 @@ const DEFAULT_VALIDATION_OPTIONS: IDSValidationOptions = {validate: true, async:
  * Provides base functions for save, remove, refresh and ?update object based functions.
  */
 export class DSModel implements IDSModel {
+    public _fields: IDSFieldList;
     protected _collection: IDSCollection<DSModel>;
     protected _datasources: IDSRegister;
     public _context: any;

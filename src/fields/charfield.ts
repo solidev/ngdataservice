@@ -1,32 +1,40 @@
-import {DSFieldMetadataKey} from "./interface";
-export function CharField(params: any): any {
-    let setmeta = Reflect.metadata(DSFieldMetadataKey, {type: "integer", params: params});
-    console.log("Out", setmeta);
-    return (target: any, key: string) => {
-        let _val = this[key];
-        // property getter
-        let getter = function () {
-            console.log(`Get: ${key} => ${_val}`);
-            return _val;
-        };
+import { DSFieldMetadataKey } from "./interface";
+import { IDSModel } from "../model/interface";
+import { ValidatorFn, Validators } from "@angular/forms";
 
-        // property setter
-        let setter = function (newVal) {
-            console.log(`Set: ${key} => ${newVal}`);
-            _val = newVal;
-        };
+export interface IDSCharFieldParams {
+    required?: boolean;
+    min_length?: number;
+    max_length?: number;
+    validators?: ValidatorFn[];
+}
 
-        // Delete property.
-        if (delete this[key]) {
-
-            // Create new property with getter and setter
-            Object.defineProperty(target, key, {
-                get: getter,
-                set: setter,
-                enumerable: true,
-                configurable: true
-            });
+export function DSCharField(params: IDSCharFieldParams): any {
+    let setmeta = Reflect.metadata(DSFieldMetadataKey,
+        {type: "charfield", params: params});
+    return (target: IDSModel, key: string) => {
+        // Set validators
+        let validators = [];
+        if (params.validators) {
+            validators = params.validators;
         }
+        if (params.required) {
+            validators.push(Validators.required);
+        }
+        if (params.min_length !== null) {
+            validators.push(Validators.minLength(params.min_length));
+        }
+        if (params.max_length !== null) {
+            validators.push(Validators.maxLength(params.max_length));
+        }
+        if (!target._fields) {
+            target._fields = {};
+        }
+        target._fields[key] = {
+            type: "charfield",
+            validators: validators,
+            asyncvalidators: []
+        };
 
         // Store metadata
         setmeta(target, key);

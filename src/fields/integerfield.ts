@@ -1,32 +1,43 @@
-import {DSFieldMetadataKey} from "./interface";
-export function IntegerField(params: any): any {
-    let setmeta = Reflect.metadata(DSFieldMetadataKey, {type: "integer", params: params});
-    console.log("Out", setmeta);
-    return (target: any, key: string) => {
-        let _val = this[key];
-        // property getter
-        let getter = function () {
-            console.log(`Get: ${key} => ${_val}`);
-            return _val;
-        };
+import { DSFieldMetadataKey } from "./interface";
+import { IDSModel } from "../model/interface";
+import { Validators, ValidatorFn } from "@angular/forms";
 
-        // property setter
-        let setter = function (newVal) {
-            console.log(`Set: ${key} => ${newVal}`);
-            _val = newVal;
-        };
+export interface IDSIntegerFieldParams {
+    required?: boolean;
+    minimum?: number;
+    maximum?: number;
+    validators?: ValidatorFn[];
 
-        // Delete property.
-        if (delete this[key]) {
+}
 
-            // Create new property with getter and setter
-            Object.defineProperty(target, key, {
-                get: getter,
-                set: setter,
-                enumerable: true,
-                configurable: true
-            });
+
+export function DSIntegerField(params: IDSIntegerFieldParams): any {
+    let setmeta = Reflect.metadata(DSFieldMetadataKey,
+        {type: "integer", params: params});
+    return (target: IDSModel, key: string) => {
+        // Set validators
+        let validators = [];
+        if (params.validators) {
+            validators = params.validators;
         }
+        if (params.required) {
+            validators.push(Validators.required);
+        }
+        if (params.minimum !== null) {
+            validators.push(Validators.min(params.minimum));
+        }
+        if (params.maximum !== null) {
+            validators.push(Validators.max(params.maximum));
+        }
+        if (!target._fields) {
+            target._fields = {};
+        }
+        target._fields[key] = {
+            type: "integer",
+            validators: validators,
+            asyncvalidators: []
+        };
+
 
         // Store metadata
         setmeta(target, key);
