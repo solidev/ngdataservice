@@ -4,5 +4,7 @@ node_modules
 dist-commonjs
 dist-esm
 dist-umd
+dist
+.ng_build
 aot
 coverage
