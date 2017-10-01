@@ -10,8 +10,6 @@ export interface IDSCharFieldParams {
 }
 
 export function DSCharField(params: IDSCharFieldParams): any {
-    let setmeta = Reflect.metadata(DSFieldMetadataKey,
-        {type: "charfield", params: params});
     return (target: IDSModel, key: string) => {
         // Set validators
         let validators = [];
@@ -35,8 +33,5 @@ export function DSCharField(params: IDSCharFieldParams): any {
             validators: validators,
             asyncvalidators: []
         };
-
-        // Store metadata
-        setmeta(target, key);
     };
 }

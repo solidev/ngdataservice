@@ -2,7 +2,7 @@ import {Observable} from "rxjs/Observable";
 import {IDSModel, IDSValidationResult, IDSValidationOptions, IDSRemoveParams} from "./interface";
 import {IDSCollection, IDSCollectionActionParams} from "../collection/interface";
 import {IDSRegister} from "../register/interface";
-import {omitBy, extend} from "lodash";
+import {omitBy, extend} from "lodash-es";
 import "rxjs/add/observable/of";
 import { IDSFieldList } from "../fields/interface";
 

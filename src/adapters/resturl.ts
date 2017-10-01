@@ -2,7 +2,7 @@ import { IDSAdapter, IDSAdapterDetailParams, IDSAdapterListParams, IDSAdapterPro
 import { IDSRestIdentifier } from "../backends/rest";
 import { IDSModel } from "../model/interface";
 import { Inject, Injectable, InjectionToken } from "@angular/core";
-import { cloneDeep, extend, isNumber, isString, template } from "lodash";
+import { cloneDeep, extend, isNumber, isString, template } from "lodash-es";
 import { DSModel } from "../model/model";
 
 export interface IDSRestUrlAdapterConfig {

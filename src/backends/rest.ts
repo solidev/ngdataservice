@@ -1,16 +1,15 @@
-import { Headers, Http, RequestMethod, RequestOptions, URLSearchParams } from "@angular/http";
-import { Observable } from "rxjs/Observable";
-import { IDSBackend, IDSBackendConfig, IDSBackendProvider } from "./interface";
-import { Inject, Injectable, InjectionToken, Optional } from "@angular/core";
+import {Headers, Http, RequestMethod, RequestOptions, URLSearchParams} from "@angular/http";
+import {Observable} from "rxjs/Observable";
+import {IDSBackend, IDSBackendConfig, IDSBackendProvider} from "./interface";
+import {Inject, Injectable, InjectionToken, Optional} from "@angular/core";
 import "rxjs/add/operator/map";
 import "rxjs/observable/of";
 import "rxjs/operator/mergeMap";
-import { capitalize, defaults, isString } from "lodash";
-import { DSConfig } from "../configuration";
-import { IDSResponseParser, IDSResponseParserProvider } from "../parsers/interface";
-import { IDSRequestRenderer, IDSRequestRendererClass } from "../renderers/interface";
-import { IDSAuthentication, IDSAuthenticationClass } from "../authentication/interface";
-import { IDSAuthenticationProvider, IDSRequestRendererProvider, IDSResponseParserClass } from "../ngdataservice";
+import {capitalize, defaults, isString} from "lodash-es";
+import {DSConfig} from "../configuration";
+import {IDSResponseParser, IDSResponseParserClass, IDSResponseParserProvider} from "../parsers/interface";
+import {IDSRequestRenderer, IDSRequestRendererClass, IDSRequestRendererProvider} from "../renderers/interface";
+import {IDSAuthentication, IDSAuthenticationClass, IDSAuthenticationProvider} from "../authentication/interface";
 
 /**
  * Rest detail : parts of an url.
@@ -65,6 +64,7 @@ export class DSRestBackend extends DSConfig<IDSBackendConfig> implements IDSBack
     private _renderer: IDSRequestRenderer;
     private _parser: IDSResponseParser;
     private _authentication: IDSAuthentication;
+
     /* tslint:enable */
 
     constructor(private _http: Http,

@@ -1,6 +1,6 @@
 import {Inject, Injectable, InjectionToken, Optional} from "@angular/core";
 import {IDSPersistence, IDSPersistenceProvider} from "./interface";
-import {filter, isFunction, map, uniqueId} from "lodash";
+import {filter, isFunction, map, uniqueId} from "lodash-es";
 import {IDSFilterFunction} from "../filters/interface";
 import {IDSSorterFunction} from "../sorters/interface";
 

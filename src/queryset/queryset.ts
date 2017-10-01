@@ -8,7 +8,7 @@ import {Observable} from "rxjs/Observable";
 import "rxjs/add/observable/of";
 import {ReplaySubject} from "rxjs/ReplaySubject";
 import {DSConfig} from "../configuration";
-import {defaults, pick, extend} from "lodash";
+import {defaults, pick, extend} from "lodash-es";
 import {IDSAdapterListParams} from "../adapters/interface";
 
 export class IDSQuerysetSetup {

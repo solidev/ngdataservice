@@ -18,7 +18,7 @@ import { IDSRegister } from "../register/interface";
 import { DSConfig } from "../configuration";
 import { IDSQueryset, IDSQuerysetClass, IDSQuerysetProvider } from "../queryset/interface";
 import { DSQueryset } from "../queryset/queryset";
-import { defaults, extend, isString } from "lodash";
+import { defaults, extend, isString } from "lodash-es";
 import { IDSSorterClass, IDSSorterProvider } from "../sorters/interface";
 import { IDSFilterClass, IDSFilterProvider } from "../filters/interface";
 import { IDSPaginatorClass, IDSPaginatorProvider } from "../paginators/interface";
@@ -207,7 +207,7 @@ export class DSCollection<T extends IDSModel> extends DSConfig<IDSCollectionSetu
     }
 
     public action(instance: T, action: string, args: IDSCollectionActionParams): Observable<any> {
-        let cargs: IDSCollectionActionFullParams = isString(args) ? {url: args, body: {}} : args;
+        let cargs: IDSCollectionActionFullParams = <any>(isString(args) ? {url: args, body: {}} : args);
         let context: any = extend({}, this.context, cargs.context || {});
         let identifier: any;
         if (instance === null) {

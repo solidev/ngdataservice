@@ -1,5 +1,5 @@
 import {IDSSerializer, IDSSerializerProvider} from "./interface";
-import {omitBy, pick} from "lodash";
+import {omitBy, pick} from "lodash-es";
 import {IDSModel} from "../model/interface";
 import {Injectable} from "@angular/core";
 import {IDSContext} from "../collection/interface";

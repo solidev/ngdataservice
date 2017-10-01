@@ -12,8 +12,6 @@ export interface IDSIntegerFieldParams {
 
 
 export function DSIntegerField(params: IDSIntegerFieldParams): any {
-    let setmeta = Reflect.metadata(DSFieldMetadataKey,
-        {type: "integer", params: params});
     return (target: IDSModel, key: string) => {
         // Set validators
         let validators = [];
@@ -37,9 +35,5 @@ export function DSIntegerField(params: IDSIntegerFieldParams): any {
             validators: validators,
             asyncvalidators: []
         };
-
-
-        // Store metadata
-        setmeta(target, key);
     };
 }

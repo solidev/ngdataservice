@@ -1,7 +1,5 @@
 import {DSFieldMetadataKey} from "./interface";
 export function TranslatableField(params: any): any {
-    let setmeta = Reflect.metadata(DSFieldMetadataKey, {type: "integer", params: params});
-    console.log("Out", setmeta);
     return (target: any, key: string) => {
         let _val = this[key];
         // property getter
@@ -29,6 +27,5 @@ export function TranslatableField(params: any): any {
         }
 
         // Store metadata
-        setmeta(target, key);
     };
 }
