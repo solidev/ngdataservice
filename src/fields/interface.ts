@@ -10,3 +10,14 @@ export interface IDSFieldProperties {
 export interface IDSFieldList {
     [index: string]: IDSFieldProperties;
 }
+
+export interface IDSFieldBaseParameters {
+    verbose_name?: string;
+    name?: string;
+    help_text?: string;
+    choices?: any;
+    default?: any;
+    required?: boolean;
+    validators?: ValidatorFn[];
+    asyncvalidators?: AsyncValidatorFn[];
+}

@@ -1,13 +1,14 @@
-import {Observable} from "rxjs/Observable";
-import {IDSModel, IDSValidationResult, IDSValidationOptions, IDSRemoveParams} from "./interface";
-import {IDSCollection, IDSCollectionActionParams} from "../collection/interface";
-import {IDSRegister} from "../register/interface";
-import {omitBy, extend} from "lodash-es";
+import { Observable } from "rxjs/Observable";
+import { IDSModel, IDSRemoveParams, IDSValidationOptions, IDSValidationResult } from "./interface";
+import { IDSCollection, IDSCollectionActionParams } from "../collection/interface";
+import { IDSRegister } from "../register/interface";
+import { extend, omitBy } from "lodash-es";
 import "rxjs/add/observable/of";
 import { IDSFieldList } from "../fields/interface";
 
 
 const DEFAULT_VALIDATION_OPTIONS: IDSValidationOptions = {validate: true, async: true};
+
 /**
  * Data object base class.
  * Provides base functions for save, remove, refresh and ?update object based functions.
@@ -42,7 +43,7 @@ export class DSModel implements IDSModel {
      * @returns {number|string}
      * @private
      */
-    public get _pk(): number|string {
+    public get _pk(): number | string {
         return this.getPk();
     }
 
@@ -112,7 +113,7 @@ export class DSModel implements IDSModel {
      * @see return value ?
      * @returns {Observable<boolean>}
      */
-    public update(fields: string[]=[]): Observable<any> {
+    public update(fields: string[] = []): Observable<any> {
         this._checkCollection();
         return this._collection.update(this, fields);
     }
@@ -179,7 +180,7 @@ export class DSModel implements IDSModel {
      * Get primary key from object.
      * @returns {any}
      */
-    protected getPk(): number|string {
+    protected getPk(): number | string {
         return this["id"];
     }
 
